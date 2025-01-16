@@ -1,5 +1,6 @@
 'use client'
-import { useState } from 'react'
+
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import * as Icons from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -8,29 +9,21 @@ import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import { initializeApp, getApps } from 'firebase/app'
+import { initializeApp, getApps, FirebaseApp } from 'firebase/app'
 import { 
   getAuth, 
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword,
+  Auth
 } from 'firebase/auth'
-
-const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
-}
-
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
-const auth = getAuth(app)
 
 interface FirebaseError extends Error {
   code: string;
   message: string;
 }
+
+// Initialize Firebase only on client side
+let app: FirebaseApp | undefined;
+let auth: Auth | undefined;
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -39,8 +32,36 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
+  useEffect(() => {
+    // Initialize Firebase only on client side
+    if (typeof window !== 'undefined') {
+      const firebaseConfig = {
+        apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+        authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+        projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+        storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+        messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+        appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+        measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
+      }
+
+      // Initialize Firebase only if it hasn't been initialized
+      if (!getApps().length) {
+        app = initializeApp(firebaseConfig)
+      } else {
+        app = getApps()[0]
+      }
+      auth = getAuth(app)
+    }
+  }, [])
+
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (!auth) {
+      setError('Authentication not initialized')
+      return
+    }
+
     setLoading(true)
     setError('')
 
