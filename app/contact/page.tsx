@@ -1,5 +1,5 @@
 'use client'
-import { useState } from "react"
+import { useState, ChangeEvent, FormEvent } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -9,19 +9,29 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import emailjs from '@emailjs/browser'
 
+interface FormData {
+  name: string;
+  company: string;
+  email: string;
+  projectType: string;
+  message: string;
+}
+
+const initialFormData: FormData = {
+  name: '',
+  company: '',
+  email: '',
+  projectType: '',
+  message: ''
+}
+
 export default function ContactPage() {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState('')
-  const [formData, setFormData] = useState({
-    name: '',
-    company: '',
-    email: '',
-    projectType: '',
-    message: ''
-  })
+  const [formData, setFormData] = useState<FormData>(initialFormData)
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({
       ...prev,
@@ -29,24 +39,23 @@ export default function ContactPage() {
     }))
   }
 
-  const handleProjectTypeChange = (value) => {
+  const handleProjectTypeChange = (value: string) => {
     setFormData(prev => ({
       ...prev,
       projectType: value
     }))
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
     setError('')
     setSuccess(false)
 
     try {
-      // Move these to environment variables in production
       const result = await emailjs.send(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '',
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || '',
         {
           from_name: formData.name,
           email: formData.email,
@@ -55,18 +64,12 @@ export default function ContactPage() {
           message: formData.message,
           to_name: 'Admin'
         },
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ''
       )
 
       if (result.status === 200) {
         setSuccess(true)
-        setFormData({
-          name: '',
-          company: '',
-          email: '',
-          projectType: '',
-          message: ''
-        })
+        setFormData(initialFormData)
       } else {
         throw new Error('Failed to send message')
       }
@@ -77,6 +80,25 @@ export default function ContactPage() {
       setLoading(false)
     }
   }
+
+  const whyWorkWithUs = [
+    {
+      title: "Technical Excellence",
+      description: "Expert development team with deep technical expertise."
+    },
+    {
+      title: "AI Integration",
+      description: "Enhance your software with cutting-edge AI capabilities."
+    },
+    {
+      title: "Agile Development",
+      description: "Flexible, iterative approach to deliver value faster."
+    },
+    {
+      title: "Ongoing Support",
+      description: "Comprehensive maintenance and support services."
+    }
+  ]
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -209,24 +231,7 @@ export default function ContactPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {[
-                      {
-                        title: "Technical Excellence",
-                        description: "Expert development team with deep technical expertise."
-                      },
-                      {
-                        title: "AI Integration",
-                        description: "Enhance your software with cutting-edge AI capabilities."
-                      },
-                      {
-                        title: "Agile Development",
-                        description: "Flexible, iterative approach to deliver value faster."
-                      },
-                      {
-                        title: "Ongoing Support",
-                        description: "Comprehensive maintenance and support services."
-                      }
-                    ].map((item, i) => (
+                    {whyWorkWithUs.map((item, i) => (
                       <div key={i} className="flex space-x-4">
                         <div className="mt-1">
                           <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
