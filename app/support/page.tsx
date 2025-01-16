@@ -7,8 +7,6 @@ import {
   Mail,
   Phone,
   ArrowRight,
-  CheckCircle,
-  Users,
   Shield,
   Zap
 } from "lucide-react"

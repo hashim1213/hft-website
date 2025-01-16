@@ -168,7 +168,7 @@ export default function AboutPage() {
             >
               <h2 className="text-3xl font-bold mb-4">Our Approach</h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
-                We believe in a collaborative approach that combines technical expertise with a deep understanding of our clients' business needs.
+                We believe in a collaborative approach that combines technical expertise with a deep understanding of our clients&apos; business needs.
               </p>
             </motion.div>
 

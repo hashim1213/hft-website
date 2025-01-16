@@ -1,5 +1,6 @@
 'use client'
 import { motion } from "framer-motion"
+import { useRouter } from 'next/navigation'
 import { 
   Code, 
   Search,
@@ -19,6 +20,8 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
 export default function DevelopmentPage() {
+  const router = useRouter()
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
@@ -209,13 +212,13 @@ export default function DevelopmentPage() {
             >
               <h2 className="text-3xl font-bold">Start Your Development Project</h2>
               <p className="max-w-2xl mx-auto text-white/80">
-                Let's discuss how we can help bring your software vision to life.
+                Let&apos;s discuss how we can help bring your software vision to life.
               </p>
               <Button 
                 variant="secondary" 
                 size="lg" 
                 className="bg-white text-primary hover:bg-white/90"
-                onClick={() => window.location.href = '/contact'}
+                onClick={() => router.push('/contact')}
               >
                 Discuss Your Project
                 <ArrowRight className="ml-2 h-4 w-4" />

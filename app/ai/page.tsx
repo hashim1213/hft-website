@@ -1,4 +1,5 @@
 'use client'
+
 import { motion } from "framer-motion"
 import { 
   Brain,
@@ -9,18 +10,20 @@ import {
   BarChart,
   Search,
   Code,
-  Archive,
   Zap,
   Star,
   Database,
   PieChart
 } from "lucide-react"
+import { useRouter } from 'next/navigation'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardContent} from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
 export default function AIPage() {
+  const router = useRouter()
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
@@ -46,7 +49,7 @@ export default function AIPage() {
               </p>
               <Button 
                 size="lg"
-                onClick={() => window.location.href = '/contact'}
+                onClick={() => router.push('/contact')}
               >
                 Explore AI Solutions
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -246,13 +249,13 @@ export default function AIPage() {
             >
               <h2 className="text-3xl font-bold">Ready to Transform Your Business with AI?</h2>
               <p className="max-w-2xl mx-auto text-white/80">
-                Let's discuss how our AI solutions can help you achieve your business objectives.
+                Let&apos;s discuss how our AI solutions can help you achieve your business objectives.
               </p>
               <Button 
                 variant="secondary" 
                 size="lg" 
                 className="bg-white text-primary hover:bg-white/90"
-                onClick={() => window.location.href = '/contact'}
+                onClick={() => router.push('/contact')}
               >
                 Schedule a Consultation
                 <ArrowRight className="ml-2 h-4 w-4" />

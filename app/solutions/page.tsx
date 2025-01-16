@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function SolutionsPage() {
-  const [activeTab, setActiveTab] = useState("software")
+  
 
   const solutions = {
     software: [
@@ -206,7 +206,7 @@ export default function SolutionsPage() {
             >
               <h2 className="text-3xl font-bold">Ready to Transform Your Business?</h2>
               <p className="max-w-2xl mx-auto text-white/80">
-                Let's discuss how our solutions can help you achieve your business goals.
+                Let&apos;s discuss how our solutions can help you achieve your business goals.
               </p>
               <Button 
                 variant="secondary" 

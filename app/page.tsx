@@ -29,7 +29,7 @@ export default function Website() {
                   Software Solutions
                 </div>
                 <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl/none max-w-3xl">
-                  Building Tomorrow's
+                  Building Tomorrow&apos;s
                   <span className="block bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
                     Software Solutions
                   </span>

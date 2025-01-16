@@ -8,7 +8,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import * as Icons from "lucide-react";
 import { initializeApp, getApps } from 'firebase/app';
@@ -21,8 +20,7 @@ import {
   doc,
   query,
   orderBy,
-  serverTimestamp,
-  Timestamp
+  serverTimestamp
 } from 'firebase/firestore';
 
 if (!process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
@@ -63,7 +61,6 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [activeTab, setActiveTab] = useState('write');
   const router = useRouter();
 
   useEffect(() => {
@@ -336,7 +333,7 @@ export default function Dashboard() {
                                 setTitle(post.title);
                                 setExcerpt(post.excerpt);
                                 setContent(post.content);
-                                setActiveTab('write');
+                                
                               }}
                             >
                               <Icons.Edit className="h-4 w-4" />

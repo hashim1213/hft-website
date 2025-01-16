@@ -7,8 +7,7 @@ import {
   Users,
   Code,
   LifeBuoy,
-  ArrowRight,
-  ExternalLink
+  ArrowRight
 } from "lucide-react"
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -219,7 +218,7 @@ export default function ServicesPage() {
             >
               <h2 className="text-3xl font-bold">Ready to Transform Your Business?</h2>
               <p className="max-w-2xl mx-auto text-white/80">
-                Let's discuss how our solutions and services can help you achieve your business goals.
+                Let&apos;s discuss how our solutions and services can help you achieve your business goals.
               </p>
               <Button 
                 variant="secondary" 

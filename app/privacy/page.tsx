@@ -102,7 +102,7 @@ export default function LegalPage() {
 
                       <section className="space-y-4">
                         <h2 className="text-xl font-semibold">Service Provision</h2>
-                        <p>We provide our services on an "as is" and "as available" basis. We reserve the right to:</p>
+                        <p>We provide our services on an &quot;as is&quot; and &quot;as available&quot; basis. We reserve the right to:</p>
                         <div className="pl-4">
                           <p className="mb-2">Modify or discontinue services without notice</p>
                           <p className="mb-2">Refuse service to anyone for any reason</p>

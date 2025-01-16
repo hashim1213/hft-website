@@ -9,7 +9,10 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { initializeApp, getApps } from 'firebase/app'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { 
+  getAuth, 
+  signInWithEmailAndPassword
+} from 'firebase/auth'
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -24,6 +27,11 @@ const firebaseConfig = {
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
 const auth = getAuth(app)
 
+interface FirebaseError extends Error {
+  code: string;
+  message: string;
+}
+
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -31,7 +39,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
     setError('')
@@ -39,8 +47,10 @@ export default function LoginPage() {
     try {
       await signInWithEmailAndPassword(auth, email, password)
       router.push('/dashboard')
-    } catch (err: any) {
-      switch (err.code) {
+    } catch (err) {
+      const firebaseError = err as FirebaseError
+      
+      switch (firebaseError.code) {
         case 'auth/user-not-found':
         case 'auth/wrong-password':
           setError('Invalid email or password')
@@ -54,7 +64,7 @@ export default function LoginPage() {
         default:
           setError('Failed to sign in. Please try again')
       }
-      console.error('Login error:', err)
+      console.error('Login error:', firebaseError)
     } finally {
       setLoading(false)
     }

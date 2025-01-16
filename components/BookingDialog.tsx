@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import * as Icons from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
@@ -10,7 +10,8 @@ import { initializeApp, getApps } from 'firebase/app'
 import { getFirestore, addDoc, collection, Timestamp } from 'firebase/firestore'
 import emailjs from '@emailjs/browser'
 
-emailjs.init("ETnbq4RolYkA_x5xz")
+// Move to environment variables
+emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || '')
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -24,7 +25,13 @@ const firebaseConfig = {
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
 const db = getFirestore(app)
 
-const SERVICES = [
+interface Service {
+  title: string;
+  description: string;
+  icon: any; // Ideally should be more specific based on your Icons type
+}
+
+const SERVICES: Service[] = [
   {
     title: "Software Development",
     description: "Discuss your software development needs",
@@ -42,28 +49,43 @@ const SERVICES = [
   }
 ]
 
-const TIME_SLOTS = [
+const TIME_SLOTS: string[] = [
   "09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM",
   "01:00 PM", "01:30 PM", "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM",
   "04:00 PM", "04:30 PM"
 ]
 
-const BookingDialog = ({ onOpenChange }) => {
+interface FormData {
+  service: string;
+  name: string;
+  email: string;
+  company: string;
+  date: string;
+  time: string;
+  message: string;
+}
 
+interface BookingDialogProps {
+  onOpenChange: (open: boolean) => void;
+}
+
+const initialFormData: FormData = {
+  service: "",
+  name: "",
+  email: "",
+  company: "",
+  date: "",
+  time: "",
+  message: ""
+}
+
+const BookingDialog: React.FC<BookingDialogProps> = ({ onOpenChange }) => {
   const [step, setStep] = useState(1)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [formData, setFormData] = useState({
-    service: "",
-    name: "",
-    email: "",
-    company: "",
-    date: "",
-    time: "",
-    message: ""
-  })
+  const [formData, setFormData] = useState<FormData>(initialFormData)
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({
       ...prev,
@@ -71,7 +93,7 @@ const BookingDialog = ({ onOpenChange }) => {
     }))
   }
 
-  const handleServiceSelect = (service) => {
+  const handleServiceSelect = (service: string) => {
     setFormData(prev => ({
       ...prev,
       service
@@ -79,63 +101,51 @@ const BookingDialog = ({ onOpenChange }) => {
     setStep(2)
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
     setError('')
 
     try {
-        const docRef = await addDoc(collection(db, 'bookingRequests'), {
-            ...formData,
-            status: 'pending',
-            createdAt: Timestamp.now(),
-            duration: '30 minutes'
-        })
+      const docRef = await addDoc(collection(db, 'bookingRequests'), {
+        ...formData,
+        status: 'pending',
+        createdAt: Timestamp.now(),
+        duration: '30 minutes'
+      })
 
-        const emailResult = await emailjs.send(
-            'service_eji3uxd',
-            'template_zat8osd',
-            {
-                name: formData.name,
-                email: formData.email,
-                company: formData.company || 'Not provided',
-                service: formData.service,
-                date: formData.date,
-                time: formData.time,
-                message: formData.message || 'No additional message',
-                booking_id: docRef.id,
-                from_name: formData.name // Add this if your template uses {{from_name}}
-            }
-        )
-
-        if (emailResult.status !== 200) {
-            throw new Error('Failed to send email notification')
+      const emailResult = await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '',
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || '',
+        {
+          name: formData.name,
+          email: formData.email,
+          company: formData.company || 'Not provided',
+          service: formData.service,
+          date: formData.date,
+          time: formData.time,
+          message: formData.message || 'No additional message',
+          booking_id: docRef.id,
+          from_name: formData.name
         }
+      )
 
-        setStep(4)
-    } catch (err) {
-        console.error('Booking error:', err)
-        setError(err.message || 'Failed to submit booking request. Please try again.')
-        
-        if (err.code === 'permission-denied') {
-            setError('Unable to save booking request. Please try again later.')
-        }
+      if (emailResult.status !== 200) {
+        throw new Error('Failed to send email notification')
+      }
+
+      setStep(4)
+    } catch (error) {
+      console.error('Booking error:', error)
+      setError(error instanceof Error ? error.message : 'Failed to submit booking request. Please try again.')
     } finally {
-        setLoading(false)
+      setLoading(false)
     }
-}
+  }
 
   const resetAndClose = () => {
     setStep(1)
-    setFormData({
-      service: "",
-      name: "",
-      email: "",
-      company: "",
-      date: "",
-      time: "",
-      message: ""
-    })
+    setFormData(initialFormData)
     setError('')
     onOpenChange?.(false)
   }
@@ -159,6 +169,12 @@ const BookingDialog = ({ onOpenChange }) => {
             {step === 4 && "Booking Confirmed"}
           </DialogTitle>
         </DialogHeader>
+
+        {error && (
+          <Alert variant="destructive">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
         
         {/* Step 1: Service Selection */}
         {step === 1 && (
@@ -186,7 +202,7 @@ const BookingDialog = ({ onOpenChange }) => {
 
         {/* Step 2: Contact Information */}
         {step === 2 && (
-          <form className="space-y-4" onSubmit={(e) => {
+          <form className="space-y-4" onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault()
             setStep(3)
           }}>
@@ -248,7 +264,13 @@ const BookingDialog = ({ onOpenChange }) => {
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium">Time</label>
-              <Select name="time" onValueChange={(value) => handleInputChange({ target: { name: 'time', value } })}>
+              <Select 
+                name="time" 
+                value={formData.time}
+                onValueChange={(value) => handleInputChange({ 
+                  target: { name: 'time', value } 
+                } as React.ChangeEvent<HTMLInputElement>)}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select preferred time" />
                 </SelectTrigger>
@@ -268,14 +290,23 @@ const BookingDialog = ({ onOpenChange }) => {
                 value={formData.message}
                 onChange={handleInputChange}
                 className="flex min-h-[100px] w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                placeholder="Any specific topics you'd like to discuss?"
+                placeholder="Any specific topics you&apos;d like to discuss?"
               />
             </div>
             <div className="flex justify-between gap-4">
-              <Button variant="outline" type="button" onClick={() => setStep(2)}>
+              <Button variant="outline" type="button" onClick={() => setStep(2)} disabled={loading}>
                 Back
               </Button>
-              <Button type="submit">Book Consultation</Button>
+              <Button type="submit" disabled={loading}>
+                {loading ? (
+                  <>
+                    <Icons.Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Booking...
+                  </>
+                ) : (
+                  'Book Consultation'
+                )}
+              </Button>
             </div>
           </form>
         )}
@@ -289,7 +320,7 @@ const BookingDialog = ({ onOpenChange }) => {
             <div className="space-y-2">
               <h3 className="text-lg font-semibold">Booking Request Received!</h3>
               <p className="text-gray-600">
-                Thank you for your booking request. We'll review your preferred time and send a confirmation email to {formData.email} within 24 hours. The confirmation email will include the final meeting time and further details.
+                Thank you for your booking request. We&apos;ll review your preferred time and send a confirmation email to {formData.email} within 24 hours. The confirmation email will include the final meeting time and further details.
               </p>
               <p className="text-gray-600 text-sm mt-4">
                 Note: Your consultation will be confirmed once you receive our email confirmation.

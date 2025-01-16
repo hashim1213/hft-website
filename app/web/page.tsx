@@ -5,7 +5,6 @@ import {
   Globe,
   Laptop,
   Monitor,
-  Smartphone,
   Brain,
   Lock,
   BarChart,
@@ -16,7 +15,7 @@ import {
 } from "lucide-react"
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardContent} from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
 export default function WebDevPage() {
@@ -212,7 +211,7 @@ export default function WebDevPage() {
             >
               <h2 className="text-3xl font-bold">Ready to Build Your Web Solution?</h2>
               <p className="max-w-2xl mx-auto text-white/80">
-                Let's discuss how we can help you create a powerful web presence that drives results.
+                Let&apos;s discuss how we can help you create a powerful web presence that drives results.
               </p>
               <Button 
                 variant="secondary" 

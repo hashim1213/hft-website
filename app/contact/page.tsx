@@ -43,9 +43,10 @@ export default function ContactPage() {
     setSuccess(false)
 
     try {
+      // Move these to environment variables in production
       const result = await emailjs.send(
-        'service_eji3uxd',
-        'template_27xfv6e',
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
         {
           from_name: formData.name,
           email: formData.email,
@@ -54,7 +55,7 @@ export default function ContactPage() {
           message: formData.message,
           to_name: 'Admin'
         },
-        'ETnbq4RolYkA_x5xz'
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
       )
 
       if (result.status === 200) {
@@ -77,7 +78,6 @@ export default function ContactPage() {
     }
   }
 
-
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
@@ -87,7 +87,7 @@ export default function ContactPage() {
           <div className="text-center space-y-4 mb-12">
             <h1 className="text-3xl font-bold sm:text-4xl">Get in Touch</h1>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Ready to build your next software solution? Let's discuss how we can help.
+              Ready to build your next software solution? Let&apos;s discuss how we can help.
             </p>
           </div>
 
@@ -96,7 +96,7 @@ export default function ContactPage() {
               <CardHeader>
                 <CardTitle>Contact Us</CardTitle>
                 <CardDescription>
-                  Fill out the form below and we'll get back to you within 24 hours.
+                  Fill out the form below and we&apos;ll get back to you within 24 hours.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -109,7 +109,7 @@ export default function ContactPage() {
                 {success && (
                   <Alert className="mb-4">
                     <AlertDescription>
-                      Thank you for your message! We'll get back to you soon.
+                      Thank you for your message! We&apos;ll get back to you soon.
                     </AlertDescription>
                   </Alert>
                 )}

@@ -1,22 +1,20 @@
 'use client'
+
 import { motion } from "framer-motion"
 import { 
   Smartphone,
   AppWindow,
   Repeat,
   Shield,
-  Zap,
   ArrowRight,
   Bell,
   Gauge,
-  Map,
   Store,
-  Database,
   Cloud
 } from "lucide-react"
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
 export default function MobileAppsPage() {
@@ -259,7 +257,7 @@ export default function MobileAppsPage() {
             >
               <h2 className="text-3xl font-bold">Transform Your Mobile Presence</h2>
               <p className="max-w-2xl mx-auto text-white/80">
-                Let's discuss how we can help you create a powerful mobile application that engages users and drives growth.
+                Let&apos;s discuss how we can help you create a powerful mobile application that engages users and drives growth.
               </p>
               <Button 
                 variant="secondary" 
