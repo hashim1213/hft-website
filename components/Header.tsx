@@ -1,17 +1,28 @@
 'use client'
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import * as Icons from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 
-const NAVIGATION_LINKS = [
+interface NavigationLink {
+  name: string;
+  href: string;
+}
+
+const NAVIGATION_LINKS: NavigationLink[] = [
   { name: 'Home', href: '/' },
   { name: 'Solutions', href: '/product' },
   { name: 'Contact', href: '/contact' }
 ]
 
-const MobileMenu = ({ isOpen, onOpenChange }) => (
+interface MobileMenuProps {
+  isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onOpenChange }) => (
   <Sheet open={isOpen} onOpenChange={onOpenChange}>
     <SheetTrigger asChild>
       <Button variant="ghost" size="icon" className="md:hidden">
@@ -73,13 +84,23 @@ export default function Header() {
   }, [])
 
   return (
-    <header className={`fixed w-full px-4 lg:px-6 h-16 flex items-center transition-all duration-300 z-50 
-      ${scrolled ? 'bg-white/80 backdrop-blur-md shadow-sm' : 'bg-transparent'}`}>
-       <Link href="/" className="flex items-center justify-center">
-      <div className="relative h-8 w-24">
-        <img src="/logo2.png" alt="Logo" className="h-auto w-auto"/>
-      </div>
-    </Link>
+    <header 
+      className={`fixed w-full px-4 lg:px-6 h-16 flex items-center transition-all duration-300 z-50
+        ${scrolled ? 'bg-white/80 backdrop-blur-md shadow-sm' : 'bg-transparent'}`}
+    >
+      <Link href="/" className="flex items-center justify-center">
+        <div className="relative h-8 w-24">
+          <Image
+            src="/logo2.png"
+            alt="Logo"
+            fill
+            priority
+            sizes="(max-width: 96px) 100vw, 96px"
+            style={{ objectFit: 'contain' }}
+            className="h-auto w-auto"
+          />
+        </div>
+      </Link>
 
       <nav className="ml-auto hidden md:flex items-center gap-6">
         {NAVIGATION_LINKS.map((link) => (
@@ -91,9 +112,11 @@ export default function Header() {
             }`}
           >
             {link.name}
-            <span className={`absolute -bottom-1 left-0 h-0.5 bg-primary transition-all ${
-              activeSection === link.name.toLowerCase() ? 'w-full' : 'w-0 group-hover:w-full'
-            }`} />
+            <span 
+              className={`absolute -bottom-1 left-0 h-0.5 bg-primary transition-all ${
+                activeSection === link.name.toLowerCase() ? 'w-full' : 'w-0 group-hover:w-full'
+              }`} 
+            />
           </Link>
         ))}
         <Link href="/login">

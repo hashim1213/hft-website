@@ -28,7 +28,7 @@ const db = getFirestore(app)
 interface Service {
   title: string;
   description: string;
-  icon: any; // Ideally should be more specific based on your Icons type
+  icon: React.ElementType; // Ideally should be more specific based on your Icons type
 }
 
 const SERVICES: Service[] = [
