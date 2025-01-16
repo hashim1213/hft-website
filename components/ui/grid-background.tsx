@@ -1,10 +1,19 @@
 import React, { useEffect, useState } from 'react';
 
-const GridBackground = ({ children }) => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  
+interface MousePosition {
+  x: number;
+  y: number;
+}
+
+interface GridBackgroundProps {
+  children: React.ReactNode;
+}
+
+const GridBackground: React.FC<GridBackgroundProps> = ({ children }) => {
+  const [mousePosition, setMousePosition] = useState<MousePosition>({ x: 0, y: 0 });
+
   useEffect(() => {
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({
         x: (e.clientX / window.innerWidth) * 15,
         y: (e.clientY / window.innerHeight) * 15,
@@ -18,7 +27,7 @@ const GridBackground = ({ children }) => {
   return (
     <div className="relative min-h-screen w-full bg-white overflow-hidden">
       {/* Animated grid background */}
-      <div 
+      <div
         className="absolute inset-0"
         style={{
           backgroundImage: `
@@ -30,11 +39,11 @@ const GridBackground = ({ children }) => {
           transition: 'transform 0.2s ease-out',
         }}
       />
-
+      
       {/* Gradient orbs */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full filter blur-3xl" />
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-500/10 rounded-full filter blur-3xl" />
-
+      
       {/* Content container */}
       <div className="relative z-10">
         {children}

@@ -1,4 +1,6 @@
 "use client";
+
+import { useState } from "react"
 import { motion } from "framer-motion";
 import * as Icons from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,6 +13,8 @@ import GridBackground from "@/components/ui/grid-background";
 import TechStackCarousel from "@/components/ui/tech-stack-carousel";
 
 export default function Website() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header/>
@@ -39,7 +43,7 @@ export default function Website() {
                   optimize, and scale their operations efficiently.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <BookingDialog />
+                <BookingDialog onOpenChange={setIsDialogOpen} />
                   <Link href="/contact">
                     <Button 
                       size="lg" 
