@@ -221,7 +221,9 @@ export default function SolutionsPage() {
         </section>
       </main>
 
+      <center>
       <Footer />
+      </center>
     </div>
   )
 }

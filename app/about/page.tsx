@@ -218,7 +218,9 @@ export default function AboutPage() {
         </section>
       </main>
 
+      <center>
       <Footer />
+      </center>
     </div>
   )
 }

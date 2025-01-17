@@ -363,7 +363,9 @@ export default function Dashboard() {
         </Tabs>
       </main>
 
+      <center>
       <Footer />
+      </center>
     </div>
   );
 }

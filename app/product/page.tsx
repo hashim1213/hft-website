@@ -234,7 +234,9 @@ export default function ServicesPage() {
         </section>
       </main>
 
+      <center>
       <Footer />
+      </center>
     </div>
   )
 }

@@ -265,7 +265,9 @@ export default function AIPage() {
         </section>
       </main>
 
+      <center>
       <Footer />
+      </center>
     </div>
   )
 }

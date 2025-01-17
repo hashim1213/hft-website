@@ -128,7 +128,9 @@ export default function LegalPage() {
         </div>
       </main>
 
+      <center>
       <Footer />
+      </center>
     </div>
   )
 }

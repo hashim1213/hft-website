@@ -85,17 +85,17 @@ export default function Header() {
 
   return (
     <header 
-      className={`fixed w-full px-4 lg:px-6 h-16 flex items-center transition-all duration-300 z-50
+      className={`fixed w-full px-4 lg:px-6 h-20 flex items-center transition-all duration-300 z-50
         ${scrolled ? 'bg-white/80 backdrop-blur-md shadow-sm' : 'bg-transparent'}`}
     >
       <Link href="/" className="flex items-center justify-center">
-        <div className="relative h-8 w-24">
+        <div className="relative h-12 w-32">
           <Image
             src="/logo2.png"
             alt="Logo"
             fill
             priority
-            sizes="(max-width: 96px) 100vw, 96px"
+            sizes="(max-width: 128px) 100vw, 128px"
             style={{ objectFit: 'contain' }}
             className="h-auto w-auto"
           />

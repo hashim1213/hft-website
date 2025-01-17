@@ -273,7 +273,9 @@ export default function MobileAppsPage() {
         </section>
       </main>
 
+      <center>
       <Footer />
+      </center>
     </div>
   )
 }

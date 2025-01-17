@@ -189,7 +189,9 @@ export default function BlogPost({ params }: { params: Promise<{ id: string }> }
           </motion.div>
         </article>
       </main>
+      <center>
       <Footer />
+      </center>
     </div>
   )
 }

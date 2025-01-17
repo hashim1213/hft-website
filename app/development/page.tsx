@@ -228,7 +228,9 @@ export default function DevelopmentPage() {
         </section>
       </main>
 
+      <center>
       <Footer />
+      </center>
     </div>
   )
 }

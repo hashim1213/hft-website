@@ -212,7 +212,9 @@ export default function ConsultingPage() {
         </section>
       </main>
 
+      <center>
       <Footer />
+      </center>
     </div>
   )
 }

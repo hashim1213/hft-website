@@ -227,7 +227,9 @@ export default function WebDevPage() {
         </section>
       </main>
 
+      <center>
       <Footer />
+      </center>
     </div>
   )
 }

@@ -254,7 +254,9 @@ export default function SupportPage() {
         </section>
       </main>
 
+      <center>
       <Footer />
+      </center>
     </div>
   )
 }

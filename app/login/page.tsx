@@ -151,7 +151,9 @@ export default function LoginPage() {
           </form>
         </div>
       </main>
+      <center>
       <Footer />
+      </center>
     </div>
   )
 }
