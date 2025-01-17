@@ -3,6 +3,7 @@ import { motion } from "framer-motion"
 import * as Icons from "lucide-react"
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
 
 export default function AboutPage() {
@@ -32,55 +33,63 @@ export default function AboutPage() {
 
         {/* Mission and Values */}
         <section className="py-16 px-4 bg-white">
-          <div className="container mx-auto max-w-5xl">
-            <motion.div 
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="grid md:grid-cols-2 gap-12 items-center"
-            >
-              <div className="space-y-6">
-                <h2 className="text-3xl font-bold">Our Mission</h2>
-                <p className="text-gray-600">
-                  At Bytesavy, we are dedicated to empowering businesses through innovative software solutions. Our mission is to bridge the gap between advanced technology and practical business applications, making cutting-edge solutions accessible and impactful.
-                </p>
-                <div className="space-y-4">
-                  {[
-                    {
-                      title: "Innovation",
-                      description: "Continuously pushing boundaries with emerging technologies"
-                    },
-                    {
-                      title: "Excellence",
-                      description: "Delivering exceptional quality in every project"
-                    },
-                    {
-                      title: "Partnership",
-                      description: "Building lasting relationships with our clients"
-                    }
-                  ].map((value, index) => (
-                    <div key={index} className="flex items-start gap-3">
-                      <div className="mt-1">
-                        <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
-                          <Icons.Check className="h-4 w-4 text-primary" />
-                        </div>
-                      </div>
-                      <div>
-                        <h3 className="font-medium">{value.title}</h3>
-                        <p className="text-sm text-gray-600">{value.description}</p>
-                      </div>
+      <div className="container mx-auto max-w-5xl">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          className="grid md:grid-cols-2 gap-12 items-center"
+        >
+          <div className="space-y-6">
+            <h2 className="text-3xl font-bold">Our Mission</h2>
+            <p className="text-gray-600">
+              At Bytesavy, we are dedicated to empowering businesses through innovative software solutions. Our mission is to bridge the gap between advanced technology and practical business applications, making cutting-edge solutions accessible and impactful.
+            </p>
+            <div className="space-y-4">
+              {[
+                {
+                  title: "Innovation",
+                  description: "Continuously pushing boundaries with emerging technologies"
+                },
+                {
+                  title: "Excellence",
+                  description: "Delivering exceptional quality in every project"
+                },
+                {
+                  title: "Partnership",
+                  description: "Building lasting relationships with our clients"
+                }
+              ].map((value, index) => (
+                <div key={index} className="flex items-start gap-3">
+                  <div className="mt-1">
+                    <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Icons.Check className="h-4 w-4 text-primary" />
                     </div>
-                  ))}
+                  </div>
+                  <div>
+                    <h3 className="font-medium">{value.title}</h3>
+                    <p className="text-sm text-gray-600">{value.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="relative h-[400px] bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg flex items-center justify-center">
+          <div className="absolute inset-4 bg-white/40 backdrop-blur-lg rounded-lg border border-white/20" />
+                <div className="absolute inset-8 z-10">
+                  <Image
+                    src="/mission-image.jpg"
+                    alt="Mission visualization"
+                    fill
+                    className="object-cover rounded-lg"
+                    priority
+                  />
                 </div>
               </div>
-              <div className="relative h-[400px] bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg flex items-center justify-center">
-                <div className="absolute inset-4 bg-white/40 backdrop-blur-lg rounded-lg border border-white/20" />
-                <Icons.Code className="h-24 w-24 text-primary relative" />
-              </div>
-            </motion.div>
-          </div>
-        </section>
+        </motion.div>
+      </div>
+    </section>
 
         {/* Expertise */}
         <section className="py-16 px-4">

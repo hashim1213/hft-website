@@ -1,5 +1,6 @@
 'use client'
 import Link from "next/link"
+import Image from "next/image"
 import * as Icons from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -104,6 +105,15 @@ export default function Footer() {
                 <span className="font-bold text-xl text-white"></span>
               </Link>
               <span className="text-sm">© {new Date().getFullYear()} Bytesavy. All rights reserved.</span>
+              <div className="relative h-6 w-8">
+                <Image
+                  src="/canada-flag.jpeg"
+                  alt="Canadian Flag"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </div>
             </div>
             <div className="flex space-x-4 text-sm">
               {FOOTER_LINKS.legal.map((link) => (
