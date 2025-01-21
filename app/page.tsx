@@ -10,6 +10,7 @@ import BookingDialog from '@/components/BookingDialog';
 import BlogSection from '@/components/BlogSection';
 import GridBackground from "@/components/ui/grid-background";
 import TechStackCarousel from "@/components/ui/tech-stack-carousel";
+import ProductsSection from '@/components/ProductsSection';
 
 export default function Website() {
   
@@ -59,7 +60,7 @@ export default function Website() {
           </section>
           <TechStackCarousel />
         </GridBackground>
-        
+        <ProductsSection />
         {/* Blog Section */}
         <center>
           <BlogSection />
