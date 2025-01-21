@@ -48,7 +48,7 @@ const ProductsSection: React.FC = () => {
       appStoreLink: "https://flashiqapp.com"
     },
     {
-      name: "SanpTrack",
+      name: "SnapTrack",
       description: "Short description of your second app and its key features.",
       icon: "/snaptrack.png",
       appStoreLink: "https://apps.apple.com/ca/app/snaptrack-habit-tracker/id6740051692"
