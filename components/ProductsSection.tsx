@@ -1,19 +1,17 @@
 'use client';
 
-import React from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
 
-interface Product {
+type Product = {
   name: string;
   description: string;
   icon: string;
   appStoreLink: string;
 }
 
-interface ProductCardProps extends Product {}
-
-const ProductCard: React.FC<ProductCardProps> = ({ name, description, icon, appStoreLink }) => (
+const ProductCard = ({ name, description, icon, appStoreLink }: Product) => (
   <motion.a
     href={appStoreLink}
     target="_blank"
@@ -23,11 +21,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ name, description, icon, appS
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
   >
-    <div className="w-24 h-24 rounded-xl overflow-hidden mb-4">
-      <img
+    <div className="relative w-24 h-24 rounded-xl overflow-hidden mb-4">
+      <Image
         src={icon}
         alt={`${name} icon`}
-        className="w-full h-full object-cover"
+        fill
+        sizes="96px"
+        className="object-cover"
+        priority
       />
     </div>
     <h3 className="text-xl font-semibold text-gray-800 mb-2">{name}</h3>
@@ -39,23 +40,23 @@ const ProductCard: React.FC<ProductCardProps> = ({ name, description, icon, appS
   </motion.a>
 );
 
-const ProductsSection: React.FC = () => {
+const ProductsSection = () => {
   const products: Product[] = [
     {
       name: "FlashIQ",
-      description: "Short description of your first app and its key features.",
+      description: "A smart flashcard study app that allows users to study any subjects. Uses the latest and best study methods.",
       icon: "/flashiq.png",
       appStoreLink: "https://flashiqapp.com"
     },
     {
       name: "SnapTrack",
-      description: "Short description of your second app and its key features.",
+      description: "Habit tracking app that allows users to track their habbits one snap at a time.",
       icon: "/snaptrack.png",
       appStoreLink: "https://apps.apple.com/ca/app/snaptrack-habit-tracker/id6740051692"
     },
     {
       name: "SwiftRide",
-      description: "Short description of your third app and its key features.",
+      description: "Winnipeg Transit app that allows users to find their next bus on time.",
       icon: "/swiftride.jpg",
       appStoreLink: "https://apps.apple.com/ca/app/swiftride-winnipeg-transit/id6472630133"
     }
@@ -71,10 +72,10 @@ const ProductsSection: React.FC = () => {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl mb-4">
-            Apps we built 
+            Apps we built
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            We are commited to helping our community by building apps that make thier lives easier
+            We are committed to helping our community by building apps that make their lives easier
           </p>
         </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
