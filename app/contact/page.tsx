@@ -259,7 +259,7 @@ export default function ContactPage() {
                   <div className="space-y-4">
                     <div className="flex items-center space-x-3">
                       <Icons.Mail className="h-5 w-5" />
-                      <span>Hello@bytesavvytech.com</span>
+                      <span>sales@bytesavy.com</span>
                     </div>
                     <div className="flex items-center space-x-3">
                       <Icons.Phone className="h-5 w-5" />
