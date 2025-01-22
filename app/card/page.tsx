@@ -90,7 +90,7 @@ const DigitalCard = () => {
                 { icon: <Github size={24} />, href: "https://github.com/hashim1213" },
                 { icon: <Linkedin size={24} />, href: "https://www.linkedin.com/in/hashim-farooq-778736122/" },
                 { icon: <Globe size={24} />, href: "https://bytesavy.com" }
-              ].map((social, index) => (
+              ].map((social) => (
                 <a 
                   key={social.href}
                   href={social.href}
@@ -137,66 +137,5 @@ const DigitalCard = () => {
   );
 };
 
-// Add these styles to your global CSS file
-const styles = `
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.animate-slideUp {
-  animation: slideUp 0.6s ease-out;
-}
-
-.animate-slideInRight {
-  animation: slideInRight 0.8s ease-out;
-}
-
-.animate-scaleIn {
-  animation: scaleIn 0.8s ease-out;
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.8s ease-out forwards;
-  opacity: 0;
-}
-`;
 
 export default DigitalCard;
