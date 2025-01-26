@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react';
-import { Github, Linkedin, Mail, Globe, Phone } from 'lucide-react';
+import { Github, Linkedin, Mail, Globe, Phone, UserPlus } from 'lucide-react';
 import Image from 'next/image';
 
 const apps = [
@@ -26,6 +26,31 @@ const apps = [
 ];
 
 const DigitalCard = () => {
+  const generateVCard = () => {
+    const vCard = `BEGIN:VCARD
+VERSION:3.0
+FN:Hashim
+N:Hashim;;;
+TITLE:Founder/Lead Developer
+ORG:Bytesavy Technologies
+TEL;TYPE=CELL:+12049999999
+EMAIL;TYPE=WORK:hashim@bytesavy.com
+URL;TYPE=WORK:https://bytesavy.com
+URL;TYPE=GitHub:https://github.com/hashim1213
+URL;TYPE=LinkedIn:https://www.linkedin.com/in/hashim-farooq-778736122/
+END:VCARD`;
+
+    const blob = new Blob([vCard], { type: 'text/vcard' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'hashim_contact.vcf');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-600 to-blue-900 flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden animate-slideUp">
@@ -69,6 +94,14 @@ const DigitalCard = () => {
 
           {/* Contact Buttons */}
           <div className="space-y-3 animate-fadeIn" style={{ animationDelay: '0.4s' }}>
+            <button 
+              onClick={generateVCard}
+              className="flex items-center justify-center gap-2 w-full py-3 bg-green-600 text-white rounded-xl active:bg-green-700 active:scale-95 transition-transform"
+            >
+              <UserPlus size={20} />
+              <span>Add Contact</span>
+            </button>
+
             <a 
               href="tel:+12049999999" 
               className="flex items-center justify-center gap-2 w-full py-3 bg-blue-600 text-white rounded-xl active:bg-blue-700 active:scale-95 transition-transform"
@@ -136,6 +169,5 @@ const DigitalCard = () => {
     </div>
   );
 };
-
 
 export default DigitalCard;
