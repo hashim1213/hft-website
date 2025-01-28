@@ -25,7 +25,7 @@ const Page: React.FC = () => {
     {
       question: "Where was our first kiss?",
       options: ["Queen Elezibeth Park", "Dinsdale Park", "Parking Lot of Keystone", "The Oval"],
-      correctAnswer: "Dinsdale Park"
+      correctAnswer: "Parking Lot of Keystone"
     },
     {
       question: "What class did we have together?",
