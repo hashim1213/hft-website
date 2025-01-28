@@ -31,9 +31,9 @@ const DigitalCard = () => {
 VERSION:3.0
 FN:Hashim
 N:Hashim;;;
-TITLE:Founder/Lead Developer
+TITLE:Founder
 ORG:Bytesavy Technologies
-TEL;TYPE=CELL:+12049999999
+TEL;TYPE=CELL:+12045969355
 EMAIL;TYPE=WORK:hashim@bytesavy.com
 URL;TYPE=WORK:https://bytesavy.com
 URL;TYPE=GitHub:https://github.com/hashim1213
