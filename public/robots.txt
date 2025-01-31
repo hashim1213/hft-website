@@ -1,0 +1,11 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /api/*
+Disallow: /admin/*
+
+# Host
+Host: https://bytesavy.com
+
+# Sitemaps
+Sitemap: https://bytesavy.com/sitemap.xml
