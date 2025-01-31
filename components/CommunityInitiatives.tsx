@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Heart, Mail, ArrowRight, ExternalLink } from 'lucide-react';
+import { Heart, Mail, ArrowRight} from 'lucide-react';
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 
@@ -76,7 +76,7 @@ export default function CommunityInitiatives() {
               </h3>
               
               <p className="text-gray-600">
-                If you're a nonprofit organization looking to enhance your digital presence or streamline your operations, we'd love to hear from you. We offer:
+                If you&apos;re a nonprofit organization looking to enhance your digital presence or streamline your operations, we&apos;d love to hear from you. We offer:
               </p>
 
               <ul className="space-y-4">
