@@ -7,10 +7,8 @@ import { Button } from "@/components/ui/button";
 
 export default function CommunityInitiatives() {
   return (
-    <section className="relative py-24 bg-gradient-to-b from-white to-gray-50">
-      <div className="absolute inset-0 bg-grid-black/[0.02] bg-[size:20px_20px]" />
-      
-      <div className="container relative px-4 md:px-6">
+    <section className="py-24">
+      <div className="container px-4 md:px-6">
         <div className="max-w-6xl mx-auto">
           <motion.div
             className="grid lg:grid-cols-2 gap-12 items-center"
@@ -69,7 +67,7 @@ export default function CommunityInitiatives() {
                 hidden: { opacity: 0, y: 20 },
                 visible: { opacity: 1, y: 0 }
               }}
-              className="bg-white/50 backdrop-blur-sm border border-gray-100 rounded-2xl p-8 space-y-6"
+              className="border rounded-2xl p-8 space-y-6 shadow-sm"
             >
               <h3 className="text-2xl font-semibold text-gray-900">
                 Have a Project in Mind?

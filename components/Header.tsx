@@ -11,6 +11,7 @@ const NAVIGATION_LINKS = [
   { name: "Home", href: "/" },
   { name: "Solutions", href: "/product" },
   { name: "Contact", href: "/contact" },
+  { name: "Blog", href: "/portal" },
 ];
 
 export default function Header() {
@@ -25,8 +26,8 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="fixed w-full z-50 px-4 py-2">
-      <div className={`max-w-screen-2xl mx-auto transition-all duration-300 rounded-full ${
+    <header className="fixed w-full z-50 px-4 pt-6 pb-2">
+      <div className={`max-w-screen-2xl mx-auto transition-all duration-300 rounded-2xl ${
         scrolled ? "bg-white/80 backdrop-blur-md shadow-md" : "bg-white"
       }`}>
         <div className="flex items-center h-16 justify-between px-6">
@@ -51,10 +52,10 @@ export default function Header() {
               <Link
                 key={link.name}
                 href={link.href}
-                className="group inline-flex items-center text-base font-medium text-gray-700 hover:text-primary transition-colors relative px-4 py-2 rounded-full"
+                className="group inline-flex items-center text-base font-medium text-gray-700 hover:text-primary transition-colors relative px-4 py-2 rounded-xl"
               >
                 {link.name}
-                <span className="absolute bottom-0 left-0 w-0 h-full bg-primary/5 rounded-full -z-10 transition-all duration-300 ease-out group-hover:w-full" />
+                <span className="absolute bottom-0 left-0 w-0 h-full bg-primary/5 rounded-xl -z-10 transition-all duration-300 ease-out group-hover:w-full" />
               </Link>
             ))}
             
@@ -62,7 +63,7 @@ export default function Header() {
             <Link href="/login">
               <Button
                 variant="outline"
-                className="gap-2 group border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 rounded-full px-6"
+                className="gap-2 group border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 rounded-xl px-6"
               >
                 <LogIn className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
                 Login
@@ -73,7 +74,7 @@ export default function Header() {
           {/* Mobile menu */}
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden rounded-full">
+              <Button variant="ghost" size="icon" className="lg:hidden rounded-xl">
                 <Menu className="h-6 w-6" />
               </Button>
             </SheetTrigger>
@@ -86,16 +87,16 @@ export default function Header() {
                   <Link
                     key={link.name}
                     href={link.href}
-                    className="text-lg font-medium hover:text-primary transition-colors group flex items-center gap-2 px-4 py-2 rounded-full relative"
+                    className="text-lg font-medium hover:text-primary transition-colors group flex items-center gap-2 px-4 py-2 rounded-xl relative"
                   >
                     {link.name}
-                    <span className="absolute bottom-0 left-0 w-0 h-full bg-primary/5 rounded-full -z-10 transition-all duration-300 group-hover:w-full" />
+                    <span className="absolute bottom-0 left-0 w-0 h-full bg-primary/5 rounded-xl -z-10 transition-all duration-300 group-hover:w-full" />
                   </Link>
                 ))}
                 <Link href="/login" className="mt-4">
                   <Button 
                     variant="outline" 
-                    className="w-full gap-2 group border-primary text-primary hover:bg-primary hover:text-primary-foreground rounded-full"
+                    className="w-full gap-2 group border-primary text-primary hover:bg-primary hover:text-primary-foreground rounded-xl"
                   >
                     <LogIn className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
                     Login

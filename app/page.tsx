@@ -13,7 +13,6 @@ import ProductsSection from "@/components/ProductsSection"
 import Image from "next/image"
 import CommunityInitiatives from "@/components/CommunityInitiatives"
 
-// Animation variants for consistent reuse
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0 }
@@ -29,7 +28,7 @@ const staggerChildren = {
 
 export default function Website() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gray-900">
       <Header />
       
       <main className="flex-1">
@@ -38,10 +37,9 @@ export default function Website() {
           className="relative min-h-screen flex items-center overflow-hidden"
           aria-label="Hero section"
         >
-          {/* Background image with loading optimization */}
           <Image
             src="/bg12.jpg"
-            alt=""  // Empty alt since image is decorative
+            alt=""
             fill
             className="object-cover"
             priority
@@ -51,11 +49,9 @@ export default function Website() {
             blurDataURL="data:image/jpeg;base64,/9j..." // Add your base64 blur here
           />
           
-          {/* Dark overlay for better text contrast */}
           <div className="absolute inset-0 bg-black/40" />
 
-          {/* Content */}
-          <div className="relative z-20 container px-4 md:px-6">
+          <div className="relative z-20 container mx-auto px-4 md:px-6">
             <motion.div
               className="max-w-2xl mx-auto text-center"
               initial="hidden"
@@ -106,16 +102,37 @@ export default function Website() {
             </motion.div>
           </div>
         </section>
-      <center>
-        <TechStackCarousel />
-        <CommunityInitiatives />
-        <ProductsSection />
-        <BlogSection />
-      </center>
+
+        {/* Tech Stack Section */}
+        <section className="w-full bg-background py-16">
+          <div className="container mx-auto px-4 md:px-6">
+            <TechStackCarousel />
+          </div>
+        </section>
+        
+        {/* Community Initiatives Section */}
+        <section className="w-full bg-muted py-20">
+          <div className="container mx-auto px-4 md:px-6">
+            <CommunityInitiatives />
+          </div>
+        </section>
+        
+        {/* Products Section */}
+        <section className="w-full bg-background py-20">
+          <div className="container mx-auto px-4 md:px-6">
+            <ProductsSection />
+          </div>
+        </section>
+        
+        {/* Blog Section with rounded corners and margin */}
+        <section className="w-full bg-muted py-20 rounded-b-3xl mb-8">
+          <div className="container mx-auto px-4 md:px-6">
+            <BlogSection />
+          </div>
+        </section>
       </main>
-      <center>
+
       <Footer />
-      </center>
     </div>
   )
 }

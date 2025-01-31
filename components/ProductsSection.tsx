@@ -74,7 +74,7 @@ export default function ProductsSection() {
   ];
 
   return (
-    <section id="products" className="py-24 bg-gradient-to-b from-gray-50 to-white">
+    <section id="products" className="py-24">
       <div className="container px-4 md:px-6 mx-auto max-w-7xl">
         <motion.div
           className="text-center mb-16"

@@ -47,7 +47,7 @@ const BlogPost = ({ post }: { post: BlogPost }) => {
       <Link href={`/blog/${post.id}`} className="block" aria-label={`Read ${post.title}`}>
         <div className="space-y-4">
           {post.imageUrl && (
-            <div className="relative w-full h-48 overflow-hidden">
+            <div className="relative w-full h-48 overflow-hidden rounded-lg">
               <img
                 src={post.imageUrl}
                 alt=""
@@ -165,7 +165,7 @@ export default function BlogSection() {
   return (
     <section 
       id="blog" 
-      className="py-24 bg-gradient-to-b from-gray-50 to-white"
+      className="py-24"
       aria-labelledby="blog-heading"
     >
       <div className="container px-4 md:px-6">

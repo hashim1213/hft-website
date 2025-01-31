@@ -34,11 +34,45 @@ const FOOTER_LINKS = {
 export default function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300">
-      <div className="container px-4 md:px-6 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+      <div className="container mx-auto px-4 md:px-6 py-16">
+        {/* Main Footer Content */}
+        <div className="text-center mb-12">
+          <Link href="/" className="inline-block mb-8">
+            <div className="relative h-12 w-36">
+              <Image
+                src="/logo2.png"
+                alt="Logo"
+                fill
+                className="object-contain brightness-0 invert"
+                priority
+              />
+            </div>
+          </Link>
+          <p className="max-w-2xl mx-auto text-gray-400 mb-8">
+            We blend creativity with cutting-edge technology to build transformative digital solutions. 
+            Our AI-powered approach delivers results that drive your business forward.
+          </p>
+          <div className="flex justify-center space-x-6 mb-8">
+            {FOOTER_LINKS.social.map((link) => {
+              const Icon = link.icon
+              return (
+                <Link 
+                  key={link.name} 
+                  href={link.href} 
+                  className="hover:text-white transition-colors transform hover:scale-110 duration-200"
+                >
+                  <Icon className="h-6 w-6" />
+                </Link>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Links Section */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
           <div className="space-y-4">
-            <h4 className="text-lg font-semibold text-white">Solutions</h4>
-            <ul className="space-y-2">
+            <h4 className="text-lg font-semibold text-white text-center">Solutions</h4>
+            <ul className="space-y-3 text-center">
               {FOOTER_LINKS.solutions.map((link) => (
                 <li key={link.name}>
                   <Link href={link.href} className="hover:text-white transition-colors">
@@ -50,8 +84,8 @@ export default function Footer() {
           </div>
 
           <div className="space-y-4">
-            <h4 className="text-lg font-semibold text-white">Services</h4>
-            <ul className="space-y-2">
+            <h4 className="text-lg font-semibold text-white text-center">Services</h4>
+            <ul className="space-y-3 text-center">
               {FOOTER_LINKS.services.map((link) => (
                 <li key={link.name}>
                   <Link href={link.href} className="hover:text-white transition-colors">
@@ -63,8 +97,8 @@ export default function Footer() {
           </div>
 
           <div className="space-y-4">
-            <h4 className="text-lg font-semibold text-white">Company</h4>
-            <ul className="space-y-2">
+            <h4 className="text-lg font-semibold text-white text-center">Company</h4>
+            <ul className="space-y-3 text-center">
               {FOOTER_LINKS.company.map((link) => (
                 <li key={link.name}>
                   <Link href={link.href} className="hover:text-white transition-colors">
@@ -76,19 +110,9 @@ export default function Footer() {
           </div>
 
           <div className="space-y-4">
-            <h4 className="text-lg font-semibold text-white">Connect</h4>
-            <div className="flex space-x-4">
-              {FOOTER_LINKS.social.map((link) => {
-                const Icon = link.icon
-                return (
-                  <Link key={link.name} href={link.href} className="hover:text-white transition-colors">
-                    <Icon className="h-5 w-5" />
-                  </Link>
-                )
-              })}
-            </div>
-            <div className="pt-4">
-              <Link href="/login" className="block w-full">
+            <h4 className="text-lg font-semibold text-white text-center">Admin</h4>
+            <div className="pt-2">
+              <Link href="/login">
                 <Button variant="outline" className="w-full gap-2 bg-white/5 hover:bg-white/10">
                   <Icons.LogIn className="h-4 w-4" />
                   Admin Login
@@ -98,26 +122,28 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-gray-800">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="flex items-center space-x-4">
-              <Link href="/">
-                <span className="font-bold text-xl text-white"></span>
-              </Link>
+        {/* Bottom Section */}
+        <div className="border-t border-gray-800 pt-8">
+          <div className="flex flex-col md:flex-row items-center justify-between">
+            <div className="flex items-center space-x-3 mb-4 md:mb-0">
               <span className="text-sm">© {new Date().getFullYear()} Bytesavy. All rights reserved.</span>
-              <div className="relative h-6 w-8">
+              <div className="relative h-5 w-7">
                 <Image
                   src="/canada-flag.jpeg"
                   alt="Canadian Flag"
                   fill
-                  className="object-contain"
+                  className="object-contain rounded"
                   priority
                 />
               </div>
             </div>
-            <div className="flex space-x-4 text-sm">
+            <div className="flex space-x-6 text-sm">
               {FOOTER_LINKS.legal.map((link) => (
-                <Link key={link.name} href={link.href} className="hover:text-white transition-colors">
+                <Link 
+                  key={link.name} 
+                  href={link.href} 
+                  className="hover:text-white transition-colors"
+                >
                   {link.name}
                 </Link>
               ))}
