@@ -99,10 +99,7 @@ export default function BlogPage() {
       <div className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-1 flex items-center justify-center">
-          <div className="text-center">
-            <Icons.Loader2 className="h-8 w-8 animate-spin mx-auto" />
-            <p className="mt-2 text-gray-600">Loading posts...</p>
-          </div>
+          <Icons.Loader2 className="h-8 w-8 animate-spin" />
         </main>
         <Footer />
       </div>
@@ -123,98 +120,125 @@ export default function BlogPage() {
       </div>
     )
   }
-
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <center>
       <main className="flex-1">
         {/* Hero Section */}
-        <div className="bg-gray-50 py-16">
-          <div className="container px-4 md:px-6">
-            <div className="text-center max-w-3xl mx-auto">
-              <h1 className="text-4xl font-bold mb-4">Our Blog</h1>
-              <p className="text-gray-600 text-lg">
-                Insights, updates, and stories from our team
-              </p>
+        <div className="relative pt-32 pb-24 bg-gradient-to-b from-gray-50 to-white">
+          <div className="absolute inset-0 bg-grid-gray-100/50 bg-[size:20px_20px] [mask-image:linear-gradient(to_bottom,white,transparent)]" />
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-3xl mx-auto text-center">
+              <motion.h1 
+                className="text-5xl font-bold tracking-tight text-gray-900 mb-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                Insights & Stories
+              </motion.h1>
+              <motion.p 
+                className="text-xl text-gray-600"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+              >
+                Exploring ideas, technology, and innovation
+              </motion.p>
             </div>
           </div>
         </div>
 
         {/* Filters Section */}
-        <div className="border-b">
-          <div className="container px-4 md:px-6 py-4">
-            <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-              <div className="w-full md:w-1/3">
-                <Input
-                  placeholder="Search posts..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full"
-                />
-              </div>
-              <div className="w-full md:w-auto">
-                <Select
-                  value={selectedCategory}
-                  onValueChange={setSelectedCategory}
-                >
-                  <SelectTrigger className="w-full md:w-[180px]">
-                    <SelectValue placeholder="Select category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories.map(category => (
-                      <SelectItem key={category} value={category}>
-                        {category.charAt(0).toUpperCase() + category.slice(1)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+        <div className="sticky top-16 z-10 bg-white/80 backdrop-blur-md border-b border-gray-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-3xl mx-auto py-4">
+              <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
+                <div className="w-full md:w-2/3">
+                  <Input
+                    placeholder="Search posts..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full bg-white"
+                  />
+                </div>
+                <div className="w-full md:w-1/3">
+                  <Select
+                    value={selectedCategory}
+                    onValueChange={setSelectedCategory}
+                  >
+                    <SelectTrigger className="w-full bg-white">
+                      <SelectValue placeholder="Select category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {categories.map(category => (
+                        <SelectItem key={category} value={category}>
+                          {category.charAt(0).toUpperCase() + category.slice(1)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Posts Grid */}
-        <div className="container px-4 md:px-6 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <motion.div 
+            className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              visible: {
+                transition: {
+                  staggerChildren: 0.1
+                }
+              }
+            }}
+          >
             {filteredPosts.map((post) => (
               <motion.article
                 key={post.id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
                 viewport={{ once: true }}
-                className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-all overflow-hidden"
+                className="group relative bg-white rounded-lg p-6 hover:bg-gray-50 transition-colors duration-200"
               >
-                <Link href={`/blog/${post.id}`}>
-                  <div className="p-6 flex flex-col h-full">
+                <Link href={`/blog/${post.id}`} className="block">
+                  <div className="space-y-4">
                     {post.category && (
-                      <span className="text-xs font-semibold text-primary mb-2 uppercase tracking-wider">
+                      <span className="inline-flex px-3 py-1 text-xs font-medium bg-primary/5 text-primary rounded-full">
                         {post.category}
                       </span>
                     )}
-                    <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
-                      <Icons.Clock className="h-4 w-4" />
-                      <span>{post.readTime}</span>
-                      <span className="mx-2">•</span>
+                    
+                    <h2 className="text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors line-clamp-2">
+                      {post.title}
+                    </h2>
+                    
+                    <p className="text-gray-600 line-clamp-3">
+                      {post.excerpt}
+                    </p>
+                    
+                    <div className="flex items-center justify-center gap-4 text-sm text-gray-500">
+                      <div className="flex items-center gap-2">
+                        <Icons.Clock className="h-4 w-4" />
+                        <span>{post.readTime}</span>
+                      </div>
                       <time dateTime={post.createdAt}>
                         {new Date(post.createdAt).toLocaleDateString('en-US', {
                           month: 'short',
-                          day: 'numeric',
-                          year: 'numeric'
+                          day: 'numeric'
                         })}
                       </time>
                     </div>
-                    <h2 className="text-xl font-semibold mb-2 line-clamp-2 hover:text-primary transition-colors">
-                      {post.title}
-                    </h2>
-                    <p className="text-gray-600 line-clamp-3 mb-4 flex-grow">
-                      {post.excerpt}
-                    </p>
+                    
                     <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                      <span className="text-sm text-gray-500">{post.author}</span>
-                      <span className="text-primary hover:underline inline-flex items-center gap-1">
-                        Read more
+                      <span className="text-sm font-medium text-gray-900">{post.author}</span>
+                      <span className="inline-flex items-center gap-2 text-sm font-medium text-primary opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200">
+                        Read article
                         <Icons.ArrowRight className="h-4 w-4" />
                       </span>
                     </div>
@@ -222,20 +246,23 @@ export default function BlogPage() {
                 </Link>
               </motion.article>
             ))}
-          </div>
+          </motion.div>
 
           {filteredPosts.length === 0 && (
-            <div className="text-center py-12">
-              <Icons.Search className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+            <motion.div 
+              className="max-w-2xl mx-auto text-center py-24"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              <Icons.Search className="h-12 w-12 mx-auto text-gray-400 mb-6" />
               <h3 className="text-lg font-semibold mb-2">No posts found</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 mb-8">
                 {searchQuery
                   ? `No posts matching "${searchQuery}"`
                   : 'No posts available in this category'}
               </p>
               <Button
                 variant="outline"
-                className="mt-4"
                 onClick={() => {
                   setSearchQuery('')
                   setSelectedCategory('all')
@@ -243,11 +270,11 @@ export default function BlogPage() {
               >
                 Clear filters
               </Button>
-            </div>
+            </motion.div>
           )}
         </div>
       </main>
-
+      <center>
       <Footer />
       </center>
     </div>

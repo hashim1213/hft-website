@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Gift } from 'lucide-react';
 
 type Product = {
   name: string;
@@ -11,36 +11,47 @@ type Product = {
   appStoreLink: string;
 }
 
-const ProductCard = ({ name, description, icon, appStoreLink }: Product) => (
+const ProductItem = ({ name, description, icon, appStoreLink }: Product) => (
   <motion.a
     href={appStoreLink}
     target="_blank"
     rel="noopener noreferrer"
-    className="group relative flex flex-col items-center p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-    whileHover={{ scale: 1.02 }}
+    className="group flex flex-col items-center"
     initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
   >
-    <div className="relative w-24 h-24 rounded-xl overflow-hidden mb-4">
-      <Image
-        src={icon}
-        alt={`${name} icon`}
-        fill
-        sizes="96px"
-        className="object-cover"
-        priority
-      />
+    <div className="relative">
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent rounded-3xl transform -rotate-6 transition-transform group-hover:rotate-3" />
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent rounded-3xl transform rotate-3 transition-transform group-hover:-rotate-6" />
+      <div className="relative w-24 h-24 rounded-3xl overflow-hidden">
+        <Image
+          src={icon}
+          alt={`${name} app icon`}
+          fill
+          sizes="96px"
+          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          priority
+        />
+      </div>
     </div>
-    <h3 className="text-xl font-semibold text-gray-800 mb-2">{name}</h3>
-    <p className="text-gray-600 text-center mb-4">{description}</p>
-    <div className="flex items-center text-primary">
-      <span className="mr-2">View in App Store</span>
-      <ExternalLink className="w-4 h-4" />
+
+    <div className="mt-6 text-center max-w-sm">
+      <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-primary transition-colors">
+        {name}
+      </h3>
+      <p className="text-gray-600 mb-4">
+        {description}
+      </p>
+      <div className="inline-flex items-center text-primary opacity-75 group-hover:opacity-100 transition-opacity">
+        <span className="font-medium">Download Free</span>
+        <ExternalLink className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+      </div>
     </div>
   </motion.a>
 );
 
-const ProductsSection = () => {
+export default function ProductsSection() {
   const products: Product[] = [
     {
       name: "FlashIQ",
@@ -50,7 +61,7 @@ const ProductsSection = () => {
     },
     {
       name: "SnapTrack",
-      description: "Habit tracking app that allows users to track their habbits one snap at a time.",
+      description: "Habit tracking app that allows users to track their habits one snap at a time.",
       icon: "/snaptrack.png",
       appStoreLink: "https://apps.apple.com/ca/app/snaptrack-habit-tracker/id6740051692"
     },
@@ -63,32 +74,46 @@ const ProductsSection = () => {
   ];
 
   return (
-    <section id="products" className="py-16 bg-gray-50">
-      <div className="container px-4 md:px-6 mx-auto">
+    <section id="products" className="py-24 bg-gradient-to-b from-gray-50 to-white">
+      <div className="container px-4 md:px-6 mx-auto max-w-7xl">
         <motion.div
-          className="text-center mb-12"
+          className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl mb-4">
-            Apps we built
+          <div className="inline-flex items-center justify-center gap-2 text-primary font-medium mb-4">
+            <Gift className="w-5 h-5" />
+            <span>Free Community Apps</span>
+          </div>
+          <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl mb-4">
+            Built for the Community
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            We are committed to helping our community by building apps that make their lives easier
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            We believe in giving back. These apps are our contribution to making everyday life a little easier for everyone.
           </p>
         </motion.div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((product, index) => (
-            <ProductCard
-              key={index}
+
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.1
+              }
+            }
+          }}
+        >
+          {products.map((product) => (
+            <ProductItem
+              key={product.name}
               {...product}
             />
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
-};
-
-export default ProductsSection;
+}

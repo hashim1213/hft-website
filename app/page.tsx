@@ -1,74 +1,121 @@
-"use client";
+"use client"
 
-import { motion } from "framer-motion";
-import * as Icons from "lucide-react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import BookingDialog from '@/components/BookingDialog';
-import BlogSection from '@/components/BlogSection';
-import GridBackground from "@/components/ui/grid-background";
-import TechStackCarousel from "@/components/ui/tech-stack-carousel";
-import ProductsSection from '@/components/ProductsSection';
+import { motion } from "framer-motion"
+import { Sparkles, ArrowRight } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import Header from "@/components/Header"
+import Footer from "@/components/Footer"
+import BookingDialog from "@/components/BookingDialog"
+import BlogSection from "@/components/BlogSection"
+import TechStackCarousel from "@/components/ui/tech-stack-carousel"
+import ProductsSection from "@/components/ProductsSection"
+import Image from "next/image"
+import CommunityInitiatives from "@/components/CommunityInitiatives"
+
+// Animation variants for consistent reuse
+const fadeInUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 }
+}
+
+const staggerChildren = {
+  visible: {
+    transition: {
+      staggerChildren: 0.2
+    }
+  }
+}
 
 export default function Website() {
-  
-
   return (
     <div className="flex flex-col min-h-screen">
-      <Header/>
+      <Header />
+      
       <main className="flex-1">
-        <GridBackground>
-          <section id="home" className="min-h-screen flex items-center justify-center pt-16">
-            <div className="container px-4 md:px-6">
-              <motion.div
-                className="flex flex-col items-center space-y-8 text-center"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
+        <section 
+          id="hero" 
+          className="relative min-h-screen flex items-center overflow-hidden"
+          aria-label="Hero section"
+        >
+          {/* Background image with loading optimization */}
+          <Image
+            src="/bg12.jpg"
+            alt=""  // Empty alt since image is decorative
+            fill
+            className="object-cover"
+            priority
+            quality={90}
+            sizes="100vw"
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j..." // Add your base64 blur here
+          />
+          
+          {/* Dark overlay for better text contrast */}
+          <div className="absolute inset-0 bg-black/40" />
+
+          {/* Content */}
+          <div className="relative z-20 container px-4 md:px-6">
+            <motion.div
+              className="max-w-2xl mx-auto text-center"
+              initial="hidden"
+              animate="visible"
+              variants={staggerChildren}
+            >
+              <motion.div 
+                variants={fadeInUp}
+                className="inline-flex items-center justify-center w-fit px-4 py-1.5 mb-6 text-sm font-medium text-primary-foreground bg-white/10 backdrop-blur-sm rounded-full"
               >
-                <div className="inline-flex items-center justify-center px-4 py-1.5 text-sm font-medium text-gray-800 bg-gray-100 rounded-full">
-                  <Icons.Code className="w-4 h-4 mr-2" />
-                  Software Solutions
-                </div>
-                <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl/none max-w-3xl">
-                  Building Tomorrow&apos;s
-                  <span className="block bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
-                    Software Solutions
-                  </span>
-                </h1>
-                <p className="mx-auto max-w-[700px] text-gray-600 md:text-xl">
-                  We create custom software solutions enhanced by AI to help businesses automate,
-                  optimize, and scale their operations efficiently.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                <BookingDialog onOpenChange={() => {}} />
-                  <Link href="/contact">
-                    <Button 
-                      size="lg" 
-                      variant="outline" 
-                      className="bg-white hover:bg-gray-50 text-gray-800 border-gray-200"
-                    >
-                      Contact Us
-                      <Icons.ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                </div>
+                <Sparkles className="w-4 h-4 mr-2" aria-hidden="true" />
+                <span>Innovating Technology</span>
               </motion.div>
-            </div>
-          </section>
-          <TechStackCarousel />
-        </GridBackground>
+
+              <motion.h1 
+                variants={fadeInUp}
+                className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl/none text-white mb-6"
+              >
+                Transforming Ideas into
+                <span className="block text-primary-foreground">Digital Reality</span>
+              </motion.h1>
+
+              <motion.p 
+                variants={fadeInUp}
+                className="max-w-[700px] text-white/90 text-lg md:text-xl mb-8 mx-auto"
+              >
+                We blend creativity with cutting-edge technology to build transformative digital solutions. 
+                Our AI-powered approach delivers results that drive your business forward.
+              </motion.p>
+
+              <motion.div 
+                variants={fadeInUp}
+                className="flex flex-col sm:flex-row gap-4 justify-center"
+              >
+                <BookingDialog onOpenChange={() => {}} />
+                
+                <Link href="/contact" passHref>
+                  <Button
+                    size="lg"
+                    variant="secondary"
+                    className="group bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white border-white/20 w-full sm:w-auto"
+                  >
+                    Explore Our Work
+                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+                  </Button>
+                </Link>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+      <center>
+        <TechStackCarousel />
+        <CommunityInitiatives />
         <ProductsSection />
-        {/* Blog Section */}
-        <center>
-          <BlogSection />
-        </center>
+        <BlogSection />
+      </center>
       </main>
       <center>
-        <Footer />
+      <Footer />
       </center>
     </div>
-  );
+  )
 }
