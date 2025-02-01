@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+
 import * as Icons from "lucide-react"
 import { initializeApp, getApps } from "firebase/app"
 import {
@@ -209,10 +209,7 @@ export default function Dashboard() {
         <div className="container mx-auto px-4 py-2 flex justify-between items-center">
           <Image src="/logo2.png" alt="Bytesavy Logo" width={120} height={40} className="h-10 w-auto" />
           <div className="flex items-center space-x-4">
-            <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
+           
             <Button variant="outline" size="sm" onClick={() => router.push("/login")}>
               <Icons.LogOut className="h-4 w-4" />
               <span className="sr-only md:not-sr-only md:ml-2">Sign Out</span>
