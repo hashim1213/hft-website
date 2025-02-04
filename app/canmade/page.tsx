@@ -96,7 +96,7 @@ const LandingPage = () => {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-6">Help Build Our Database</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              We're actively working on building Canada's most comprehensive database of locally made products. 
+              We&apos;re actively working on building Canada&apos;s most comprehensive database of locally made products. 
               This is a community effort, and we need your help!
             </p>
           </div>
@@ -104,7 +104,7 @@ const LandingPage = () => {
           <div className="bg-gray-50 rounded-xl p-8 max-w-3xl mx-auto">
             <h3 className="text-2xl font-semibold mb-4">Partner With Us</h3>
             <p className="text-gray-600 mb-6">
-              Are you a Canadian manufacturer or retailer? We'd love to collaborate with you to ensure our database 
+              Are you a Canadian manufacturer or retailer? We&apos;d love to collaborate with you to ensure our database 
               accurately represents your products. Together, we can help Canadians make informed choices about 
               buying local.
             </p>
