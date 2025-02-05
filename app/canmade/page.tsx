@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Scan, ShoppingBag, Heart, Building, Database, Mail, Menu, X, Award, ArrowRight, ArrowDown, Clock, Globe } from 'lucide-react';
+import { Scan, ShoppingBag, Heart, Building, Database, Mail, Menu, X, Award, ArrowRight, Clock, Globe } from 'lucide-react';
 import { FeatureCard } from '@/components/featurecard';
 import { BenefitCard } from '@/components/benefitcard';
 import Image from 'next/image';
