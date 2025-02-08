@@ -8,10 +8,10 @@ import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import BookingDialog from "@/components/BookingDialog"
 import BlogSection from "@/components/BlogSection"
-import TechStackCarousel from "@/components/ui/tech-stack-carousel"
 import ProductsSection from "@/components/ProductsSection"
 import Image from "next/image"
 import CommunityInitiatives from "@/components/CommunityInitiatives"
+import CanmadeSection from '@/components/CanmadeSection'
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -46,7 +46,7 @@ export default function Website() {
             quality={90}
             sizes="100vw"
             placeholder="blur"
-            blurDataURL="data:image/jpeg;base64,/9j..." // Add your base64 blur here
+            blurDataURL="data:image/jpeg;base64,/9j..." 
           />
           
           <div className="absolute inset-0 bg-black/40" />
@@ -104,11 +104,8 @@ export default function Website() {
         </section>
 
         {/* Tech Stack Section */}
-        <section className="w-full bg-background py-16">
-          <div className="container mx-auto px-4 md:px-6">
-            <TechStackCarousel />
-          </div>
-        </section>
+         {/* Add the new CanMade section here */}
+  <CanmadeSection />
         
         {/* Community Initiatives Section */}
         <section className="w-full bg-muted py-20">
