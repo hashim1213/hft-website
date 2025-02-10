@@ -16,6 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/development',
     '/support',
     '/portal',
+    '/canmade',
   ]
 
   return routes.map((route) => ({
