@@ -52,7 +52,9 @@ export const metadata: Metadata = {
     "artificial intelligence",
     "custom software",
     "business solutions",
-    "digital innovation"
+    "digital innovation", 
+    "CanMade", 
+    "Made in Canada"
   ],
   referrer: "origin-when-cross-origin",
   creator: "Bytesavy",

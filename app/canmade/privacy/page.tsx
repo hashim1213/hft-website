@@ -24,7 +24,7 @@ const PrivacyPolicy = () => {
               <h2 className="text-2xl font-semibold">Data Collection Overview</h2>
             </div>
             <p className="text-gray-700 mb-4">
-              At CanMade, we're committed to transparency about how we collect and use data to improve your experience. We collect minimal, non-personal analytics data to help us understand how the app is used and make it better for everyone.
+              At CanMade, we&apos;re committed to transparency about how we collect and use data to improve your experience. We collect minimal, non-personal analytics data to help us understand how the app is used and make it better for everyone.
             </p>
           </section>
 
