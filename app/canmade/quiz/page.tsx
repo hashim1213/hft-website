@@ -236,8 +236,8 @@ export default function CanadianQuizPage() {
   const SaskatchewanChallengeView = () => (
     <div className="max-w-2xl mx-auto text-center space-y-8 p-6">
       <img src="/saskatchewan.png" alt="Saskatchewan" className="h-48 mx-auto" />
-      <h2 className="text-2xl font-bold">Before we begin, prove you're Canadian!</h2>
-      <p className="text-xl mb-8">Arrange the letters to spell this province's name:</p>
+      <h2 className="text-2xl font-bold">Before we begin, prove you&apos;re Canadian!</h2>
+      <p className="text-xl mb-8">Arrange the letters to spell this province&apos;s name:</p>
       
       {/* Selected letters display */}
       <div className="flex flex-wrap justify-center gap-2 mb-8">
