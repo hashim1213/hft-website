@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Scan, ShoppingBag, Heart, Building, Database, Mail, Menu, X, Award, ArrowRight, Clock, Globe } from 'lucide-react';
+import { Scan, ShoppingBag, Heart, Building, Database, Mail, Menu, X, Award, ArrowRight, Clock, Globe, Trophy, Brain } from 'lucide-react';
 import { FeatureCard } from '@/components/featurecard';
 import { BenefitCard } from '@/components/benefitcard';
 import Image from 'next/image';
@@ -15,7 +15,7 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Navigation */}
+      {/* Navigation - Updated with Quiz link */}
       <nav className="bg-red-600 text-white p-4 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center space-x-2">
@@ -32,7 +32,8 @@ const LandingPage = () => {
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-6">
             <a href="#features" className="hover:text-red-200">Features</a>
-            <a href="#media" className="hover:text-red-200">Press</a>
+            <a href="/canmade/quiz" className="hover:text-red-200">Canadian Quiz</a>
+            <a href="#leaderboard" className="hover:text-red-200">Leaderboard</a>
             <a href="#why" className="hover:text-red-200">Why Choose Us</a>
             <a href="#collaborate" className="hover:text-red-200">Collaborate</a>
             <a href="/canmade/privacy" className="hover:text-red-200">Privacy Policy</a>
@@ -49,6 +50,8 @@ const LandingPage = () => {
           <div className="md:hidden absolute top-full left-0 right-0 bg-red-600 border-t border-red-500 p-4">
             <div className="flex flex-col space-y-4">
               <a href="#features" className="hover:text-red-200" onClick={toggleMenu}>Features</a>
+              <a href="#quiz" className="hover:text-red-200" onClick={toggleMenu}>Canadian Quiz</a>
+              <a href="#leaderboard" className="hover:text-red-200" onClick={toggleMenu}>Leaderboard</a>
               <a href="#media" className="hover:text-red-200" onClick={toggleMenu}>Press</a>
               <a href="#why" className="hover:text-red-200" onClick={toggleMenu}>Why Choose Us</a>
               <a href="#collaborate" className="hover:text-red-200" onClick={toggleMenu}>Collaborate</a>
@@ -100,6 +103,116 @@ const LandingPage = () => {
         </div>
       </div>
 
+  {/* New Quiz Section */}
+ {/* New Quiz Section */}
+<section id="quiz" className="py-20 bg-gray-50">
+  <div className="max-w-7xl mx-auto px-4">
+    <div className="text-center mb-12">
+      <h2 className="text-3xl font-bold mb-6">The Greatest Canadian Quiz</h2>
+      <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+        Test your knowledge of Canadian history, culture, and achievements! Challenge yourself and compete with other Canadians for the top spot on our leaderboard.
+      </p>
+    </div>
+    
+    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      <div className="bg-white rounded-xl p-8 shadow-sm">
+        <div className="flex items-center space-x-4 mb-6">
+          <Brain className="w-12 h-12 text-red-600" />
+          <h3 className="text-2xl font-semibold">Mobile App Quiz</h3>
+        </div>
+        <p className="text-gray-600 mb-6">
+          Take the quiz on our iOS app and compete for the highest score! Time yourself and aim for perfection.
+        </p>
+        <a 
+          href="https://apps.apple.com/ca/app/canmade-canadian-made/id6741483305"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center bg-red-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-red-700 transition-colors"
+        >
+          <span>Download iOS App</span>
+          <ArrowRight className="ml-2 w-4 h-4" />
+        </a>
+      </div>
+      
+      <div className="bg-white rounded-xl p-8 shadow-sm">
+        <div className="flex items-center space-x-4 mb-6">
+          <Globe className="w-12 h-12 text-red-600" />
+          <h3 className="text-2xl font-semibold">Web Quiz</h3>
+        </div>
+        <p className="text-gray-600 mb-6">
+          Take the quiz right in your browser! Perfect for Android users and desktop viewing. Test your Canadian knowledge and compete for the top spot.
+        </p>
+        <a 
+          href="/canmade/quiz"
+          className="inline-flex items-center bg-red-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-red-700 transition-colors"
+        >
+          <span>Start Web Quiz</span>
+          <ArrowRight className="ml-2 w-4 h-4" />
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* Leaderboard Section */}
+<section id="leaderboard" className="py-20">
+  <div className="max-w-7xl mx-auto px-4">
+    <div className="text-center mb-12">
+      <div className="flex justify-center mb-6">
+        <Trophy className="w-16 h-16 text-red-600" />
+      </div>
+      <h2 className="text-3xl font-bold mb-6">Quiz Leaderboard</h2>
+      <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+        Think you&apos;ve got more maple syrup running through your veins than others? Submit your high scores and join the ranks!
+      </p>
+    </div>
+
+    <div className="bg-white rounded-xl p-8 shadow-sm max-w-4xl mx-auto">
+      <div className="text-center space-y-6">
+        <h3 className="text-2xl font-semibold">How to Get on the Leaderboard</h3>
+        <div className="text-gray-600 space-y-4">
+          <p>1. Take the quiz on our iOS app or try the <a href="/canmade/quiz" className="text-red-600 hover:text-red-700">web version</a></p>
+          <p>2. Screenshot your final score and completion time</p>
+          <p>3. Email your screenshot to <a href="mailto:canmade@bytesavy.com" className="text-red-600 hover:text-red-700">canmade@bytesavy.com</a></p>
+        </div>
+        <div className="border-t border-gray-200 pt-6 mt-6">
+          <p className="text-sm text-gray-500">First leaderboard update: March 1st, 2025</p>
+          <p className="text-sm text-gray-500">Following the initial update, rankings will be refreshed daily</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+      {/* Leaderboard Section */}
+      <section id="leaderboard" className="py-20">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <div className="flex justify-center mb-6">
+              <Trophy className="w-16 h-16 text-red-600" />
+            </div>
+            <h2 className="text-3xl font-bold mb-6">Quiz Leaderboard</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+              Think you&apos;ve got more maple syrup running through your veins than others? Submit your high scores and join the ranks!
+            </p>
+          </div>
+
+          <div className="bg-white rounded-xl p-8 shadow-sm max-w-4xl mx-auto">
+            <div className="text-center space-y-6">
+              <h3 className="text-2xl font-semibold">How to Get on the Leaderboard</h3>
+              <div className="text-gray-600 space-y-4">
+                <p>1. Take the quiz on our iOS app (or web version once available)</p>
+                <p>2. Screenshot your final score and completion time</p>
+                <p>3. Email your screenshot to <a href="mailto:canmade@bytesavy.com" className="text-red-600 hover:text-red-700">canmade@bytesavy.com</a></p>
+              </div>
+              <div className="border-t border-gray-200 pt-6 mt-6">
+                <p className="text-sm text-gray-500">First leaderboard update: March 1st, 2025</p>
+                <p className="text-sm text-gray-500">Following the initial update, rankings will be refreshed daily</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
  
 
       {/* Features Section */}
