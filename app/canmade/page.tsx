@@ -183,38 +183,6 @@ const LandingPage = () => {
     </div>
   </div>
 </section>
-
-      {/* Leaderboard Section */}
-      <section id="leaderboard" className="py-20">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <div className="flex justify-center mb-6">
-              <Trophy className="w-16 h-16 text-red-600" />
-            </div>
-            <h2 className="text-3xl font-bold mb-6">Quiz Leaderboard</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              Think you&apos;ve got more maple syrup running through your veins than others? Submit your high scores and join the ranks!
-            </p>
-          </div>
-
-          <div className="bg-white rounded-xl p-8 shadow-sm max-w-4xl mx-auto">
-            <div className="text-center space-y-6">
-              <h3 className="text-2xl font-semibold">How to Get on the Leaderboard</h3>
-              <div className="text-gray-600 space-y-4">
-                <p>1. Take the quiz on our iOS app (or web version once available)</p>
-                <p>2. Screenshot your final score and completion time</p>
-                <p>3. Email your screenshot to <a href="mailto:canmade@bytesavy.com" className="text-red-600 hover:text-red-700">canmade@bytesavy.com</a></p>
-              </div>
-              <div className="border-t border-gray-200 pt-6 mt-6">
-                <p className="text-sm text-gray-500">First leaderboard update: March 1st, 2025</p>
-                <p className="text-sm text-gray-500">Following the initial update, rankings will be refreshed daily</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
- 
-
       {/* Features Section */}
       <section id="features" className="py-20">
         <div className="max-w-7xl mx-auto px-4">
