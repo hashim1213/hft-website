@@ -12,6 +12,8 @@ import ProductsSection from "@/components/ProductsSection"
 import Image from "next/image"
 import CommunityInitiatives from "@/components/CommunityInitiatives"
 import CanmadeSection from '@/components/CanmadeSection'
+import MediaSection from '@/components/MediaSection'
+import Script from 'next/script'
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -26,9 +28,56 @@ const staggerChildren = {
   }
 }
 
+// JSON-LD Schema
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "ByteSavy",
+  description: "ByteSavy is a Canadian technology company specializing in AI-driven solutions including CanMade - an innovative tool for identifying Canadian products.",
+  url: "https://bytesavy.com",
+  logo: "https://bytesavy.com/logo.png",
+  sameAs: [
+    "https://www.linkedin.com/company/bytesavy",
+    "https://twitter.com/bytesavy"
+  ],
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Brandon",
+    addressRegion: "MB",
+    addressCountry: "CA"
+  },
+  contactPoint: {
+    "@type": "ContactPoint",
+    contactType: "customer support",
+    email: "contact@bytesavy.com"
+  },
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://bytesavy.com"
+  },
+  award: [
+    {
+      "@type": "Award",
+      name: "Featured in Winnipeg Sun",
+      description: "Manitoban creates app that detects products made in Canada"
+    },
+    {
+      "@type": "Award",
+      name: "Featured in Winnipeg Free Press",
+      description: "Touchscreen on pulse of buy-Canadian surge"
+    }
+  ]
+};
+
 export default function Website() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-900">
+      <Script
+        id="json-ld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      
       <Header />
       
       <main className="flex-1">
@@ -39,7 +88,7 @@ export default function Website() {
         >
           <Image
             src="/bg12.jpg"
-            alt=""
+            alt="ByteSavy - Transforming Ideas into Digital Reality"
             fill
             className="object-cover"
             priority
@@ -63,7 +112,7 @@ export default function Website() {
                 className="inline-flex items-center justify-center w-fit px-4 py-1.5 mb-6 text-sm font-medium text-primary-foreground bg-white/10 backdrop-blur-sm rounded-full"
               >
                 <Sparkles className="w-4 h-4 mr-2" aria-hidden="true" />
-                <span>Innovating Technology</span>
+                <span>Canadian Innovation</span>
               </motion.div>
 
               <motion.h1 
@@ -78,8 +127,8 @@ export default function Website() {
                 variants={fadeInUp}
                 className="max-w-[700px] text-white/90 text-lg md:text-xl mb-8 mx-auto"
               >
-                We blend creativity with cutting-edge technology to build transformative digital solutions. 
-                Our AI-powered approach delivers results that drive your business forward.
+                We blend creativity with cutting-edge AI technology to build transformative digital solutions. 
+                Discover CanMade - our revolutionary app for identifying Canadian products.
               </motion.p>
 
               <motion.div 
@@ -103,25 +152,21 @@ export default function Website() {
           </div>
         </section>
 
-        {/* Tech Stack Section */}
-         {/* Add the new CanMade section here */}
-  <CanmadeSection />
+        <MediaSection />
+        <CanmadeSection />
         
-        {/* Community Initiatives Section */}
         <section className="w-full bg-muted py-20">
           <div className="container mx-auto px-4 md:px-6">
             <CommunityInitiatives />
           </div>
         </section>
         
-        {/* Products Section */}
         <section className="w-full bg-background py-20">
           <div className="container mx-auto px-4 md:px-6">
             <ProductsSection />
           </div>
         </section>
         
-        {/* Blog Section with rounded corners and margin */}
         <section className="w-full bg-muted py-20 rounded-b-3xl mb-8">
           <div className="container mx-auto px-4 md:px-6">
             <BlogSection />
