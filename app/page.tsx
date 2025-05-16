@@ -14,10 +14,17 @@ import CommunityInitiatives from "@/components/CommunityInitiatives"
 import CanmadeSection from '@/components/CanmadeSection'
 import MediaSection from '@/components/MediaSection'
 import Script from 'next/script'
+import OurApproachSection from "@/components/Apporach"
+import ServicesSection from "@/components/Services"
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0 }
+}
+
+const fadeInRight = {
+  hidden: { opacity: 0, x: 20 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.6 }}
 }
 
 const staggerChildren = {
@@ -33,7 +40,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "ByteSavy",
-  description: "ByteSavy is a Canadian technology company specializing in AI-driven solutions including CanMade - an innovative tool for identifying Canadian products.",
+  description: "ByteSavy is a Canadian technology company specializing in custom software development solutions for businesses.",
   url: "https://bytesavy.com",
   logo: "https://bytesavy.com/logo.png",
   sameAs: [
@@ -54,24 +61,12 @@ const jsonLd = {
   mainEntityOfPage: {
     "@type": "WebPage",
     "@id": "https://bytesavy.com"
-  },
-  award: [
-    {
-      "@type": "Award",
-      name: "Featured in Winnipeg Sun",
-      description: "Manitoban creates app that detects products made in Canada"
-    },
-    {
-      "@type": "Award",
-      name: "Featured in Winnipeg Free Press",
-      description: "Touchscreen on pulse of buy-Canadian surge"
-    }
-  ]
+  }
 };
 
 export default function Website() {
   return (
-    <div className="flex flex-col min-h-screen bg-gray-900">
+    <div className="flex flex-col min-h-screen bg-white">
       <Script
         id="json-ld"
         type="application/ld+json"
@@ -83,94 +78,123 @@ export default function Website() {
       <main className="flex-1">
         <section 
           id="hero" 
-          className="relative min-h-screen flex items-center overflow-hidden"
+          className="pt-28 pb-16 md:pt-40 md:pb-24 overflow-hidden"
           aria-label="Hero section"
         >
-          <Image
-            src="/bg12.jpg"
-            alt="ByteSavy - Transforming Ideas into Digital Reality"
-            fill
-            className="object-cover"
-            priority
-            quality={90}
-            sizes="100vw"
-            placeholder="blur"
-            blurDataURL="data:image/jpeg;base64,/9j..." 
-          />
-          
-          <div className="absolute inset-0 bg-black/40" />
-
-          <div className="relative z-20 container mx-auto px-4 md:px-6">
-            <motion.div
-              className="max-w-2xl mx-auto text-center"
-              initial="hidden"
-              animate="visible"
-              variants={staggerChildren}
-            >
-              <motion.div 
-                variants={fadeInUp}
-                className="inline-flex items-center justify-center w-fit px-4 py-1.5 mb-6 text-sm font-medium text-primary-foreground bg-white/10 backdrop-blur-sm rounded-full"
+          <div className="container mx-auto px-4 md:px-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+              {/* Left column - Text content */}
+              <motion.div
+                className="max-w-xl"
+                initial="hidden"
+                animate="visible"
+                variants={staggerChildren}
               >
-                <Sparkles className="w-4 h-4 mr-2" aria-hidden="true" />
-                <span>Canadian Innovation</span>
-              </motion.div>
-
-              <motion.h1 
-                variants={fadeInUp}
-                className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl/none text-white mb-6"
-              >
-                Transforming Ideas into
-                <span className="block text-primary-foreground">Digital Reality</span>
-              </motion.h1>
-
-              <motion.p 
-                variants={fadeInUp}
-                className="max-w-[700px] text-white/90 text-lg md:text-xl mb-8 mx-auto"
-              >
-                We blend creativity with cutting-edge AI technology to build transformative digital solutions. 
-                Discover CanMade - our revolutionary app for identifying Canadian products.
-              </motion.p>
-
-              <motion.div 
-                variants={fadeInUp}
-                className="flex flex-col sm:flex-row gap-4 justify-center"
-              >
-                <BookingDialog onOpenChange={() => {}} />
+                <motion.div 
+                  variants={fadeInUp}
+                  className="inline-flex items-center justify-center w-fit px-4 py-1.5 mb-6 text-sm font-medium bg-gray-100 text-gray-800 rounded-full"
+                >
+                  <Sparkles className="w-4 h-4 mr-2 text-blue-600" aria-hidden="true" />
+                  <span>Custom Software Development</span>
+                </motion.div>
                 
-                <Link href="/contact" passHref>
-                  <Button
-                    size="lg"
-                    variant="secondary"
-                    className="group bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white border-white/20 w-full sm:w-auto"
-                  >
-                    Explore Our Work
-                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
-                  </Button>
-                </Link>
+                <motion.h1
+                  variants={fadeInUp}
+                  className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 tracking-tight"
+                >
+                  ByteSavy
+                  <span className="block text-2xl md:text-3xl font-normal mt-2 text-gray-700">
+                    A custom software studio
+                  </span>
+                </motion.h1>
+                
+                <motion.p
+                  variants={fadeInUp}
+                  className="text-lg text-gray-600 mb-8 leading-relaxed"
+                >
+                  We build custom software solutions that solve your unique business challenges and drive measurable results. Our expert team delivers tailored applications that streamline operations and accelerate growth.
+                </motion.p>
+                
+                <motion.div
+                  variants={fadeInUp}
+                  className="flex flex-col sm:flex-row gap-4"
+                >
+                  <BookingDialog 
+                    onOpenChange={() => {}} 
+                  />
+                  
+                  <Link href="/services" passHref>
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="group border-gray-300 text-gray-700 hover:text-gray-900 hover:border-gray-400 w-full sm:w-auto"
+                    >
+                      Our Services
+                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+                    </Button>
+                  </Link>
+                </motion.div>
               </motion.div>
-            </motion.div>
+              
+              {/* Right column - Image with chat bubble */}
+              <motion.div
+                className="relative"
+                initial="hidden"
+                animate="visible"
+                variants={fadeInRight}
+              >
+                <div className="relative rounded-lg overflow-hidden shadow-xl">
+                  <Image
+                    src="/bg12.jpg" // Keep using your existing image
+                    alt="ByteSavy - Custom Software Development"
+                    width={800}
+                    height={600}
+                    className="object-cover w-full h-full rounded-lg"
+                    priority
+                  />
+                  <div className="absolute inset-0 bg-black/30 rounded-lg" />
+                </div>
+                
+                {/* Chat bubble overlay - similar to Bard's design */}
+                <div className="absolute -bottom-6 -right-6 bg-white rounded-xl p-4 shadow-lg max-w-xs">
+                  <div className="flex gap-3">
+                    <div className="flex-shrink-0">
+                      <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
+                        <span className="text-white font-medium text-sm">BS</span>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-700">
+                        "Let us transform your business operations with custom software that addresses your specific needs and challenges."
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
           </div>
         </section>
 
         <MediaSection />
-        <CanmadeSection />
-        
-        <section className="w-full bg-muted py-20">
+        <OurApproachSection />
+        <ServicesSection/>
+        <section className="w-full bg-gray-50 py-20">
           <div className="container mx-auto px-4 md:px-6">
             <CommunityInitiatives />
           </div>
         </section>
         
-        <section className="w-full bg-background py-20">
+        <section className="w-full bg-white py-20">
           <div className="container mx-auto px-4 md:px-6">
             <ProductsSection />
           </div>
         </section>
         
-        <section className="w-full bg-muted py-20 rounded-b-3xl mb-8">
+        <section className="w-full bg-white py-20 relative mb-8">
           <div className="container mx-auto px-4 md:px-6">
             <BlogSection />
           </div>
+          <div className="absolute bottom-0 left-0 right-0 h-16 bg-white rounded-b-3xl"></div>
         </section>
       </main>
 

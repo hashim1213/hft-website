@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Heart, Mail, ArrowRight} from 'lucide-react';
+import { Heart, Mail, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 
@@ -34,7 +34,7 @@ export default function CommunityInitiatives() {
                   hidden: { opacity: 0, y: 20 },
                   visible: { opacity: 1, y: 0 }
                 }}
-                className="inline-flex items-center gap-2 text-primary"
+                className="inline-flex items-center gap-2 text-blue-600"
               >
                 <Heart className="w-5 h-5" />
                 <span className="font-medium">Community Impact</span>
@@ -45,7 +45,7 @@ export default function CommunityInitiatives() {
                   hidden: { opacity: 0, y: 20 },
                   visible: { opacity: 1, y: 0 }
                 }}
-                className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl"
+                className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900"
               >
                 Empowering Nonprofits Through Technology
               </motion.h2>
@@ -55,7 +55,7 @@ export default function CommunityInitiatives() {
                   hidden: { opacity: 0, y: 20 },
                   visible: { opacity: 1, y: 0 }
                 }}
-                className="text-xl text-gray-600"
+                className="text-lg text-gray-600"
               >
                 Every year, we select 1-2 nonprofit organizations for pro bono digital transformation support. Our mission is to amplify the impact of those who serve our community.
               </motion.p>
@@ -67,7 +67,7 @@ export default function CommunityInitiatives() {
                 hidden: { opacity: 0, y: 20 },
                 visible: { opacity: 1, y: 0 }
               }}
-              className="border rounded-2xl p-8 space-y-6 shadow-sm"
+              className="border border-gray-200 rounded-2xl p-8 space-y-6 shadow-sm bg-white"
             >
               <h3 className="text-2xl font-semibold text-gray-900">
                 Have a Project in Mind?
@@ -85,8 +85,8 @@ export default function CommunityInitiatives() {
                   'Technical implementation support'
                 ].map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
-                    <ArrowRight className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                    <span>{item}</span>
+                    <ArrowRight className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+                    <span className="text-gray-700">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -94,14 +94,14 @@ export default function CommunityInitiatives() {
               <div className="pt-4 space-y-4">
                 <a 
                   href="mailto:community@bytesavy.com"
-                  className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
+                  className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors"
                 >
                   <Mail className="w-5 h-5" />
                   community@bytesavy.com
                 </a>
 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button asChild className="flex-1">
+                  <Button asChild className="bg-blue-600 hover:bg-blue-700 flex-1">
                     <Link href="/contact">
                       Get in Touch
                       <ArrowRight className="ml-2 h-4 w-4" />
