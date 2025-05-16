@@ -199,7 +199,7 @@ export default function BlogSection() {
             
             {posts.length > 0 && (
               <div className="mt-12 text-center">
-                <Link href="/blog" className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium">
+                <Link href="/portal" className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium">
                   View all articles
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
