@@ -1,13 +1,15 @@
 'use client'
-import { useEffect, useState, use } from 'react'
+import { useEffect, useState } from 'react'
 import { getFirestore, doc, getDoc } from 'firebase/firestore'
 import { initializeApp, getApps } from 'firebase/app'
 import { motion } from 'framer-motion'
-import * as Icons from 'lucide-react'
+import { User, Calendar, Clock, Twitter, Linkedin, Link as LinkIcon, ArrowLeft } from 'lucide-react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Skeleton } from "@/components/ui/skeleton"
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 
 const initializeFirebase = () => {
   if (typeof window === 'undefined') return null;
@@ -45,13 +47,12 @@ const formatDate = (dateString: string) => {
   }).format(date)
 }
 
-export default function BlogPost({ params }: { params: Promise<{ id: string }> }) {
+export default function BlogPost({ params }: { params: { id: string } }) {
   const [post, setPost] = useState<BlogPost | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   
-  // Unwrap the params promise using React.use
-  const resolvedParams = use(params)
+  const postId = params.id
 
   useEffect(() => {
     const app = initializeFirebase()
@@ -61,7 +62,7 @@ export default function BlogPost({ params }: { params: Promise<{ id: string }> }
     
     async function loadPost() {
       try {
-        const docRef = doc(db, 'posts', resolvedParams.id)
+        const docRef = doc(db, 'posts', postId)
         const docSnap = await getDoc(docRef)
 
         if (docSnap.exists()) {
@@ -84,20 +85,24 @@ export default function BlogPost({ params }: { params: Promise<{ id: string }> }
     }
 
     loadPost()
-  }, [resolvedParams.id])
+  }, [postId])
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col bg-white">
         <Header />
-        <main className="flex-1 container mx-auto px-4 py-16 mt-8">
-          <div className="max-w-3xl mx-auto space-y-6">
-            <Skeleton className="h-12 w-3/4" />
-            <div className="flex items-center gap-4">
-              <Skeleton className="h-6 w-32" />
-              <Skeleton className="h-6 w-32" />
+        <main className="flex-1 pt-40 pb-20">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto space-y-6">
+              <Skeleton className="h-12 w-3/4" />
+              <div className="flex items-center gap-4">
+                <Skeleton className="h-6 w-32" />
+                <Skeleton className="h-6 w-32" />
+              </div>
+              <Skeleton className="h-64" />
+              <Skeleton className="h-24" />
+              <Skeleton className="h-24" />
             </div>
-            <Skeleton className="h-64" />
           </div>
         </main>
         <Footer />
@@ -107,91 +112,115 @@ export default function BlogPost({ params }: { params: Promise<{ id: string }> }
 
   if (error || !post) {
     return (
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col bg-white">
         <Header />
-        <main className="flex-1 container mx-auto px-4 py-16 mt-8">
-          <Alert variant="destructive" className="max-w-3xl mx-auto">
-            <AlertDescription>{error || 'Post not found'}</AlertDescription>
-          </Alert>
+        <main className="flex-1 pt-40 pb-20">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto">
+              <Link href="/blog" className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-8">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to all articles
+              </Link>
+              
+              <Alert variant="destructive">
+                <AlertDescription className="text-center py-2">{error || 'Post not found'}</AlertDescription>
+              </Alert>
+              
+              <div className="text-center mt-8">
+                <Button asChild>
+                  <Link href="/blog">
+                    View all articles
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
         </main>
         <Footer />
       </div>
     )
   }
 
-
   const formattedDate = formatDate(post.createdAt)
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white">
       <Header />
-      <main className="flex-1">
-        <article className="container mx-auto px-4 py-16 mt-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="max-w-3xl mx-auto"
-          >
-            <header className="mb-12">
-              <h1 className="text-4xl font-bold mb-6">{post.title}</h1>
-              <div className="flex flex-wrap items-center gap-4 text-gray-600">
-                <div className="flex items-center gap-2">
-                  <Icons.User className="h-4 w-4" />
-                  <span>{post.author}</span>
+      <main className="flex-1 pt-40 pb-20">
+        <article className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto">
+            <Link href="/blog" className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-8">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to all articles
+            </Link>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <header className="mb-12">
+                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">{post.title}</h1>
+                <div className="flex flex-wrap items-center gap-4 text-gray-600">
+                  <div className="flex items-center gap-2">
+                    <User className="h-4 w-4 text-blue-600" />
+                    <span>{post.author}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4 text-blue-600" />
+                    <time dateTime={post.createdAt}>{formattedDate}</time>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-blue-600" />
+                    <span>{post.readTime}</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Icons.Calendar className="h-4 w-4" />
-                  <time dateTime={post.createdAt}>{formattedDate}</time>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Icons.Clock className="h-4 w-4" />
-                  <span>{post.readTime}</span>
-                </div>
+              </header>
+
+              <div className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-600 prose-a:text-blue-600">
+                {post.content.split('\n').filter(Boolean).map((paragraph, index) => (
+                  <p key={index} className="mb-6 text-gray-600 leading-relaxed">
+                    {paragraph}
+                  </p>
+                ))}
               </div>
-            </header>
 
-            <div className="prose prose-lg max-w-none">
-              {post.content.split('\n').filter(Boolean).map((paragraph, index) => (
-                <p key={index} className="mb-4">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-
-            <div className="mt-12 pt-8 border-t">
-              <h2 className="text-2xl font-semibold mb-4">Share this post</h2>
-              <div className="flex gap-4">
-                {typeof window !== 'undefined' && (
-                  <>
+              <div className="mt-12 pt-8 border-t border-gray-100">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  <h2 className="text-xl font-semibold text-gray-900">Share this article</h2>
+                  <div className="flex gap-3">
                     <button 
                       onClick={() => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(window.location.href)}`, '_blank')}
-                      className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+                      className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                      aria-label="Share on Twitter"
                     >
-                      <Icons.Twitter className="h-5 w-5" />
+                      <Twitter className="h-5 w-5 text-gray-700" />
                     </button>
                     <button 
                       onClick={() => window.open(`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent(post.title)}`, '_blank')}
-                      className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+                      className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                      aria-label="Share on LinkedIn"
                     >
-                      <Icons.Linkedin className="h-5 w-5" />
+                      <Linkedin className="h-5 w-5 text-gray-700" />
                     </button>
                     <button 
-                      onClick={() => navigator.clipboard.writeText(window.location.href)}
-                      className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+                      onClick={() => {
+                        navigator.clipboard.writeText(window.location.href);
+                        // Optionally add toast notification here
+                      }}
+                      className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                      aria-label="Copy link"
                     >
-                      <Icons.Link className="h-5 w-5" />
+                      <LinkIcon className="h-5 w-5 text-gray-700" />
                     </button>
-                  </>
-                )}
+                  </div>
+                </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </article>
       </main>
-      <center>
       <Footer />
-      </center>
     </div>
   )
 }
