@@ -10,7 +10,6 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Skeleton } from "@/components/ui/skeleton"
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { use } from 'react'
 
 const initializeFirebase = () => {
   if (typeof window === 'undefined') return null;
@@ -48,19 +47,22 @@ const formatDate = (dateString: string) => {
   }).format(date)
 }
 
-interface PageProps {
-  params: Promise<{ id: string }> | { id: string }
-}
-
-export default function BlogPost({ params }: PageProps) {
+// This matches Next.js App Router's expected param format
+export default function BlogPost({ params }: { params: { id: string } }) {
   const [post, setPost] = useState<BlogPost | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   
-  // Handle both Promise and direct object patterns
-  const postId = params instanceof Promise ? use(params).id : params.id
+  // Safely access the ID
+  const postId = params?.id
 
   useEffect(() => {
+    if (!postId) {
+      setError('Invalid post ID')
+      setLoading(false)
+      return
+    }
+
     const app = initializeFirebase()
     if (!app) return;
 
