@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, use } from 'react'
 import { getFirestore, doc, getDoc } from 'firebase/firestore'
 import { initializeApp, getApps } from 'firebase/app'
 import { motion } from 'framer-motion'
@@ -47,22 +47,15 @@ const formatDate = (dateString: string) => {
   }).format(date)
 }
 
-// This matches Next.js App Router's expected param format
-export default function BlogPost({ params }: { params: { id: string } }) {
+export default function BlogPost({ params }: { params: Promise<{ id: string }> }) {
   const [post, setPost] = useState<BlogPost | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   
-  // Safely access the ID
-  const postId = params?.id
+  // Unwrap the params promise using React.use
+  const resolvedParams = use(params)
 
   useEffect(() => {
-    if (!postId) {
-      setError('Invalid post ID')
-      setLoading(false)
-      return
-    }
-
     const app = initializeFirebase()
     if (!app) return;
 
@@ -70,7 +63,7 @@ export default function BlogPost({ params }: { params: { id: string } }) {
     
     async function loadPost() {
       try {
-        const docRef = doc(db, 'posts', postId)
+        const docRef = doc(db, 'posts', resolvedParams.id)
         const docSnap = await getDoc(docRef)
 
         if (docSnap.exists()) {
@@ -93,7 +86,7 @@ export default function BlogPost({ params }: { params: { id: string } }) {
     }
 
     loadPost()
-  }, [postId])
+  }, [resolvedParams.id])
 
   if (loading) {
     return (
