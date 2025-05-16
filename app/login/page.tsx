@@ -5,9 +5,7 @@ import { useRouter } from 'next/navigation'
 import * as Icons from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { initializeApp, getApps, FirebaseApp } from 'firebase/app'
 import { 
   getAuth, 
@@ -28,7 +26,6 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -94,78 +91,71 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex flex-col">
-      <div className="flex-1 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md shadow-lg">
-          <CardHeader className="space-y-1">
-            <div className="flex items-center justify-center mb-6">
-              <Icons.Lock className="h-12 w-12 text-primary" />
-            </div>
-            <CardTitle className="text-2xl font-bold text-center">Welcome Back</CardTitle>
-            <CardDescription className="text-center">
-              Sign in to manage your blog posts
-            </CardDescription>
-          </CardHeader>
-          
-          <CardContent>
+    <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
+      {/* ByteSavy Logo in Top Left */}
+      <div className="absolute top-6 left-6">
+        <img 
+          src="/logo_white.png" 
+          alt="ByteSavy Logo" 
+          className="h-12 w-auto"
+        />
+      </div>
+      
+      <div className="max-w-5xl w-full flex flex-col md:flex-row rounded-lg overflow-hidden">
+        {/* Left side - Image Area */}
+        <div className="hidden md:block md:w-2/5 relative h-[480px]">
+          <img 
+            src="/Unknown-2.jpg" 
+            alt="Content management" 
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute bottom-4 left-4 text-white">
+            <h2 className="text-base font-semibold">Content Management</h2>
+            <p className="text-xs opacity-70">Manage your posts</p>
+          </div>
+        </div>
+
+        {/* Right side - Login Form */}
+        <div className="w-full md:w-3/5 bg-black p-8 flex flex-col justify-center">
+          <div className="w-full max-w-md mx-auto">
+            <h1 className="text-2xl font-bold mb-1 text-center">Sign in</h1>
+            <p className="text-gray-400 text-sm mb-6 text-center">to continue to Content Management</p>
+
             {error && (
-              <Alert variant="destructive" className="mb-6">
+              <Alert variant="destructive" className="mb-6 bg-red-900/20 border border-red-800 text-red-300">
                 <Icons.AlertCircle className="h-4 w-4" />
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
 
             <form onSubmit={handleLogin} className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-sm font-medium">
-                  Email Address
-                </Label>
-                <div className="relative">
-                  <Icons.Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10"
-                    required
-                  />
-                </div>
+              <div className="space-y-1">
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="bg-gray-800 border-gray-700 text-white h-12 rounded-md"
+                  required
+                />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="password" className="text-sm font-medium">
-                  Password
-                </Label>
-                <div className="relative">
-                  <Icons.KeyRound className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 pr-10"
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
-                  >
-                    {showPassword ? (
-                      <Icons.EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Icons.Eye className="h-4 w-4" />
-                    )}
-                  </button>
-                </div>
+              <div className="space-y-1">
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="bg-gray-800 border-gray-700 text-white h-12 rounded-md"
+                  required
+                />
               </div>
 
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white h-12 rounded-md mt-1"
                 disabled={loading}
               >
                 {loading ? (
@@ -174,21 +164,18 @@ export default function LoginPage() {
                     <span>Signing in...</span>
                   </div>
                 ) : (
-                  <div className="flex items-center justify-center">
-                    <Icons.LogIn className="mr-2 h-4 w-4" />
-                    <span>Sign in</span>
-                  </div>
+                  <span>Continue</span>
                 )}
               </Button>
             </form>
-          </CardContent>
-          
-          <CardFooter className="flex justify-center">
-            <p className="text-sm text-gray-500">
-              Need help? Contact support
-            </p>
-          </CardFooter>
-        </Card>
+
+            <div className="mt-6 text-center">
+              <p className="text-sm text-gray-400">
+                Need help? Contact your administrator
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import * as Icons from "lucide-react"
 import { initializeApp, getApps } from "firebase/app"
@@ -25,8 +26,8 @@ import {
   orderBy,
   serverTimestamp,
   updateDoc,
+  where,
 } from "firebase/firestore"
-import Image from "next/image"
 
 // Firebase configuration check
 if (!process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
@@ -71,6 +72,7 @@ export default function Dashboard() {
   
   // State management
   const [posts, setPosts] = useState<BlogPost[]>([])
+  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([])
   const [formData, setFormData] = useState({
     title: "",
     excerpt: "",
@@ -82,11 +84,37 @@ export default function Dashboard() {
   const [success, setSuccess] = useState("")
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [activeTab, setActiveTab] = useState("all")
 
   // Load posts on mount
   useEffect(() => {
     loadPosts()
   }, [])
+
+  // Apply filters and search
+  useEffect(() => {
+    let result = [...posts]
+    
+    // Filter by status tab
+    if (activeTab === "published") {
+      result = result.filter(post => post.status === "published")
+    } else if (activeTab === "drafts") {
+      result = result.filter(post => post.status === "draft")
+    }
+    
+    // Apply search query
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase()
+      result = result.filter(post => 
+        post.title.toLowerCase().includes(query) || 
+        post.excerpt.toLowerCase().includes(query) ||
+        post.category.toLowerCase().includes(query)
+      )
+    }
+    
+    setFilteredPosts(result)
+  }, [posts, searchQuery, activeTab])
 
   // Fetch posts from Firebase
   const loadPosts = async () => {
@@ -224,221 +252,325 @@ export default function Dashboard() {
     setIsDialogOpen(true)
   }
 
+  // Handle status toggle
+  const handleToggleStatus = async (post: BlogPost) => {
+    if (!db) {
+      setError("Database connection failed")
+      return
+    }
+
+    const newStatus = post.status === "published" ? "draft" : "published"
+    
+    try {
+      await updateDoc(doc(db, "posts", post.id), { 
+        status: newStatus 
+      })
+      setSuccess(`Post ${newStatus === "published" ? "published" : "unpublished"} successfully`)
+      await loadPosts()
+    } catch (err) {
+      console.error("Error updating post status:", err)
+      setError("Failed to update post status")
+    }
+  }
+
+  // Clear success/error messages after 5 seconds
+  useEffect(() => {
+    if (success || error) {
+      const timer = setTimeout(() => {
+        setSuccess("")
+        setError("")
+      }, 5000)
+      return () => clearTimeout(timer)
+    }
+  }, [success, error])
+
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="container mx-auto px-4 py-2 flex justify-between items-center">
-          <Image 
-            src="/logo2.png" 
-            alt="Bytesavy Logo" 
-            width={120} 
-            height={40} 
-            className="h-10 w-auto"
-          />
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={() => router.push("/login")}
-            disabled={loading}
-          >
-            <Icons.LogOut className="h-4 w-4" />
-            <span className="sr-only md:not-sr-only md:ml-2">Sign Out</span>
-          </Button>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="flex-1 container mx-auto px-4 py-8">
-        {/* Header Section */}
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold">Your Posts</h2>
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild>
-              <Button size="sm" disabled={loading}>
-                <Icons.Plus className="h-4 w-4 md:mr-2" />
-                <span className="sr-only md:not-sr-only">
-                  {loading ? "Loading..." : "New Post"}
-                </span>
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>{editingPost ? "Edit Post" : "Create New Post"}</DialogTitle>
-              </DialogHeader>
-              <form onSubmit={(e) => handleSubmit(e, "draft")} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="title">Title</Label>
-                  <Input
-                    id="title"
-                    value={formData.title}
-                    onChange={(e) => handleInputChange(e, "title")}
-                    placeholder="Enter post title"
-                    disabled={loading}
-                    className="w-full"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="excerpt">Excerpt</Label>
-                  <Input
-                    id="excerpt"
-                    value={formData.excerpt}
-                    onChange={(e) => handleInputChange(e, "excerpt")}
-                    placeholder="Brief description of your post"
-                    disabled={loading}
-                    className="w-full"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="category">Category</Label>
-                  <Select 
-                    value={formData.category} 
-                    onValueChange={(value) => handleInputChange(value, "category")}
-                    disabled={loading}
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select a category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {CATEGORIES.map(({ value, label }) => (
-                        <SelectItem key={value} value={value}>{label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="content">Content</Label>
-                  <Textarea
-                    id="content"
-                    value={formData.content}
-                    onChange={(e) => handleInputChange(e, "content")}
-                    placeholder="Write your post content here..."
-                    disabled={loading}
-                    className="min-h-[200px]"
-                  />
-                </div>
-                <div className="flex justify-end gap-4">
-                  <Button 
-                    type="button" 
-                    variant="outline" 
-                    onClick={() => setIsDialogOpen(false)}
-                    disabled={loading}
-                  >
-                    Cancel
-                  </Button>
-                  <Button 
-                    type="submit"
-                    onClick={(e) => handleSubmit(e, "draft")}
-                    disabled={loading}
-                  >
-                    {loading ? "Saving..." : "Save as Draft"}
-                  </Button>
-                  <Button 
-                    type="button"
-                    onClick={(e) => handleSubmit(e, "published")}
-                    disabled={loading}
-                  >
-                    {loading ? "Publishing..." : "Publish"}
-                  </Button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
-        </div>
-
-        {/* Alerts */}
-        {error && (
-          <Alert variant="destructive" className="mb-4">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
-        {success && (
-          <Alert className="mb-4">
-            <AlertDescription>{success}</AlertDescription>
-          </Alert>
-        )}
-
-        {/* Posts List */}
-        <div className="space-y-4">
-          {loading && posts.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
-              <Icons.Loader2 className="mx-auto h-12 w-12 mb-4 animate-spin" />
-              <p>Loading posts...</p>
+    <div className="min-h-screen flex flex-col bg-black text-white">
+      {/* Sidebar and Content Layout */}
+      <div className="flex flex-col h-screen">
+        {/* Top Navbar */}
+        <div className="border-b border-gray-800 py-3 px-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <img 
+                src="/logo_white.png" 
+                alt="ByteSavy Logo" 
+                className="h-8 w-auto"
+              />
             </div>
-          ) : (
-            <>
-              {posts.map((post) => (
-                <Card key={post.id} className="hover:shadow-md transition-shadow">
-                  <CardContent className="p-4">
-                    <div className="flex flex-col md:flex-row justify-between items-start gap-4">
-                      <div className="space-y-2 flex-grow">
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <h3 className="font-medium text-lg">{post.title}</h3>
-                          <span
-                            className={`px-2 py-1 rounded-full text-xs ${
-                              post.status === "published" 
-                                ? "bg-green-100 text-green-800" 
-                                : "bg-yellow-100 text-yellow-800"
-                            }`}
-                          >
-                            {post.status}
-                          </span>
-                        </div>
-                        <p className="text-sm text-gray-600">{post.excerpt}</p>
-                        <div className="flex items-center gap-2 text-xs text-gray-500 flex-wrap">
-                          <span className="flex items-center">
-                            <Icons.Calendar className="h-4 w-4 mr-1" />
-                            {new Date(post.createdAt).toLocaleDateString()}
-                          </span>
-                          <span className="flex items-center">
-                            <Icons.Clock className="h-4 w-4 mr-1" />
-                            {post.readTime}
-                          </span>
-                          <span className="flex items-center">
-                            <Icons.Tag className="h-4 w-4 mr-1" />
-                            {post.category}
-                          </span>
-                        </div>
+            <div className="flex items-center gap-4">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={() => router.push("/login")}
+                className="text-gray-400 hover:text-white hover:bg-gray-800"
+              >
+                <Icons.LogOut className="h-4 w-4 mr-2" />
+                <span>Sign Out</span>
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Content Area */}
+        <div className="flex-1 overflow-hidden flex flex-col">
+          <div className="px-6 py-4 border-b border-gray-800 flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <h1 className="text-xl font-medium">Content Management</h1>
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button 
+                    size="sm" 
+                    disabled={loading}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    <Icons.Plus className="h-4 w-4 mr-2" />
+                    <span>New Post</span>
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[600px] bg-gray-900 border-gray-800 text-white">
+                  <DialogHeader>
+                    <DialogTitle className="text-white text-xl">
+                      {editingPost ? "Edit Post" : "Create New Post"}
+                    </DialogTitle>
+                  </DialogHeader>
+                  <form onSubmit={(e) => handleSubmit(e, "draft")} className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2 col-span-2">
+                        <Label htmlFor="title" className="text-gray-400">Title</Label>
+                        <Input
+                          id="title"
+                          value={formData.title}
+                          onChange={(e) => handleInputChange(e, "title")}
+                          placeholder="Enter post title"
+                          disabled={loading}
+                          className="w-full bg-gray-800 border-gray-700 text-white"
+                        />
                       </div>
-                      <div className="flex gap-2 self-end md:self-start">
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          onClick={() => handleEditPost(post)}
+
+                      <div className="space-y-2">
+                        <Label htmlFor="category" className="text-gray-400">Category</Label>
+                        <Select 
+                          value={formData.category} 
+                          onValueChange={(value) => handleInputChange(value, "category")}
                           disabled={loading}
                         >
-                          <Icons.Edit className="h-4 w-4" />
-                        </Button>
-                        <Button 
-                          variant="destructive" 
-                          size="sm" 
-                          onClick={() => handleDeletePost(post.id)}
+                          <SelectTrigger className="w-full bg-gray-800 border-gray-700 text-white">
+                            <SelectValue placeholder="Select a category" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-gray-800 border-gray-700 text-white">
+                            {CATEGORIES.map(({ value, label }) => (
+                              <SelectItem key={value} value={value}>{label}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="excerpt" className="text-gray-400">Excerpt</Label>
+                        <Input
+                          id="excerpt"
+                          value={formData.excerpt}
+                          onChange={(e) => handleInputChange(e, "excerpt")}
+                          placeholder="Brief description of your post"
                           disabled={loading}
-                        >
-                          <Icons.Trash2 className="h-4 w-4" />
-                        </Button>
+                          className="w-full bg-gray-800 border-gray-700 text-white"
+                        />
+                      </div>
+                      
+                      <div className="space-y-2 col-span-2">
+                        <Label htmlFor="content" className="text-gray-400">Content</Label>
+                        <Textarea
+                          id="content"
+                          value={formData.content}
+                          onChange={(e) => handleInputChange(e, "content")}
+                          placeholder="Write your post content here..."
+                          disabled={loading}
+                          className="min-h-[250px] bg-gray-800 border-gray-700 text-white"
+                        />
                       </div>
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
-              {!loading && posts.length === 0 && (
-                <div className="text-center py-8 text-gray-500">
-                  <Icons.FileText className="mx-auto h-12 w-12 mb-4" />
-                  <p>No posts yet. Start writing your first post!</p>
-                </div>
-              )}
-            </>
-          )}
-        </div>
-      </main>
+                    
+                    <div className="flex justify-end gap-3">
+                      <Button 
+                        type="button" 
+                        variant="ghost" 
+                        onClick={() => setIsDialogOpen(false)}
+                        disabled={loading}
+                        className="text-gray-400 hover:text-white hover:bg-gray-800"
+                      >
+                        Cancel
+                      </Button>
+                      <Button 
+                        type="submit"
+                        onClick={(e) => handleSubmit(e, "draft")}
+                        disabled={loading}
+                        className="bg-gray-700 hover:bg-gray-600 text-white"
+                      >
+                        {loading ? "Saving..." : "Save as Draft"}
+                      </Button>
+                      <Button 
+                        type="button"
+                        onClick={(e) => handleSubmit(e, "published")}
+                        disabled={loading}
+                        className="bg-blue-600 hover:bg-blue-700 text-white"
+                      >
+                        {loading ? "Publishing..." : "Publish"}
+                      </Button>
+                    </div>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            </div>
 
-      {/* Footer */}
-      <footer className="bg-white border-t mt-8">
-        <div className="container mx-auto px-4 py-4 text-center text-sm text-gray-600">
-          © 2025 Bytesavy. All rights reserved.
+            <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between">
+              <div className="relative w-full sm:w-80">
+                <Icons.Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
+                <Input 
+                  placeholder="Search posts..." 
+                  className="pl-9 bg-gray-900 border-gray-800 text-white w-full"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              
+              <Tabs 
+                defaultValue="all" 
+                className="w-full sm:w-auto"
+                value={activeTab}
+                onValueChange={setActiveTab}
+              >
+                <TabsList className="w-full bg-gray-900">
+                  <TabsTrigger value="all" className="flex-1 data-[state=active]:bg-gray-800">
+                    All
+                  </TabsTrigger>
+                  <TabsTrigger value="published" className="flex-1 data-[state=active]:bg-gray-800">
+                    Published
+                  </TabsTrigger>
+                  <TabsTrigger value="drafts" className="flex-1 data-[state=active]:bg-gray-800">
+                    Drafts
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div>
+          </div>
+
+          {/* Alerts */}
+          <div className="px-6 pt-3">
+            {error && (
+              <Alert variant="destructive" className="mb-4 bg-red-900/20 border border-red-800 text-red-300">
+                <Icons.AlertCircle className="h-4 w-4" />
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+            {success && (
+              <Alert className="mb-4 bg-green-900/20 border border-green-800 text-green-300">
+                <Icons.CheckCircle className="h-4 w-4" />
+                <AlertDescription>{success}</AlertDescription>
+              </Alert>
+            )}
+          </div>
+
+          {/* Content List */}
+          <div className="flex-1 overflow-auto p-6 pt-2">
+            {loading && posts.length === 0 ? (
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center text-gray-400">
+                  <Icons.Loader2 className="mx-auto h-8 w-8 mb-4 animate-spin" />
+                  <p>Loading posts...</p>
+                </div>
+              </div>
+            ) : (
+              <>
+                {filteredPosts.length > 0 ? (
+                  <div className="space-y-3">
+                    {filteredPosts.map((post) => (
+                      <Card key={post.id} className="bg-gray-900 border-gray-800 hover:border-gray-700 overflow-hidden">
+                        <CardContent className="p-0">
+                          <div className="flex flex-col sm:flex-row gap-0">
+                            {/* Status Bar */}
+                            <div className={`w-full h-1 sm:w-1 sm:h-full ${
+                              post.status === "published" ? "bg-green-600" : "bg-yellow-600"
+                            }`} />
+                            
+                            {/* Content */}
+                            <div className="flex flex-col sm:flex-row justify-between items-start p-4 flex-grow">
+                              <div className="space-y-1.5 flex-grow mr-3">
+                                <h3 className="font-medium text-white">{post.title}</h3>
+                                <p className="text-sm text-gray-400 line-clamp-1">{post.excerpt}</p>
+                                
+                                <div className="flex items-center gap-3 text-xs text-gray-500 flex-wrap">
+                                  <span className="flex items-center">
+                                    <Icons.Calendar className="h-3.5 w-3.5 mr-1.5" />
+                                    {new Date(post.createdAt).toLocaleDateString()}
+                                  </span>
+                                  <span className="flex items-center">
+                                    <Icons.Tag className="h-3.5 w-3.5 mr-1.5" />
+                                    {post.category}
+                                  </span>
+                                </div>
+                              </div>
+                              
+                              {/* Actions */}
+                              <div className="flex gap-2 mt-3 sm:mt-0">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => handleToggleStatus(post)}
+                                  className="text-gray-400 hover:text-white hover:bg-gray-800"
+                                >
+                                  {post.status === "published" ? (
+                                    <Icons.EyeOff className="h-4 w-4" />
+                                  ) : (
+                                    <Icons.Eye className="h-4 w-4" />
+                                  )}
+                                </Button>
+                                <Button 
+                                  variant="ghost" 
+                                  size="sm" 
+                                  onClick={() => handleEditPost(post)}
+                                  className="text-gray-400 hover:text-white hover:bg-gray-800"
+                                >
+                                  <Icons.Edit className="h-4 w-4" />
+                                </Button>
+                                <Button 
+                                  variant="ghost" 
+                                  size="sm" 
+                                  onClick={() => handleDeletePost(post.id)}
+                                  className="text-gray-400 hover:text-red-400 hover:bg-gray-800"
+                                >
+                                  <Icons.Trash2 className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center h-full">
+                    <div className="text-center py-12 text-gray-400 max-w-md">
+                      <Icons.FileQuestion className="mx-auto h-10 w-10 mb-3 opacity-40" />
+                      {searchQuery ? (
+                        <>
+                          <p className="text-lg mb-1">No matching posts found</p>
+                          <p className="text-sm text-gray-500">Try adjusting your search query or filters</p>
+                        </>
+                      ) : (
+                        <>
+                          <p className="text-lg mb-1">No posts available</p>
+                          <p className="text-sm text-gray-500">Click the "New Post" button to create your first post</p>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </div>
-      </footer>
+      </div>
     </div>
   )
 }
