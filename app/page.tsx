@@ -123,13 +123,13 @@ export default function Website() {
                     onOpenChange={() => {}} 
                   />
                   
-                  <Link href="/services" passHref>
+                  <Link href="/product" passHref>
                     <Button
                       size="lg"
                       variant="outline"
                       className="group border-gray-300 text-gray-700 hover:text-gray-900 hover:border-gray-400 w-full sm:w-auto"
                     >
-                      Our Services
+                      Our Solutions
                       <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
                     </Button>
                   </Link>
