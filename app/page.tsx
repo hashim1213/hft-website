@@ -40,7 +40,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "ByteSavy",
-  description: "ByteSavy is a Canadian technology company specializing in custom software development solutions for businesses.",
+  description: "Bytesavy is a Canadian technology company specializing in custom software development solutions for businesses.",
   url: "https://bytesavy.com",
   logo: "https://bytesavy.com/logo.png",
   sameAs: [
@@ -102,7 +102,7 @@ export default function Website() {
                   variants={fadeInUp}
                   className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 tracking-tight"
                 >
-                  ByteSavy
+                  Bytesavy
                   <span className="block text-2xl md:text-3xl font-normal mt-2 text-gray-700">
                     A custom software studio
                   </span>

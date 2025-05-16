@@ -135,9 +135,9 @@ export default function OurApproachSection() {
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-blue-700">
-              <Link href="/case-studies">
-                View Our Case Studies
+            <Button asChild variant="outline" size="lg" className="border-white text-blue-600 hover:bg-blue-700">
+              <Link href="/product">
+                Our Solutions
               </Link>
             </Button>
           </div>

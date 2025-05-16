@@ -60,7 +60,7 @@ export default function ServicesSection() {
             
             <div className="space-y-4 mb-8">
               {[
-                "Deep industry knowledge across retail, healthcare, manufacturing, and finance",
+                "Deep industry knowledge across Agriculture, Healthcare, Manufacturing, and Retail",
                 "Expertise in both customer-facing applications and internal operational tools",
                 "Focus on security, compliance, and data privacy by design",
                 "Performance optimization for speed and reliability"
@@ -75,7 +75,7 @@ export default function ServicesSection() {
             </div>
             
             <Button asChild>
-              <Link href="/services">
+              <Link href="/product">
                 Explore Our Services
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
@@ -94,7 +94,7 @@ export default function ServicesSection() {
             <div className="relative z-10 bg-white p-3 rounded-xl border border-gray-200 shadow-lg">
               <div className="aspect-[4/3] relative rounded-lg overflow-hidden">
                 <Image
-                  src="/dashboard-example.jpg" // Replace with actual image
+                  src="/abb.png" // Replace with actual image
                   alt="Custom dashboard example"
                   fill
                   className="object-cover"
@@ -104,7 +104,7 @@ export default function ServicesSection() {
               <div className="absolute -bottom-5 -right-5 bg-white rounded-lg p-4 shadow-lg border border-gray-200">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  <span className="text-sm font-medium text-gray-900">97% client satisfaction</span>
+                  <span className="text-sm font-medium text-gray-900">Built for your business processes</span>
                 </div>
               </div>
             </div>

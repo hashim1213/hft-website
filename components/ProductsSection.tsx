@@ -56,7 +56,7 @@ export default function ProductsSection() {
     {
       name: "CanMade",
       description: "A revolutionary app that helps consumers identify Canadian-made products with a simple scan, supporting local manufacturing and conscientious shopping.",
-      icon: "/canmade.png",
+      icon: "/app-logo.png",
       appStoreLink: "https://apps.apple.com/ca/app/canmade/id6473916103"
     },
     {
