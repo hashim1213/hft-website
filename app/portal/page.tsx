@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import * as Icons from "lucide-react"
+import { Loader2, AlertCircle, Clock, ArrowRight, Search } from "lucide-react"
 import Link from "next/link"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
@@ -96,10 +96,13 @@ export default function BlogPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col bg-white">
         <Header />
-        <main className="flex-1 flex items-center justify-center">
-          <Icons.Loader2 className="h-8 w-8 animate-spin" />
+        <main className="flex-1 pt-40 flex items-center justify-center">
+          <div className="text-center">
+            <Loader2 className="h-10 w-10 animate-spin mx-auto text-blue-600" />
+            <p className="mt-4 text-gray-600">Loading articles...</p>
+          </div>
         </main>
         <Footer />
       </div>
@@ -108,175 +111,198 @@ export default function BlogPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col bg-white">
         <Header />
-        <main className="flex-1 flex items-center justify-center">
-          <div className="text-center text-red-600">
-            <Icons.AlertCircle className="h-8 w-8 mx-auto" />
-            <p className="mt-2">{error}</p>
+        <main className="flex-1 pt-40 flex items-center justify-center">
+          <div className="text-center max-w-md mx-auto px-4">
+            <AlertCircle className="h-12 w-12 mx-auto text-red-500 mb-4" />
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Something went wrong</h2>
+            <p className="text-gray-600 mb-6">{error}</p>
+            <Button onClick={() => window.location.reload()}>
+              Try again
+            </Button>
           </div>
         </main>
         <Footer />
       </div>
     )
   }
+  
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white">
       <Header />
       <main className="flex-1">
         {/* Hero Section */}
-        <div className="relative pt-32 pb-24 bg-gradient-to-b from-gray-50 to-white">
-          <div className="absolute inset-0 bg-grid-gray-100/50 bg-[size:20px_20px] [mask-image:linear-gradient(to_bottom,white,transparent)]" />
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl mx-auto text-center">
-              <motion.h1 
-                className="text-5xl font-bold tracking-tight text-gray-900 mb-6"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                Insights & Stories
-              </motion.h1>
-              <motion.p 
-                className="text-xl text-gray-600"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-              >
-                Exploring ideas, technology, and innovation
-              </motion.p>
-            </div>
+        <div className="pt-40 pb-16 bg-gray-50 border-b border-gray-100">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <motion.h1 
+              className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              Insights & Stories
+            </motion.h1>
+            <motion.p 
+              className="text-lg text-gray-600 max-w-2xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              Exploring ideas, technology, and innovation in software development
+            </motion.p>
           </div>
         </div>
 
         {/* Filters Section */}
-        <div className="sticky top-16 z-10 bg-white/80 backdrop-blur-md border-b border-gray-100">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl mx-auto py-4">
-              <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
-                <div className="w-full md:w-2/3">
-                  <Input
-                    placeholder="Search posts..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full bg-white"
-                  />
-                </div>
-                <div className="w-full md:w-1/3">
-                  <Select
-                    value={selectedCategory}
-                    onValueChange={setSelectedCategory}
-                  >
-                    <SelectTrigger className="w-full bg-white">
-                      <SelectValue placeholder="Select category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {categories.map(category => (
-                        <SelectItem key={category} value={category}>
-                          {category.charAt(0).toUpperCase() + category.slice(1)}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+        <div className="sticky top-0 z-10 bg-white border-b border-gray-200 shadow-sm py-4">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col md:flex-row gap-4 items-center">
+              <div className="w-full md:w-2/3 relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  placeholder="Search articles..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-white pl-10 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+              <div className="w-full md:w-1/3">
+                <Select
+                  value={selectedCategory}
+                  onValueChange={setSelectedCategory}
+                >
+                  <SelectTrigger className="w-full bg-white border-gray-200">
+                    <SelectValue placeholder="All categories" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map(category => (
+                      <SelectItem key={category} value={category}>
+                        {category === 'all' ? 'All categories' : category.charAt(0).toUpperCase() + category.slice(1)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           </div>
         </div>
 
         {/* Posts Grid */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <motion.div 
-            className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12"
-            initial="hidden"
-            animate="visible"
-            variants={{
-              visible: {
-                transition: {
-                  staggerChildren: 0.1
-                }
-              }
-            }}
-          >
-            {filteredPosts.map((post) => (
-              <motion.article
-                key={post.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="group relative bg-white rounded-lg p-6 hover:bg-gray-50 transition-colors duration-200"
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          {filteredPosts.length > 0 ? (
+            <>
+              <div className="mb-6 flex justify-between items-center">
+                <h2 className="text-lg font-medium text-gray-900">
+                  {filteredPosts.length} {filteredPosts.length === 1 ? 'Article' : 'Articles'} Found
+                </h2>
+                {(searchQuery || selectedCategory !== 'all') && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setSearchQuery('')
+                      setSelectedCategory('all')
+                    }}
+                    className="text-gray-600 hover:text-blue-600"
+                  >
+                    Clear filters
+                  </Button>
+                )}
+              </div>
+              
+              <motion.div 
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                initial="hidden"
+                animate="visible"
+                variants={{
+                  visible: {
+                    transition: {
+                      staggerChildren: 0.05
+                    }
+                  }
+                }}
               >
-                <Link href={`/blog/${post.id}`} className="block">
-                  <div className="space-y-4">
-                    {post.category && (
-                      <span className="inline-flex px-3 py-1 text-xs font-medium bg-primary/5 text-primary rounded-full">
-                        {post.category}
-                      </span>
-                    )}
-                    
-                    <h2 className="text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors line-clamp-2">
-                      {post.title}
-                    </h2>
-                    
-                    <p className="text-gray-600 line-clamp-3">
-                      {post.excerpt}
-                    </p>
-                    
-                    <div className="flex items-center justify-center gap-4 text-sm text-gray-500">
-                      <div className="flex items-center gap-2">
-                        <Icons.Clock className="h-4 w-4" />
-                        <span>{post.readTime}</span>
+                {filteredPosts.map((post) => (
+                  <motion.article
+                    key={post.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="group flex flex-col h-full border border-gray-200 rounded-xl overflow-hidden hover:border-blue-100 hover:shadow-md transition-all duration-200"
+                  >
+                    <Link href={`/blog/${post.id}`} className="flex flex-col h-full">
+                      <div className="p-6 flex flex-col h-full">
+                        {post.category && (
+                          <span className="inline-flex px-3 py-1 text-xs font-medium bg-blue-50 text-blue-600 rounded-full mb-4 w-fit">
+                            {post.category}
+                          </span>
+                        )}
+                        
+                        <h2 className="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors mb-3 line-clamp-2">
+                          {post.title}
+                        </h2>
+                        
+                        <p className="text-gray-600 mb-6 line-clamp-3 flex-grow">
+                          {post.excerpt}
+                        </p>
+                        
+                        <div className="mt-auto pt-4 border-t border-gray-100">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2 text-sm text-gray-500">
+                              <Clock className="h-4 w-4 text-gray-400" />
+                              <span>{post.readTime}</span>
+                            </div>
+                            
+                            <span className="text-sm text-gray-500">
+                              {new Date(post.createdAt).toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric'
+                              })}
+                            </span>
+                          </div>
+                          
+                          <div className="flex items-center justify-between mt-4">
+                            <span className="text-sm font-medium text-gray-900">{post.author}</span>
+                            <span className="inline-flex items-center gap-1 text-sm font-medium text-blue-600 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200">
+                              Read article
+                              <ArrowRight className="h-3 w-3" />
+                            </span>
+                          </div>
+                        </div>
                       </div>
-                      <time dateTime={post.createdAt}>
-                        {new Date(post.createdAt).toLocaleDateString('en-US', {
-                          month: 'short',
-                          day: 'numeric'
-                        })}
-                      </time>
-                    </div>
-                    
-                    <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                      <span className="text-sm font-medium text-gray-900">{post.author}</span>
-                      <span className="inline-flex items-center gap-2 text-sm font-medium text-primary opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200">
-                        Read article
-                        <Icons.ArrowRight className="h-4 w-4" />
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              </motion.article>
-            ))}
-          </motion.div>
-
-          {filteredPosts.length === 0 && (
+                    </Link>
+                  </motion.article>
+                ))}
+              </motion.div>
+            </>
+          ) : (
             <motion.div 
-              className="max-w-2xl mx-auto text-center py-24"
+              className="py-16 text-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
-              <Icons.Search className="h-12 w-12 mx-auto text-gray-400 mb-6" />
-              <h3 className="text-lg font-semibold mb-2">No posts found</h3>
-              <p className="text-gray-600 mb-8">
+              <Search className="h-16 w-16 mx-auto text-gray-300 mb-6" />
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">No articles found</h3>
+              <p className="text-gray-600 mb-8 max-w-md mx-auto">
                 {searchQuery
-                  ? `No posts matching "${searchQuery}"`
-                  : 'No posts available in this category'}
+                  ? `We couldn't find any articles matching "${searchQuery}"`
+                  : 'No articles available in this category'}
               </p>
               <Button
-                variant="outline"
                 onClick={() => {
                   setSearchQuery('')
                   setSelectedCategory('all')
                 }}
               >
-                Clear filters
+                View all articles
               </Button>
             </motion.div>
           )}
         </div>
       </main>
-      <center>
       <Footer />
-      </center>
     </div>
   )
 }

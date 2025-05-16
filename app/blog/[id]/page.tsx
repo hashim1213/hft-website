@@ -118,7 +118,7 @@ export default function BlogPost({ params }: { params: Promise<{ id: string }> }
         <main className="flex-1 pt-40 pb-20">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
-              <Link href="/blog" className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-8">
+              <Link href="/portal" className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-8">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to all articles
               </Link>
