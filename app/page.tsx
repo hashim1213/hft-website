@@ -175,7 +175,7 @@ export default function Website() {
           </div>
         </section>
 
-        <MediaSection />
+        
         <OurApproachSection />
         <ServicesSection/>
         <section className="w-full bg-gray-50 py-20">
@@ -197,7 +197,7 @@ export default function Website() {
           <div className="absolute bottom-0 left-0 right-0 h-16 bg-white rounded-b-3xl"></div>
         </section>
       </main>
-
+      <MediaSection />
       <Footer />
     </div>
   )
