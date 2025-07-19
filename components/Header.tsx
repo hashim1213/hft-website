@@ -10,8 +10,9 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 const NAVIGATION_LINKS = [
   { name: "Home", href: "/" },
   { name: "Solutions", href: "/product" },
-  { name: "Contact", href: "/contact" },
+  
   { name: "Blog", href: "/portal" },
+  { name: "About", href: "/about" },
 ];
 
 export default function Header() {
@@ -60,13 +61,13 @@ export default function Header() {
             ))}
             
             {/* Login Button */}
-            <Link href="/login">
+            <Link href="/contact">
               <Button
                 variant="outline"
                 className="gap-2 group border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 rounded-xl px-6"
               >
                 <LogIn className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
-                Login
+                Contact
               </Button>
             </Link>
           </nav>
