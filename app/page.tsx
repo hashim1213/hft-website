@@ -10,11 +10,8 @@ import BookingDialog from "@/components/BookingDialog"
 import BlogSection from "@/components/BlogSection"
 import ProductsSection from "@/components/ProductsSection"
 import Image from "next/image"
-import CommunityInitiatives from "@/components/CommunityInitiatives"
-import CanmadeSection from '@/components/CanmadeSection'
 import MediaSection from '@/components/MediaSection'
 import Script from 'next/script'
-import OurApproachSection from "@/components/Apporach"
 import ServicesSection from "@/components/Services"
 
 const fadeInUp = {
@@ -76,6 +73,7 @@ export default function Website() {
       <Header />
       
       <main className="flex-1">
+        
         <section 
           id="hero" 
           className="pt-28 pb-16 md:pt-40 md:pb-24 overflow-hidden"
@@ -133,6 +131,49 @@ export default function Website() {
                       <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
                     </Button>
                   </Link>
+
+                  </motion.div>
+                
+                {/* Trusted by section - integrated into hero */}
+                <motion.div
+                  variants={fadeInUp}
+                  className="mt-2 pt-4"
+                >
+                  
+                  <div className="flex flex-wrap items-center gap-8 md:gap-12">
+                    {/* Manitoba Crop Alliance Logo */}
+                    <div className="grayscale hover:grayscale-0 transition-all duration-300 opacity-50 hover:opacity-100">
+                      <Image
+                        src="/MCA_logo.png"
+                        alt="Manitoba Crop Alliance"
+                        width={140}
+                        height={48}
+                        className="h-9 w-auto object-contain"
+                      />
+                    </div>
+                    
+                    {/* Alberta Grains Logo */}
+                    <div className="grayscale hover:grayscale-0 transition-all duration-300 opacity-50 hover:opacity-100">
+                      <Image
+                        src="/ab_grains.png"
+                        alt="Alberta Grains"
+                        width={140}
+                        height={48}
+                        className="h-12 w-auto object-contain"
+                      />
+                    </div>
+                    
+                    {/* South East Research Farm Logo */}
+                    <div className="grayscale hover:grayscale-0 transition-all duration-300 opacity-50 hover:opacity-100">
+                      <Image
+                        src="/serf.jpg"
+                        alt="South East Research Farm"
+                        width={140}
+                        height={48}
+                        className="h-12 w-auto object-contain"
+                      />
+                    </div>
+                  </div>
                 </motion.div>
               </motion.div>
               
@@ -174,16 +215,11 @@ export default function Website() {
             </div>
           </div>
         </section>
+     
+        
 
-        
-        <OurApproachSection />
         <ServicesSection/>
-        <section className="w-full bg-gray-50 py-20">
-          <div className="container mx-auto px-4 md:px-6">
-            <CommunityInitiatives />
-          </div>
-        </section>
-        
+       
         <section className="w-full bg-white py-20">
           <div className="container mx-auto px-4 md:px-6">
             <ProductsSection />
