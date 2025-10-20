@@ -24,6 +24,7 @@ const db = getFirestore(app)
 
 interface BlogPost {
   id: string
+  slug: string // Added slug field
   title: string
   excerpt: string
   content: string
@@ -35,7 +36,20 @@ interface BlogPost {
   imageUrl?: string
 }
 
-const BlogPost = ({ post }: { post: BlogPost }) => {
+// Utility function to generate fallback slug from title if slug is missing
+const generateSlugFromTitle = (title: string): string => {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+}
+
+const BlogPostCard = ({ post }: { post: BlogPost }) => {
+  // Use slug if available, otherwise fall back to id (for backward compatibility during migration)
+  const postUrl = post.slug ? `/blog/${post.slug}` : `/blog/${post.id}`
+  
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
@@ -44,13 +58,13 @@ const BlogPost = ({ post }: { post: BlogPost }) => {
       viewport={{ once: true }}
       className="group h-full border border-gray-200 rounded-xl overflow-hidden hover:border-blue-100 hover:shadow-md transition-all duration-200"
     >
-      <Link href={`/blog/${post.id}`} className="block h-full" aria-label={`Read ${post.title}`}>
+      <Link href={postUrl} className="block h-full" aria-label={`Read ${post.title}`}>
         <div className="flex flex-col h-full">
           {post.imageUrl && (
             <div className="relative w-full h-48 overflow-hidden">
               <img
                 src={post.imageUrl}
-                alt=""
+                alt={post.title}
                 className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
                 loading="lazy"
               />
@@ -79,9 +93,9 @@ const BlogPost = ({ post }: { post: BlogPost }) => {
               {post.excerpt}
             </p>
             
-            {post.tags && (
+            {post.tags && post.tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-4">
-                {post.tags.map(tag => (
+                {post.tags.slice(0, 3).map(tag => (
                   <span
                     key={tag}
                     className="inline-flex px-2 py-1 text-xs text-blue-600 bg-blue-50 rounded-full"
@@ -89,6 +103,11 @@ const BlogPost = ({ post }: { post: BlogPost }) => {
                     {tag}
                   </span>
                 ))}
+                {post.tags.length > 3 && (
+                  <span className="inline-flex px-2 py-1 text-xs text-gray-500 bg-gray-100 rounded-full">
+                    +{post.tags.length - 3} more
+                  </span>
+                )}
               </div>
             )}
             
@@ -146,11 +165,16 @@ export default function BlogSection() {
       
       const querySnapshot = await getDocs(postsQuery)
       const loadedPosts = querySnapshot.docs
-        .map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-          createdAt: doc.data().createdAt?.toDate?.().toISOString() || new Date().toISOString()
-        } as BlogPost))
+        .map(doc => {
+          const data = doc.data()
+          return {
+            id: doc.id,
+            ...data,
+            // Generate slug from title if missing (backward compatibility)
+            slug: data.slug || generateSlugFromTitle(data.title || doc.id),
+            createdAt: data.createdAt?.toDate?.().toISOString() || new Date().toISOString()
+          } as BlogPost
+        })
         .filter(post => post.status === 'published')
 
       setPosts(loadedPosts)
@@ -190,7 +214,7 @@ export default function BlogSection() {
             {posts.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {posts.map((post) => (
-                  <BlogPost key={post.id} post={post} />
+                  <BlogPostCard key={post.id} post={post} />
                 ))}
               </div>
             ) : (
@@ -199,7 +223,10 @@ export default function BlogSection() {
             
             {posts.length > 0 && (
               <div className="mt-12 text-center">
-                <Link href="/portal" className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium">
+                <Link 
+                  href="/portal" 
+                  className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium transition-colors"
+                >
                   View all articles
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>

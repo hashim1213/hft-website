@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Global font fallback */
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -34,6 +35,7 @@ body {
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
+  
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
@@ -66,7 +68,55 @@ body {
   * {
     @apply border-border;
   }
+  
+  /* Fix for white background everywhere */
+  html {
+    background-color: white !important;
+    overscroll-behavior: none;
+  }
+  
   body {
     @apply bg-background text-foreground;
+    background-color: white !important; /* Force white background */
+    overscroll-behavior: none; /* Prevent bounce/overscroll */
+    -webkit-overscroll-behavior: none; /* iOS Safari specific */
   }
+  
+  /* Ensure Next.js root elements are white */
+  #__next,
+  #__next > div {
+    background-color: white !important;
+  }
+  
+  /* Prevent mobile overscroll showing background */
+  @supports (-webkit-touch-callout: none) {
+    body {
+      overscroll-behavior-y: none;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+}
+
+/* Additional fix for any remaining blue backgrounds */
+@layer utilities {
+  .bg-page {
+    background-color: white !important;
+  }
+}
+
+/* Fix for browser-specific overscroll */
+html, body {
+  overscroll-behavior: none;
+  background: white;
+}
+
+/* Prevent iOS Safari bounce effect */
+html {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: none;
+}
+
+/* Force white background on all root elements */
+html, body, #__next, [data-nextjs-scroll-focus-boundary] {
+  background-color: white !important;
 }
