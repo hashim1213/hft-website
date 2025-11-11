@@ -108,7 +108,7 @@ export default function DevelopmentPage() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative pt-24 pb-16 px-4 bg-gradient-to-b from-gray-50 to-white">
+        <section className="relative pt-32 md:pt-40 pb-16 px-4 bg-gradient-to-b from-gray-50 to-white">
           <div className="container mx-auto max-w-6xl">
             <motion.div
               initial="hidden"

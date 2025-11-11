@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -29,7 +29,6 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore"
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"
 
 // Firebase configuration check
 if (!process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
@@ -48,7 +47,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
 const db = getFirestore(app)
-const storage = getStorage(app)
 
 // Types
 interface BlogPost {
@@ -90,7 +88,6 @@ const CATEGORIES = [
 
 export default function Dashboard() {
   const router = useRouter()
-  const fileInputRef = useRef<HTMLInputElement>(null)
 
   // State management
   const [posts, setPosts] = useState<BlogPost[]>([])
@@ -105,7 +102,6 @@ export default function Dashboard() {
     author: "Bytesavy Team",
   })
   const [loading, setLoading] = useState(false)
-  const [uploadingImage, setUploadingImage] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null)
@@ -164,48 +160,6 @@ export default function Dashboard() {
     }
   }
 
-  // Handle image upload
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      setError("Please upload an image file")
-      return
-    }
-
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      setError("Image size must be less than 5MB")
-      return
-    }
-
-    setUploadingImage(true)
-    setError("")
-
-    try {
-      // Create a unique filename
-      const filename = `blog-images/${Date.now()}-${file.name}`
-      const storageRef = ref(storage, filename)
-
-      // Upload file
-      await uploadBytes(storageRef, file)
-
-      // Get download URL
-      const downloadURL = await getDownloadURL(storageRef)
-
-      // Update form data with image URL
-      setFormData(prev => ({ ...prev, imageUrl: downloadURL }))
-      setSuccess("Image uploaded successfully!")
-    } catch (err) {
-      console.error("Error uploading image:", err)
-      setError("Failed to upload image. Please try again.")
-    } finally {
-      setUploadingImage(false)
-    }
-  }
-
   // Form validation
   const validateForm = () => {
     if (!formData.title.trim()) return "Title is required"
@@ -253,19 +207,23 @@ export default function Dashboard() {
         .map(tag => tag.trim())
         .filter(tag => tag.length > 0)
 
-      const postData = {
+      const postData: any = {
         title: formData.title.trim(),
         slug: slug,
         excerpt: formData.excerpt.trim(),
         content: formData.content.trim(),
         author: formData.author.trim(),
-        createdAt: editingPost ? undefined : serverTimestamp(),
         updatedAt: serverTimestamp(),
         readTime: `${Math.ceil(formData.content.trim().split(/\s+/).length / 200)} min read`,
         status,
         category: formData.category.trim(),
         tags: tagsArray,
         imageUrl: formData.imageUrl.trim() || null,
+      }
+
+      // Only set createdAt for new posts
+      if (!editingPost) {
+        postData.createdAt = serverTimestamp()
       }
 
       if (editingPost) {
@@ -574,25 +532,19 @@ export default function Dashboard() {
                         </div>
 
                         <div className="space-y-4">
-                          <input
-                            ref={fileInputRef}
-                            type="file"
-                            accept="image/*"
-                            onChange={handleImageUpload}
-                            className="hidden"
-                          />
-
-                          <div className="flex gap-2">
-                            <Button
-                              type="button"
-                              variant="outline"
-                              onClick={() => fileInputRef.current?.click()}
-                              disabled={uploadingImage}
-                              className="flex-1"
-                            >
-                              <Icons.Upload className="h-4 w-4 mr-2" />
-                              {uploadingImage ? "Uploading..." : "Upload Image"}
-                            </Button>
+                          <div className="space-y-2">
+                            <Label htmlFor="imageUrl" className="text-gray-700">Image URL</Label>
+                            <Input
+                              id="imageUrl"
+                              value={formData.imageUrl}
+                              onChange={(e) => handleInputChange(e, "imageUrl")}
+                              placeholder="https://example.com/image.jpg"
+                              disabled={loading}
+                              className="bg-white border-gray-200"
+                            />
+                            <p className="text-xs text-gray-500">
+                              Enter the URL of your featured image. Recommended: 1200x630px for optimal social sharing.
+                            </p>
                           </div>
 
                           {formData.imageUrl && (
@@ -601,22 +553,12 @@ export default function Dashboard() {
                                 src={formData.imageUrl}
                                 alt="Preview"
                                 className="w-full h-48 object-cover rounded-lg border border-gray-200"
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none'
+                                }}
                               />
-                              <Button
-                                type="button"
-                                variant="destructive"
-                                size="sm"
-                                className="absolute top-2 right-2"
-                                onClick={() => setFormData(prev => ({ ...prev, imageUrl: "" }))}
-                              >
-                                <Icons.X className="h-4 w-4" />
-                              </Button>
                             </div>
                           )}
-
-                          <p className="text-xs text-gray-500">
-                            Max file size: 5MB. Recommended: 1200x630px for optimal social sharing.
-                          </p>
                         </div>
                       </div>
 

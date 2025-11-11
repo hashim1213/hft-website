@@ -124,7 +124,7 @@ export default function SolutionsPage() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative pt-24 pb-16 px-4 bg-white">
+        <section className="relative pt-32 md:pt-40 pb-16 px-4 bg-white">
           <div className="container mx-auto max-w-5xl">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
