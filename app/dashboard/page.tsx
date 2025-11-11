@@ -328,7 +328,7 @@ export default function Dashboard() {
       title: post.title,
       excerpt: post.excerpt,
       content: post.content,
-      category: post.category,
+      category: post.category || "",
       imageUrl: post.imageUrl || "",
       tags: post.tags?.join(', ') || "",
       author: post.author || "Bytesavy Team",

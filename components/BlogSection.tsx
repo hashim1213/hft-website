@@ -149,6 +149,7 @@ const EmptyState = () => (
 
 export default function BlogSection() {
   const [posts, setPosts] = useState<BlogPost[]>([])
+  const [recommendedPosts, setRecommendedPosts] = useState<BlogPost[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -156,13 +157,13 @@ export default function BlogSection() {
     try {
       setLoading(true)
       setError('')
-      
+
       const postsQuery = query(
         collection(db, 'posts'),
         orderBy('createdAt', 'desc'),
-        limit(6)
+        limit(9)
       )
-      
+
       const querySnapshot = await getDocs(postsQuery)
       const loadedPosts = querySnapshot.docs
         .map(doc => {
@@ -177,7 +178,11 @@ export default function BlogSection() {
         })
         .filter(post => post.status === 'published')
 
-      setPosts(loadedPosts)
+      // Set first 6 as main posts
+      setPosts(loadedPosts.slice(0, 6))
+
+      // Set last 3 as recommended posts
+      setRecommendedPosts(loadedPosts.slice(6, 9))
     } catch (err) {
       console.error('Error loading posts:', err)
       setError('Failed to load blog posts. Please try again later.')
@@ -223,13 +228,33 @@ export default function BlogSection() {
             
             {posts.length > 0 && (
               <div className="mt-12 text-center">
-                <Link 
-                  href="/portal" 
+                <Link
+                  href="/portal"
                   className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium transition-colors"
                 >
                   View all articles
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
+              </div>
+            )}
+
+            {/* Recommended Reading Section */}
+            {recommendedPosts.length > 0 && (
+              <div className="mt-20 pt-16 border-t border-gray-200">
+                <div className="text-center mb-12">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                    Recommended Reading
+                  </h3>
+                  <p className="text-gray-600 max-w-xl mx-auto">
+                    More articles you might find interesting
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {recommendedPosts.map((post) => (
+                    <BlogPostCard key={post.id} post={post} />
+                  ))}
+                </div>
               </div>
             )}
           </>
