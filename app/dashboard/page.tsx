@@ -59,6 +59,9 @@ interface BlogPost {
   readTime: string
   status: "draft" | "published"
   category: string
+  tags?: string[]
+  imageUrl?: string
+  images?: string[]
 }
 
 // Utility function to generate slug from title
@@ -73,9 +76,13 @@ const generateSlugFromTitle = (title: string): string => {
 
 const CATEGORIES = [
   { value: "technology", label: "Technology" },
-  { value: "lifestyle", label: "Lifestyle" },
+  { value: "software-development", label: "Software Development" },
+  { value: "ai-machine-learning", label: "AI & Machine Learning" },
+  { value: "web-development", label: "Web Development" },
+  { value: "mobile-development", label: "Mobile Development" },
   { value: "business", label: "Business" },
-  { value: "health", label: "Health" },
+  { value: "case-studies", label: "Case Studies" },
+  { value: "tutorials", label: "Tutorials" },
 ] as const
 
 export default function Dashboard() {
@@ -89,6 +96,9 @@ export default function Dashboard() {
     excerpt: "",
     content: "",
     category: "",
+    imageUrl: "",
+    tags: "",
+    author: "Bytesavy Team",
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
@@ -165,6 +175,7 @@ export default function Dashboard() {
     if (!formData.excerpt.trim()) return "Excerpt is required"
     if (!formData.content.trim()) return "Content is required"
     if (!formData.category.trim()) return "Category is required"
+    if (!formData.author.trim()) return "Author is required"
     return null
   }
 
@@ -199,16 +210,24 @@ export default function Dashboard() {
     try {
       const slug = generateSlugFromTitle(formData.title.trim())
 
+      // Process tags from comma-separated string
+      const tagsArray = formData.tags
+        .split(',')
+        .map(tag => tag.trim())
+        .filter(tag => tag.length > 0)
+
       const postData = {
         title: formData.title.trim(),
         slug: slug,
         excerpt: formData.excerpt.trim(),
         content: formData.content.trim(),
-        author: "Admin",
+        author: formData.author.trim(),
         createdAt: serverTimestamp(),
         readTime: `${Math.ceil(formData.content.trim().split(/\s+/).length / 200)} min read`,
         status,
         category: formData.category.trim(),
+        tags: tagsArray,
+        imageUrl: formData.imageUrl.trim() || null,
       }
 
       if (editingPost) {
@@ -220,7 +239,15 @@ export default function Dashboard() {
       }
 
       // Reset form and state
-      setFormData({ title: "", excerpt: "", content: "", category: "" })
+      setFormData({
+        title: "",
+        excerpt: "",
+        content: "",
+        category: "",
+        imageUrl: "",
+        tags: "",
+        author: "Bytesavy Team"
+      })
       setEditingPost(null)
       setIsDialogOpen(false)
       await loadPosts()
@@ -264,6 +291,9 @@ export default function Dashboard() {
       excerpt: post.excerpt,
       content: post.content,
       category: post.category,
+      imageUrl: post.imageUrl || "",
+      tags: post.tags?.join(', ') || "",
+      author: post.author || "Bytesavy Team",
     })
     setIsDialogOpen(true)
   }
@@ -344,66 +374,149 @@ export default function Dashboard() {
                     <span>New Post</span>
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[600px] bg-gray-900 border-gray-800 text-white">
+                <DialogContent className="sm:max-w-[800px] max-h-[85vh] overflow-y-auto bg-gray-900 border-gray-800 text-white">
                   <DialogHeader>
-                    <DialogTitle className="text-white text-xl">
+                    <DialogTitle className="text-white text-xl flex items-center gap-2">
+                      <Icons.FileText className="h-5 w-5" />
                       {editingPost ? "Edit Post" : "Create New Post"}
                     </DialogTitle>
                   </DialogHeader>
-                  <form onSubmit={(e) => handleSubmit(e, "draft")} className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2 col-span-2">
-                        <Label htmlFor="title" className="text-gray-400">Title</Label>
+                  <form onSubmit={(e) => handleSubmit(e, "draft")} className="space-y-6">
+                    {/* Basic Information */}
+                    <div className="space-y-4">
+                      <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider flex items-center gap-2">
+                        <Icons.FileEdit className="h-4 w-4" />
+                        Basic Information
+                      </h3>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="title" className="text-gray-400 text-sm">Title *</Label>
                         <Input
                           id="title"
                           value={formData.title}
                           onChange={(e) => handleInputChange(e, "title")}
-                          placeholder="Enter post title"
+                          placeholder="Enter a compelling post title"
                           disabled={loading}
-                          className="w-full bg-gray-800 border-gray-700 text-white"
+                          className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
                         />
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="category" className="text-gray-400">Category</Label>
-                        <Select 
-                          value={formData.category} 
-                          onValueChange={(value) => handleInputChange(value, "category")}
-                          disabled={loading}
-                        >
-                          <SelectTrigger className="w-full bg-gray-800 border-gray-700 text-white">
-                            <SelectValue placeholder="Select a category" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-gray-800 border-gray-700 text-white">
-                            {CATEGORIES.map(({ value, label }) => (
-                              <SelectItem key={value} value={value}>{label}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="excerpt" className="text-gray-400">Excerpt</Label>
-                        <Input
+                        <Label htmlFor="excerpt" className="text-gray-400 text-sm">Excerpt *</Label>
+                        <Textarea
                           id="excerpt"
                           value={formData.excerpt}
                           onChange={(e) => handleInputChange(e, "excerpt")}
-                          placeholder="Brief description of your post"
+                          placeholder="Brief description that appears in blog listings (1-2 sentences)"
                           disabled={loading}
-                          className="w-full bg-gray-800 border-gray-700 text-white"
+                          rows={2}
+                          className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 resize-none"
                         />
                       </div>
-                      
-                      <div className="space-y-2 col-span-2">
-                        <Label htmlFor="content" className="text-gray-400">Content</Label>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="author" className="text-gray-400 text-sm">Author *</Label>
+                          <Input
+                            id="author"
+                            value={formData.author}
+                            onChange={(e) => handleInputChange(e, "author")}
+                            placeholder="Author name"
+                            disabled={loading}
+                            className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="category" className="text-gray-400 text-sm">Category *</Label>
+                          <Select
+                            value={formData.category}
+                            onValueChange={(value) => handleInputChange(value, "category")}
+                            disabled={loading}
+                          >
+                            <SelectTrigger className="w-full bg-gray-800 border-gray-700 text-white">
+                              <SelectValue placeholder="Select a category" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-gray-800 border-gray-700 text-white">
+                              {CATEGORIES.map(({ value, label }) => (
+                                <SelectItem key={value} value={value}>{label}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Media */}
+                    <div className="space-y-4 border-t border-gray-800 pt-4">
+                      <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider flex items-center gap-2">
+                        <Icons.Image className="h-4 w-4" />
+                        Featured Image
+                      </h3>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="imageUrl" className="text-gray-400 text-sm">Image URL (optional)</Label>
+                        <Input
+                          id="imageUrl"
+                          value={formData.imageUrl}
+                          onChange={(e) => handleInputChange(e, "imageUrl")}
+                          placeholder="https://example.com/image.jpg"
+                          disabled={loading}
+                          className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
+                        />
+                        <p className="text-xs text-gray-500">Upload images to a service like Imgur or Cloudinary and paste the URL here</p>
+                      </div>
+                    </div>
+
+                    {/* Tags */}
+                    <div className="space-y-4 border-t border-gray-800 pt-4">
+                      <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider flex items-center gap-2">
+                        <Icons.Tags className="h-4 w-4" />
+                        Tags & Keywords
+                      </h3>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="tags" className="text-gray-400 text-sm">Tags (optional)</Label>
+                        <Input
+                          id="tags"
+                          value={formData.tags}
+                          onChange={(e) => handleInputChange(e, "tags")}
+                          placeholder="React, Next.js, AI, Machine Learning (comma-separated)"
+                          disabled={loading}
+                          className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
+                        />
+                        <p className="text-xs text-gray-500">Separate tags with commas for better SEO and discoverability</p>
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="space-y-4 border-t border-gray-800 pt-4">
+                      <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider flex items-center gap-2">
+                        <Icons.Code className="h-4 w-4" />
+                        Content (Markdown Supported)
+                      </h3>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="content" className="text-gray-400 text-sm">Content *</Label>
                         <Textarea
                           id="content"
                           value={formData.content}
                           onChange={(e) => handleInputChange(e, "content")}
-                          placeholder="Write your post content here..."
+                          placeholder="Write your post content here using Markdown...
+
+## Example Heading
+Write **bold** or *italic* text
+
+- Bullet point 1
+- Bullet point 2
+
+[Link text](https://example.com)
+
+![Image](https://example.com/image.jpg)"
                           disabled={loading}
-                          className="min-h-[250px] bg-gray-800 border-gray-700 text-white"
+                          className="min-h-[300px] bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 font-mono text-sm"
                         />
+                        <p className="text-xs text-gray-500">Supports Markdown: **bold**, *italic*, ## headings, [links](url), - lists, ![images](url)</p>
                       </div>
                     </div>
                     
