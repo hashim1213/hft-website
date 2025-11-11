@@ -13,6 +13,7 @@ import Image from "next/image"
 import MediaSection from '@/components/MediaSection'
 import Script from 'next/script'
 import ServicesSection from "@/components/Services"
+import { organizationSchema, localBusinessSchema, faqSchema, howToSchema, breadcrumbSchema } from "@/lib/structured-data"
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -32,44 +33,73 @@ const staggerChildren = {
   }
 }
 
-// JSON-LD Schema
-const jsonLd = {
+// Comprehensive JSON-LD Schema for SEO, AEO, and GEO
+const jsonLdGraph = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "ByteSavy",
-  description: "Bytesavy is a Canadian technology company specializing in custom software development solutions for businesses.",
-  url: "https://bytesavy.com",
-  logo: "https://bytesavy.com/logo.png",
-  sameAs: [
-    "https://www.linkedin.com/company/bytesavy",
-    "https://twitter.com/bytesavy"
-  ],
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Brandon",
-    addressRegion: "MB",
-    addressCountry: "CA"
-  },
-  contactPoint: {
-    "@type": "ContactPoint",
-    contactType: "customer support",
-    email: "contact@bytesavy.com"
-  },
-  mainEntityOfPage: {
-    "@type": "WebPage",
-    "@id": "https://bytesavy.com"
-  }
+  "@graph": [
+    organizationSchema,
+    localBusinessSchema,
+    faqSchema,
+    howToSchema,
+    {
+      "@type": "WebSite",
+      "@id": "https://bytesavy.com/#website",
+      "url": "https://bytesavy.com",
+      "name": "Bytesavy - Custom Software Development & AI Solutions in Canada",
+      "description": "Leading Canadian software development company offering custom web apps, mobile applications, AI integration, and enterprise solutions. Serving businesses across Toronto, Vancouver, Montreal, Calgary, and all of Canada.",
+      "publisher": {
+        "@id": "https://bytesavy.com/#organization"
+      },
+      "inLanguage": "en-CA",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://bytesavy.com/search?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "ProfessionalService",
+      "name": "Bytesavy Software Development Services",
+      "priceRange": "$$$$",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "123 Innovation Drive",
+        "addressLocality": "Toronto",
+        "addressRegion": "ON",
+        "postalCode": "M5V 3A8",
+        "addressCountry": "CA"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 43.6426,
+        "longitude": -79.3871
+      },
+      "url": "https://bytesavy.com",
+      "telephone": "+1-647-XXX-XXXX",
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "09:00",
+        "closes": "18:00"
+      }
+    }
+  ]
 };
 
 export default function Website() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
+      {/* Enhanced Structured Data for AI Understanding */}
       <Script
-        id="json-ld"
+        id="json-ld-graph"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdGraph) }}
+        strategy="beforeInteractive"
       />
-      
+
       <Header />
       
       <main className="flex-1">
