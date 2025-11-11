@@ -10,7 +10,7 @@ export default function LegalPage() {
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
 
-      <main className="flex-1 pt-24 pb-16">
+      <main className="flex-1 pt-32 md:pt-40 pb-16">
         <div className="container mx-auto max-w-4xl px-4">
           <Tabs defaultValue="privacy" className="space-y-8">
             <TabsList className="grid w-full grid-cols-2 lg:max-w-[400px] mx-auto">
