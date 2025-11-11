@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -9,9 +9,10 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Badge } from "@/components/ui/badge"
 
 import * as Icons from "lucide-react"
 import { initializeApp, getApps } from "firebase/app"
@@ -28,6 +29,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore"
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"
 
 // Firebase configuration check
 if (!process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
@@ -46,6 +48,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
 const db = getFirestore(app)
+const storage = getStorage(app)
 
 // Types
 interface BlogPost {
@@ -87,7 +90,8 @@ const CATEGORIES = [
 
 export default function Dashboard() {
   const router = useRouter()
-  
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
   // State management
   const [posts, setPosts] = useState<BlogPost[]>([])
   const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([])
@@ -101,10 +105,12 @@ export default function Dashboard() {
     author: "Bytesavy Team",
   })
   const [loading, setLoading] = useState(false)
+  const [uploadingImage, setUploadingImage] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null)
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isSheetOpen, setIsSheetOpen] = useState(false)
+  const [isFullscreen, setIsFullscreen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [activeTab, setActiveTab] = useState("all")
 
@@ -113,48 +119,37 @@ export default function Dashboard() {
     loadPosts()
   }, [])
 
-  // Apply filters and search
+  // Filter posts based on search and tab
   useEffect(() => {
-    let result = [...posts]
-    
-    // Filter by status tab
-    if (activeTab === "published") {
-      result = result.filter(post => post.status === "published")
-    } else if (activeTab === "drafts") {
-      result = result.filter(post => post.status === "draft")
-    }
-    
-    // Apply search query
+    let filtered = posts
+
     if (searchQuery) {
-      const query = searchQuery.toLowerCase()
-      result = result.filter(post => 
-        post.title.toLowerCase().includes(query) || 
-        post.excerpt.toLowerCase().includes(query) ||
-        post.category.toLowerCase().includes(query)
+      filtered = filtered.filter(post =>
+        post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        post.category.toLowerCase().includes(searchQuery.toLowerCase())
       )
     }
-    
-    setFilteredPosts(result)
-  }, [posts, searchQuery, activeTab])
 
-  // Fetch posts from Firebase
-  const loadPosts = async () => {
-    if (!db) {
-      setError("Database connection failed")
-      return
+    if (activeTab !== "all") {
+      filtered = filtered.filter(post => post.status === activeTab)
     }
 
+    setFilteredPosts(filtered)
+  }, [searchQuery, activeTab, posts])
+
+  // Load posts from Firestore
+  const loadPosts = async () => {
     setLoading(true)
     try {
       const postsQuery = query(collection(db, "posts"), orderBy("createdAt", "desc"))
       const querySnapshot = await getDocs(postsQuery)
-      
+
       const loadedPosts = querySnapshot.docs.map((doc) => {
         const data = doc.data()
         return {
           id: doc.id,
           ...data,
-          // Generate slug from title if missing (backward compatibility)
           slug: data.slug || generateSlugFromTitle(data.title || doc.id),
           createdAt: data.createdAt?.toDate?.().toISOString() || new Date().toISOString(),
         } as BlogPost
@@ -166,6 +161,48 @@ export default function Dashboard() {
       setError("Failed to load posts")
     } finally {
       setLoading(false)
+    }
+  }
+
+  // Handle image upload
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      setError("Please upload an image file")
+      return
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      setError("Image size must be less than 5MB")
+      return
+    }
+
+    setUploadingImage(true)
+    setError("")
+
+    try {
+      // Create a unique filename
+      const filename = `blog-images/${Date.now()}-${file.name}`
+      const storageRef = ref(storage, filename)
+
+      // Upload file
+      await uploadBytes(storageRef, file)
+
+      // Get download URL
+      const downloadURL = await getDownloadURL(storageRef)
+
+      // Update form data with image URL
+      setFormData(prev => ({ ...prev, imageUrl: downloadURL }))
+      setSuccess("Image uploaded successfully!")
+    } catch (err) {
+      console.error("Error uploading image:", err)
+      setError("Failed to upload image. Please try again.")
+    } finally {
+      setUploadingImage(false)
     }
   }
 
@@ -222,7 +259,8 @@ export default function Dashboard() {
         excerpt: formData.excerpt.trim(),
         content: formData.content.trim(),
         author: formData.author.trim(),
-        createdAt: serverTimestamp(),
+        createdAt: editingPost ? undefined : serverTimestamp(),
+        updatedAt: serverTimestamp(),
         readTime: `${Math.ceil(formData.content.trim().split(/\s+/).length / 200)} min read`,
         status,
         category: formData.category.trim(),
@@ -249,7 +287,7 @@ export default function Dashboard() {
         author: "Bytesavy Team"
       })
       setEditingPost(null)
-      setIsDialogOpen(false)
+      setIsSheetOpen(false)
       await loadPosts()
     } catch (err) {
       console.error("Error saving post:", err)
@@ -266,15 +304,15 @@ export default function Dashboard() {
       return
     }
 
-    if (!window.confirm("Are you sure you want to delete this post?")) {
+    if (!confirm("Are you sure you want to delete this post?")) {
       return
     }
 
     setLoading(true)
     try {
       await deleteDoc(doc(db, "posts", id))
-      await loadPosts()
       setSuccess("Post deleted successfully")
+      await loadPosts()
     } catch (err) {
       console.error("Error deleting post:", err)
       setError("Failed to delete post")
@@ -295,7 +333,7 @@ export default function Dashboard() {
       tags: post.tags?.join(', ') || "",
       author: post.author || "Bytesavy Team",
     })
-    setIsDialogOpen(true)
+    setIsSheetOpen(true)
   }
 
   // Handle status toggle
@@ -306,20 +344,24 @@ export default function Dashboard() {
     }
 
     const newStatus = post.status === "published" ? "draft" : "published"
-    
+
+    setLoading(true)
     try {
-      await updateDoc(doc(db, "posts", post.id), { 
-        status: newStatus 
+      await updateDoc(doc(db, "posts", post.id), {
+        status: newStatus,
+        updatedAt: serverTimestamp()
       })
       setSuccess(`Post ${newStatus === "published" ? "published" : "unpublished"} successfully`)
       await loadPosts()
     } catch (err) {
       console.error("Error updating post status:", err)
       setError("Failed to update post status")
+    } finally {
+      setLoading(false)
     }
   }
 
-  // Clear success/error messages after 5 seconds
+  // Clear messages after 5 seconds
   useEffect(() => {
     if (success || error) {
       const timer = setTimeout(() => {
@@ -331,178 +373,294 @@ export default function Dashboard() {
   }, [success, error])
 
   return (
-    <div className="min-h-screen flex flex-col bg-black text-white">
-      {/* Sidebar and Content Layout */}
-      <div className="flex flex-col h-screen">
-        {/* Top Navbar */}
-        <div className="border-b border-gray-800 py-3 px-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <img 
-                src="/logo_white.png" 
-                alt="ByteSavy Logo" 
-                className="h-8 w-auto"
-              />
-            </div>
-            <div className="flex items-center gap-4">
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={() => router.push("/login")}
-                className="text-gray-400 hover:text-white hover:bg-gray-800"
-              >
-                <Icons.LogOut className="h-4 w-4 mr-2" />
-                <span>Sign Out</span>
-              </Button>
-            </div>
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      {/* Top Navbar */}
+      <div className="bg-white border-b border-gray-200 py-4 px-6 sticky top-0 z-40">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <img
+              src="/logo2.png"
+              alt="ByteSavy Logo"
+              className="h-8 w-auto"
+            />
+            <div className="h-6 w-px bg-gray-200" />
+            <h1 className="text-lg font-semibold text-gray-900">Blog Management</h1>
+          </div>
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => router.push("/")}
+              className="text-gray-600 hover:text-gray-900"
+            >
+              <Icons.Home className="h-4 w-4 mr-2" />
+              <span>Home</span>
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => router.push("/login")}
+              className="text-gray-600 hover:text-gray-900"
+            >
+              <Icons.LogOut className="h-4 w-4 mr-2" />
+              <span>Sign Out</span>
+            </Button>
           </div>
         </div>
+      </div>
 
-        {/* Main Content Area */}
-        <div className="flex-1 overflow-hidden flex flex-col">
-          <div className="px-6 py-4 border-b border-gray-800 flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <h1 className="text-xl font-medium">Content Management</h1>
-              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button 
-                    size="sm" 
-                    disabled={loading}
-                    className="bg-blue-600 hover:bg-blue-700 text-white"
-                  >
-                    <Icons.Plus className="h-4 w-4 mr-2" />
-                    <span>New Post</span>
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[800px] max-h-[85vh] overflow-y-auto bg-gray-900 border-gray-800 text-white">
-                  <DialogHeader>
-                    <DialogTitle className="text-white text-xl flex items-center gap-2">
-                      <Icons.FileText className="h-5 w-5" />
-                      {editingPost ? "Edit Post" : "Create New Post"}
-                    </DialogTitle>
-                  </DialogHeader>
-                  <form onSubmit={(e) => handleSubmit(e, "draft")} className="space-y-6">
-                    {/* Basic Information */}
-                    <div className="space-y-4">
-                      <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider flex items-center gap-2">
-                        <Icons.FileEdit className="h-4 w-4" />
-                        Basic Information
-                      </h3>
+      {/* Main Content */}
+      <div className="flex-1 p-6">
+        <div className="max-w-7xl mx-auto">
+          {/* Alerts */}
+          {success && (
+            <Alert className="mb-6 bg-green-50 border-green-200">
+              <Icons.CheckCircle2 className="h-4 w-4 text-green-600" />
+              <AlertDescription className="text-green-800">{success}</AlertDescription>
+            </Alert>
+          )}
 
-                      <div className="space-y-2">
-                        <Label htmlFor="title" className="text-gray-400 text-sm">Title *</Label>
-                        <Input
-                          id="title"
-                          value={formData.title}
-                          onChange={(e) => handleInputChange(e, "title")}
-                          placeholder="Enter a compelling post title"
-                          disabled={loading}
-                          className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
-                        />
-                      </div>
+          {error && (
+            <Alert className="mb-6 bg-red-50 border-red-200">
+              <Icons.AlertCircle className="h-4 w-4 text-red-600" />
+              <AlertDescription className="text-red-800">{error}</AlertDescription>
+            </Alert>
+          )}
 
-                      <div className="space-y-2">
-                        <Label htmlFor="excerpt" className="text-gray-400 text-sm">Excerpt *</Label>
-                        <Textarea
-                          id="excerpt"
-                          value={formData.excerpt}
-                          onChange={(e) => handleInputChange(e, "excerpt")}
-                          placeholder="Brief description that appears in blog listings (1-2 sentences)"
-                          disabled={loading}
-                          rows={2}
-                          className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 resize-none"
-                        />
-                      </div>
+          {/* Header Actions */}
+          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between mb-6">
+            <div className="relative flex-1 max-w-md">
+              <Icons.Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+              <Input
+                placeholder="Search posts by title, excerpt, or category..."
+                className="pl-9 bg-white border-gray-200"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
 
-                      <div className="grid grid-cols-2 gap-4">
+            <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+              <SheetTrigger asChild>
+                <Button
+                  size="default"
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  onClick={() => {
+                    setEditingPost(null)
+                    setFormData({
+                      title: "",
+                      excerpt: "",
+                      content: "",
+                      category: "",
+                      imageUrl: "",
+                      tags: "",
+                      author: "Bytesavy Team"
+                    })
+                  }}
+                >
+                  <Icons.PlusCircle className="h-4 w-4 mr-2" />
+                  <span>New Post</span>
+                </Button>
+              </SheetTrigger>
+
+              <SheetContent
+                side="right"
+                className={`bg-white p-0 ${isFullscreen ? 'w-full max-w-full' : 'sm:max-w-2xl'}`}
+              >
+                <div className="flex flex-col h-full">
+                  {/* Editor Header */}
+                  <SheetHeader className="border-b border-gray-200 p-6 space-y-0">
+                    <div className="flex items-center justify-between">
+                      <SheetTitle className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+                        <Icons.FileText className="h-5 w-5" />
+                        {editingPost ? "Edit Post" : "Create New Post"}
+                      </SheetTitle>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setIsFullscreen(!isFullscreen)}
+                        className="text-gray-600 hover:text-gray-900"
+                      >
+                        {isFullscreen ? (
+                          <Icons.Minimize2 className="h-4 w-4" />
+                        ) : (
+                          <Icons.Maximize2 className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </div>
+                  </SheetHeader>
+
+                  {/* Editor Content */}
+                  <div className="flex-1 overflow-y-auto p-6">
+                    <form onSubmit={(e) => handleSubmit(e, "draft")} className="space-y-6">
+                      {/* Basic Information */}
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2 text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                          <Icons.FileEdit className="h-4 w-4" />
+                          Basic Information
+                        </div>
+
                         <div className="space-y-2">
-                          <Label htmlFor="author" className="text-gray-400 text-sm">Author *</Label>
+                          <Label htmlFor="title" className="text-gray-700">Title *</Label>
                           <Input
-                            id="author"
-                            value={formData.author}
-                            onChange={(e) => handleInputChange(e, "author")}
-                            placeholder="Author name"
+                            id="title"
+                            value={formData.title}
+                            onChange={(e) => handleInputChange(e, "title")}
+                            placeholder="Enter a compelling post title"
                             disabled={loading}
-                            className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
+                            className="bg-white border-gray-200"
                           />
+                          {formData.title && (
+                            <p className="text-xs text-gray-500">
+                              SEO Slug: {generateSlugFromTitle(formData.title)}
+                            </p>
+                          )}
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="category" className="text-gray-400 text-sm">Category *</Label>
-                          <Select
-                            value={formData.category}
-                            onValueChange={(value) => handleInputChange(value, "category")}
+                          <Label htmlFor="excerpt" className="text-gray-700">Excerpt *</Label>
+                          <Textarea
+                            id="excerpt"
+                            value={formData.excerpt}
+                            onChange={(e) => handleInputChange(e, "excerpt")}
+                            placeholder="Brief description (150-160 characters for optimal SEO)"
                             disabled={loading}
-                          >
-                            <SelectTrigger className="w-full bg-gray-800 border-gray-700 text-white">
-                              <SelectValue placeholder="Select a category" />
-                            </SelectTrigger>
-                            <SelectContent className="bg-gray-800 border-gray-700 text-white">
-                              {CATEGORIES.map(({ value, label }) => (
-                                <SelectItem key={value} value={value}>{label}</SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
+                            rows={2}
+                            maxLength={160}
+                            className="bg-white border-gray-200 resize-none"
+                          />
+                          <p className="text-xs text-gray-500">
+                            {formData.excerpt.length}/160 characters
+                          </p>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="author" className="text-gray-700">Author *</Label>
+                            <Input
+                              id="author"
+                              value={formData.author}
+                              onChange={(e) => handleInputChange(e, "author")}
+                              placeholder="Author name"
+                              disabled={loading}
+                              className="bg-white border-gray-200"
+                            />
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="category" className="text-gray-700">Category *</Label>
+                            <Select
+                              value={formData.category}
+                              onValueChange={(value) => handleInputChange(value, "category")}
+                              disabled={loading}
+                            >
+                              <SelectTrigger className="bg-white border-gray-200">
+                                <SelectValue placeholder="Select category" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {CATEGORIES.map(({ value, label }) => (
+                                  <SelectItem key={value} value={value}>{label}</SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* Media */}
-                    <div className="space-y-4 border-t border-gray-800 pt-4">
-                      <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider flex items-center gap-2">
-                        <Icons.Image className="h-4 w-4" />
-                        Featured Image
-                      </h3>
+                      {/* Featured Image */}
+                      <div className="space-y-4 border-t border-gray-200 pt-6">
+                        <div className="flex items-center gap-2 text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                          <Icons.Image className="h-4 w-4" />
+                          Featured Image
+                        </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="imageUrl" className="text-gray-400 text-sm">Image URL (optional)</Label>
-                        <Input
-                          id="imageUrl"
-                          value={formData.imageUrl}
-                          onChange={(e) => handleInputChange(e, "imageUrl")}
-                          placeholder="https://example.com/image.jpg"
-                          disabled={loading}
-                          className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
-                        />
-                        <p className="text-xs text-gray-500">Upload images to a service like Imgur or Cloudinary and paste the URL here</p>
+                        <div className="space-y-4">
+                          <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageUpload}
+                            className="hidden"
+                          />
+
+                          <div className="flex gap-2">
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => fileInputRef.current?.click()}
+                              disabled={uploadingImage}
+                              className="flex-1"
+                            >
+                              <Icons.Upload className="h-4 w-4 mr-2" />
+                              {uploadingImage ? "Uploading..." : "Upload Image"}
+                            </Button>
+                          </div>
+
+                          {formData.imageUrl && (
+                            <div className="relative">
+                              <img
+                                src={formData.imageUrl}
+                                alt="Preview"
+                                className="w-full h-48 object-cover rounded-lg border border-gray-200"
+                              />
+                              <Button
+                                type="button"
+                                variant="destructive"
+                                size="sm"
+                                className="absolute top-2 right-2"
+                                onClick={() => setFormData(prev => ({ ...prev, imageUrl: "" }))}
+                              >
+                                <Icons.X className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          )}
+
+                          <p className="text-xs text-gray-500">
+                            Max file size: 5MB. Recommended: 1200x630px for optimal social sharing.
+                          </p>
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Tags */}
-                    <div className="space-y-4 border-t border-gray-800 pt-4">
-                      <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider flex items-center gap-2">
-                        <Icons.Tags className="h-4 w-4" />
-                        Tags & Keywords
-                      </h3>
+                      {/* Tags & SEO */}
+                      <div className="space-y-4 border-t border-gray-200 pt-6">
+                        <div className="flex items-center gap-2 text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                          <Icons.Tags className="h-4 w-4" />
+                          Tags & SEO Keywords
+                        </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="tags" className="text-gray-400 text-sm">Tags (optional)</Label>
-                        <Input
-                          id="tags"
-                          value={formData.tags}
-                          onChange={(e) => handleInputChange(e, "tags")}
-                          placeholder="React, Next.js, AI, Machine Learning (comma-separated)"
-                          disabled={loading}
-                          className="w-full bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
-                        />
-                        <p className="text-xs text-gray-500">Separate tags with commas for better SEO and discoverability</p>
+                        <div className="space-y-2">
+                          <Label htmlFor="tags" className="text-gray-700">Tags</Label>
+                          <Input
+                            id="tags"
+                            value={formData.tags}
+                            onChange={(e) => handleInputChange(e, "tags")}
+                            placeholder="React, Next.js, AI, Machine Learning"
+                            disabled={loading}
+                            className="bg-white border-gray-200"
+                          />
+                          <p className="text-xs text-gray-500">
+                            Separate with commas. Use 3-5 tags for best SEO results.
+                          </p>
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Content */}
-                    <div className="space-y-4 border-t border-gray-800 pt-4">
-                      <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider flex items-center gap-2">
-                        <Icons.Code className="h-4 w-4" />
-                        Content (Markdown Supported)
-                      </h3>
+                      {/* Content Editor */}
+                      <div className="space-y-4 border-t border-gray-200 pt-6">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2 text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                            <Icons.Code className="h-4 w-4" />
+                            Content (Markdown)
+                          </div>
+                          <span className="text-xs text-gray-500">
+                            {Math.ceil(formData.content.split(/\s+/).length / 200)} min read
+                          </span>
+                        </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="content" className="text-gray-400 text-sm">Content *</Label>
-                        <Textarea
-                          id="content"
-                          value={formData.content}
-                          onChange={(e) => handleInputChange(e, "content")}
-                          placeholder="Write your post content here using Markdown...
+                        <div className="space-y-2">
+                          <Textarea
+                            id="content"
+                            value={formData.content}
+                            onChange={(e) => handleInputChange(e, "content")}
+                            placeholder="Write your post content here using Markdown...
 
 ## Example Heading
 Write **bold** or *italic* text
@@ -512,192 +670,162 @@ Write **bold** or *italic* text
 
 [Link text](https://example.com)
 
-![Image](https://example.com/image.jpg)"
-                          disabled={loading}
-                          className="min-h-[300px] bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 font-mono text-sm"
-                        />
-                        <p className="text-xs text-gray-500">Supports Markdown: **bold**, *italic*, ## headings, [links](url), - lists, ![images](url)</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex justify-end gap-3">
-                      <Button 
-                        type="button" 
-                        variant="ghost" 
-                        onClick={() => setIsDialogOpen(false)}
-                        disabled={loading}
-                        className="text-gray-400 hover:text-white hover:bg-gray-800"
-                      >
-                        Cancel
-                      </Button>
-                      <Button 
-                        type="submit"
-                        onClick={(e) => handleSubmit(e, "draft")}
-                        disabled={loading}
-                        className="bg-gray-700 hover:bg-gray-600 text-white"
-                      >
-                        {loading ? "Saving..." : "Save as Draft"}
-                      </Button>
-                      <Button 
-                        type="button"
-                        onClick={(e) => handleSubmit(e, "published")}
-                        disabled={loading}
-                        className="bg-blue-600 hover:bg-blue-700 text-white"
-                      >
-                        {loading ? "Publishing..." : "Publish"}
-                      </Button>
-                    </div>
-                  </form>
-                </DialogContent>
-              </Dialog>
-            </div>
+![Image](https://example.com/image.jpg)
 
-            <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between">
-              <div className="relative w-full sm:w-80">
-                <Icons.Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
-                <Input 
-                  placeholder="Search posts..." 
-                  className="pl-9 bg-gray-900 border-gray-800 text-white w-full"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-              
-              <Tabs 
-                defaultValue="all" 
-                className="w-full sm:w-auto"
-                value={activeTab}
-                onValueChange={setActiveTab}
-              >
-                <TabsList className="w-full bg-gray-900">
-                  <TabsTrigger value="all" className="flex-1 data-[state=active]:bg-gray-800">
-                    All
-                  </TabsTrigger>
-                  <TabsTrigger value="published" className="flex-1 data-[state=active]:bg-gray-800">
-                    Published
-                  </TabsTrigger>
-                  <TabsTrigger value="drafts" className="flex-1 data-[state=active]:bg-gray-800">
-                    Drafts
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
-            </div>
-          </div>
+> This is a quote
 
-          {/* Alerts */}
-          <div className="px-6 pt-3">
-            {error && (
-              <Alert variant="destructive" className="mb-4 bg-red-900/20 border border-red-800 text-red-300">
-                <Icons.AlertCircle className="h-4 w-4" />
-                <AlertDescription>{error}</AlertDescription>
-              </Alert>
-            )}
-            {success && (
-              <Alert className="mb-4 bg-green-900/20 border border-green-800 text-green-300">
-                <Icons.CheckCircle className="h-4 w-4" />
-                <AlertDescription>{success}</AlertDescription>
-              </Alert>
-            )}
-          </div>
-
-          {/* Content List */}
-          <div className="flex-1 overflow-auto p-6 pt-2">
-            {loading && posts.length === 0 ? (
-              <div className="flex items-center justify-center h-full">
-                <div className="text-center text-gray-400">
-                  <Icons.Loader2 className="mx-auto h-8 w-8 mb-4 animate-spin" />
-                  <p>Loading posts...</p>
-                </div>
-              </div>
-            ) : (
-              <>
-                {filteredPosts.length > 0 ? (
-                  <div className="space-y-3">
-                    {filteredPosts.map((post) => (
-                      <Card key={post.id} className="bg-gray-900 border-gray-800 hover:border-gray-700 overflow-hidden">
-                        <CardContent className="p-0">
-                          <div className="flex flex-col sm:flex-row gap-0">
-                            {/* Status Bar */}
-                            <div className={`w-full h-1 sm:w-1 sm:h-full ${
-                              post.status === "published" ? "bg-green-600" : "bg-yellow-600"
-                            }`} />
-                            
-                            {/* Content */}
-                            <div className="flex flex-col sm:flex-row justify-between items-start p-4 flex-grow">
-                              <div className="space-y-1.5 flex-grow mr-3">
-                                <h3 className="font-medium text-white">{post.title}</h3>
-                                <p className="text-sm text-gray-400 line-clamp-1">{post.excerpt}</p>
-                                
-                                <div className="flex items-center gap-3 text-xs text-gray-500 flex-wrap">
-                                  <span className="flex items-center">
-                                    <Icons.Calendar className="h-3.5 w-3.5 mr-1.5" />
-                                    {new Date(post.createdAt).toLocaleDateString()}
-                                  </span>
-                                  <span className="flex items-center">
-                                    <Icons.Tag className="h-3.5 w-3.5 mr-1.5" />
-                                    {post.category}
-                                  </span>
-                                </div>
-                              </div>
-                              
-                              {/* Actions */}
-                              <div className="flex gap-2 mt-3 sm:mt-0">
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => handleToggleStatus(post)}
-                                  className="text-gray-400 hover:text-white hover:bg-gray-800"
-                                >
-                                  {post.status === "published" ? (
-                                    <Icons.EyeOff className="h-4 w-4" />
-                                  ) : (
-                                    <Icons.Eye className="h-4 w-4" />
-                                  )}
-                                </Button>
-                                <Button 
-                                  variant="ghost" 
-                                  size="sm" 
-                                  onClick={() => handleEditPost(post)}
-                                  className="text-gray-400 hover:text-white hover:bg-gray-800"
-                                >
-                                  <Icons.Edit className="h-4 w-4" />
-                                </Button>
-                                <Button 
-                                  variant="ghost" 
-                                  size="sm" 
-                                  onClick={() => handleDeletePost(post.id)}
-                                  className="text-gray-400 hover:text-red-400 hover:bg-gray-800"
-                                >
-                                  <Icons.Trash2 className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            </div>
+\`\`\`javascript
+const code = 'example';
+\`\`\`"
+                            disabled={loading}
+                            className={`bg-white border-gray-200 font-mono text-sm resize-none ${
+                              isFullscreen ? 'min-h-[calc(100vh-32rem)]' : 'min-h-[400px]'
+                            }`}
+                          />
+                          <div className="flex items-center justify-between text-xs text-gray-500">
+                            <span>Supports full Markdown syntax</span>
+                            <span>{formData.content.split(/\s+/).filter(Boolean).length} words</span>
                           </div>
-                        </CardContent>
-                      </Card>
-                    ))}
+                        </div>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="flex justify-end gap-3 pt-6 border-t border-gray-200">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => setIsSheetOpen(false)}
+                          disabled={loading}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          type="submit"
+                          variant="outline"
+                          onClick={(e) => handleSubmit(e, "draft")}
+                          disabled={loading}
+                          className="border-gray-300"
+                        >
+                          {loading ? "Saving..." : "Save as Draft"}
+                        </Button>
+                        <Button
+                          type="button"
+                          onClick={(e) => handleSubmit(e, "published")}
+                          disabled={loading}
+                          className="bg-blue-600 hover:bg-blue-700 text-white"
+                        >
+                          {loading ? "Publishing..." : "Publish"}
+                        </Button>
+                      </div>
+                    </form>
                   </div>
-                ) : (
-                  <div className="flex items-center justify-center h-full">
-                    <div className="text-center py-12 text-gray-400 max-w-md">
-                      <Icons.FileQuestion className="mx-auto h-10 w-10 mb-3 opacity-40" />
-                      {searchQuery ? (
-                        <>
-                          <p className="text-lg mb-1">No matching posts found</p>
-                          <p className="text-sm text-gray-500">Try adjusting your search query or filters</p>
-                        </>
-                      ) : (
-                        <>
-                          <p className="text-lg mb-1">No posts available</p>
-                          <p className="text-sm text-gray-500">Click the "New Post" button to create your first post</p>
-                        </>
-                      )}
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+
+          {/* Tabs */}
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
+            <TabsList className="bg-white border border-gray-200">
+              <TabsTrigger value="all">All ({posts.length})</TabsTrigger>
+              <TabsTrigger value="published">
+                Published ({posts.filter(p => p.status === "published").length})
+              </TabsTrigger>
+              <TabsTrigger value="draft">
+                Drafts ({posts.filter(p => p.status === "draft").length})
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+
+          {/* Posts Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredPosts.map((post) => (
+              <Card key={post.id} className="bg-white border-gray-200 hover:shadow-lg transition-shadow">
+                <CardContent className="p-0">
+                  {post.imageUrl && (
+                    <img
+                      src={post.imageUrl}
+                      alt={post.title}
+                      className="w-full h-48 object-cover rounded-t-lg"
+                    />
+                  )}
+                  <div className="p-5 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <Badge variant={post.status === "published" ? "default" : "secondary"}>
+                        {post.status}
+                      </Badge>
+                      <span className="text-xs text-gray-500">{post.readTime}</span>
+                    </div>
+
+                    <h3 className="font-semibold text-lg text-gray-900 line-clamp-2">
+                      {post.title}
+                    </h3>
+
+                    <p className="text-sm text-gray-600 line-clamp-2">
+                      {post.excerpt}
+                    </p>
+
+                    {post.tags && post.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-1">
+                        {post.tags.slice(0, 3).map((tag, i) => (
+                          <span key={i} className="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    <div className="flex items-center gap-2 pt-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleEditPost(post)}
+                        className="flex-1"
+                      >
+                        <Icons.Edit2 className="h-3 w-3 mr-1" />
+                        Edit
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleToggleStatus(post)}
+                        className="flex-1"
+                      >
+                        {post.status === "published" ? (
+                          <>
+                            <Icons.EyeOff className="h-3 w-3 mr-1" />
+                            Unpublish
+                          </>
+                        ) : (
+                          <>
+                            <Icons.Eye className="h-3 w-3 mr-1" />
+                            Publish
+                          </>
+                        )}
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        onClick={() => handleDeletePost(post.id)}
+                      >
+                        <Icons.Trash2 className="h-3 w-3" />
+                      </Button>
                     </div>
                   </div>
-                )}
-              </>
-            )}
+                </CardContent>
+              </Card>
+            ))}
           </div>
+
+          {filteredPosts.length === 0 && (
+            <div className="text-center py-12">
+              <Icons.FileText className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">No posts found</h3>
+              <p className="text-gray-600">
+                {searchQuery ? "Try adjusting your search query" : "Create your first blog post to get started"}
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>
