@@ -10,6 +10,9 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Skeleton } from "@/components/ui/skeleton"
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import rehypeRaw from 'rehype-raw'
 
 const initializeFirebase = () => {
   if (typeof window === 'undefined') return null;
@@ -237,37 +240,41 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
               )}
 
               {/* Content */}
-              <div className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-blockquote:border-blue-200 prose-blockquote:bg-blue-50 prose-blockquote:text-gray-700">
-                {post.content.split('\n').filter(Boolean).map((paragraph, index) => {
-                  // Handle different content types
-                  if (paragraph.startsWith('# ')) {
-                    return (
-                      <h2 key={index} className="text-2xl font-bold text-gray-900 mt-8 mb-4">
-                        {paragraph.substring(2)}
-                      </h2>
-                    )
-                  }
-                  if (paragraph.startsWith('## ')) {
-                    return (
-                      <h3 key={index} className="text-xl font-semibold text-gray-900 mt-6 mb-3">
-                        {paragraph.substring(3)}
-                      </h3>
-                    )
-                  }
-                  if (paragraph.startsWith('> ')) {
-                    return (
-                      <blockquote key={index} className="border-l-4 border-blue-200 bg-blue-50 pl-6 py-4 my-6 italic text-gray-700">
-                        {paragraph.substring(2)}
-                      </blockquote>
-                    )
-                  }
-                  
-                  return (
-                    <p key={index} className="mb-6 text-gray-700 leading-relaxed text-lg">
-                      {paragraph}
-                    </p>
-                  )
-                })}
+              <div className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-blockquote:border-blue-200 prose-blockquote:bg-blue-50 prose-blockquote:text-gray-700 prose-ul:list-disc prose-ol:list-decimal prose-li:text-gray-700 prose-code:text-blue-600 prose-code:bg-gray-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-img:rounded-lg">
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  rehypePlugins={[rehypeRaw]}
+                  components={{
+                    h1: ({node, ...props}) => <h2 className="text-3xl font-bold text-gray-900 mt-10 mb-6" {...props} />,
+                    h2: ({node, ...props}) => <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4" {...props} />,
+                    h3: ({node, ...props}) => <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3" {...props} />,
+                    h4: ({node, ...props}) => <h4 className="text-lg font-semibold text-gray-900 mt-4 mb-2" {...props} />,
+                    p: ({node, ...props}) => <p className="mb-6 text-gray-700 leading-relaxed text-lg" {...props} />,
+                    ul: ({node, ...props}) => <ul className="mb-6 ml-6 list-disc space-y-2" {...props} />,
+                    ol: ({node, ...props}) => <ol className="mb-6 ml-6 list-decimal space-y-2" {...props} />,
+                    li: ({node, ...props}) => <li className="text-gray-700 leading-relaxed" {...props} />,
+                    blockquote: ({node, ...props}) => (
+                      <blockquote className="border-l-4 border-blue-200 bg-blue-50 pl-6 py-4 my-6 italic text-gray-700" {...props} />
+                    ),
+                    code: ({node, inline, ...props}: any) =>
+                      inline ? (
+                        <code className="text-blue-600 bg-gray-100 px-2 py-0.5 rounded text-sm font-mono" {...props} />
+                      ) : (
+                        <code className="block bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm font-mono" {...props} />
+                      ),
+                    pre: ({node, ...props}) => <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto mb-6" {...props} />,
+                    a: ({node, ...props}) => (
+                      <a className="text-blue-600 hover:text-blue-700 hover:underline font-medium" target="_blank" rel="noopener noreferrer" {...props} />
+                    ),
+                    img: ({node, ...props}) => (
+                      <img className="rounded-lg my-6 w-full" {...props} alt={props.alt || 'Blog image'} />
+                    ),
+                    strong: ({node, ...props}) => <strong className="font-bold text-gray-900" {...props} />,
+                    em: ({node, ...props}) => <em className="italic" {...props} />,
+                  }}
+                >
+                  {post.content}
+                </ReactMarkdown>
               </div>
 
               {/* Share Section */}
