@@ -207,19 +207,23 @@ export default function Dashboard() {
         .map(tag => tag.trim())
         .filter(tag => tag.length > 0)
 
-      const postData = {
+      const postData: any = {
         title: formData.title.trim(),
         slug: slug,
         excerpt: formData.excerpt.trim(),
         content: formData.content.trim(),
         author: formData.author.trim(),
-        createdAt: editingPost ? undefined : serverTimestamp(),
         updatedAt: serverTimestamp(),
         readTime: `${Math.ceil(formData.content.trim().split(/\s+/).length / 200)} min read`,
         status,
         category: formData.category.trim(),
         tags: tagsArray,
         imageUrl: formData.imageUrl.trim() || null,
+      }
+
+      // Only set createdAt for new posts
+      if (!editingPost) {
+        postData.createdAt = serverTimestamp()
       }
 
       if (editingPost) {
