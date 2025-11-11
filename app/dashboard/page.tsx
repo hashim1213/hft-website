@@ -50,6 +50,7 @@ const db = getFirestore(app)
 // Types
 interface BlogPost {
   id: string
+  slug: string
   title: string
   excerpt: string
   content: string
@@ -58,6 +59,16 @@ interface BlogPost {
   readTime: string
   status: "draft" | "published"
   category: string
+}
+
+// Utility function to generate slug from title
+const generateSlugFromTitle = (title: string): string => {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
 }
 
 const CATEGORIES = [
@@ -133,6 +144,8 @@ export default function Dashboard() {
         return {
           id: doc.id,
           ...data,
+          // Generate slug from title if missing (backward compatibility)
+          slug: data.slug || generateSlugFromTitle(data.title || doc.id),
           createdAt: data.createdAt?.toDate?.().toISOString() || new Date().toISOString(),
         } as BlogPost
       })
@@ -184,8 +197,11 @@ export default function Dashboard() {
     setSuccess("")
 
     try {
+      const slug = generateSlugFromTitle(formData.title.trim())
+
       const postData = {
         title: formData.title.trim(),
+        slug: slug,
         excerpt: formData.excerpt.trim(),
         content: formData.content.trim(),
         author: "Admin",
