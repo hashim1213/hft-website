@@ -68,17 +68,17 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
     if (!app) return;
 
     const db = getFirestore(app)
-    
+
     async function loadPost() {
       try {
-        // Query by slug instead of document ID
+        // First, try to query by slug
         const postsQuery = query(
           collection(db, 'posts'),
           where('slug', '==', resolvedParams.slug),
           where('status', '==', 'published'),
           limit(1)
         )
-        
+
         const querySnapshot = await getDocs(postsQuery)
 
         if (!querySnapshot.empty) {
@@ -91,7 +91,46 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
             createdAt: timestamp.toISOString()
           } as BlogPost)
         } else {
-          setError('Blog post not found')
+          // Fallback: try to find by checking all published posts and matching generated slug
+          const allPostsQuery = query(
+            collection(db, 'posts'),
+            where('status', '==', 'published')
+          )
+
+          const allPostsSnapshot = await getDocs(allPostsQuery)
+
+          // Helper function to generate slug from title
+          const generateSlugFromTitle = (title: string): string => {
+            return title
+              .toLowerCase()
+              .trim()
+              .replace(/[^\w\s-]/g, '')
+              .replace(/[\s_-]+/g, '-')
+              .replace(/^-+|-+$/g, '')
+          }
+
+          let foundPost = null
+          for (const docSnap of allPostsSnapshot.docs) {
+            const data = docSnap.data()
+            const generatedSlug = generateSlugFromTitle(data.title || '')
+            if (generatedSlug === resolvedParams.slug) {
+              foundPost = docSnap
+              break
+            }
+          }
+
+          if (foundPost) {
+            const data = foundPost.data()
+            const timestamp = data.createdAt?.toDate?.() || new Date()
+            setPost({
+              id: foundPost.id,
+              ...data,
+              slug: data.slug || generateSlugFromTitle(data.title || ''),
+              createdAt: timestamp.toISOString()
+            } as BlogPost)
+          } else {
+            setError('Blog post not found')
+          }
         }
       } catch (err) {
         console.error('Error loading post:', err)
