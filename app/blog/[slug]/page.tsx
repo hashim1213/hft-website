@@ -3,7 +3,7 @@ import { useEffect, useState, use } from 'react'
 import { getFirestore, collection, query, where, getDocs, limit } from 'firebase/firestore'
 import { initializeApp, getApps } from 'firebase/app'
 import { motion } from 'framer-motion'
-import { User, Calendar, Clock, Twitter, Linkedin, Link as LinkIcon, ArrowLeft } from 'lucide-react'
+import { User, Calendar, Clock, Twitter, Linkedin, Link as LinkIcon, ArrowLeft, ArrowRight } from 'lucide-react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { Alert, AlertDescription } from "@/components/ui/alert"
@@ -55,13 +55,24 @@ const formatDate = (dateString: string) => {
   }).format(date)
 }
 
+// Utility function to generate fallback slug from title if slug is missing
+const generateSlugFromTitle = (title: string): string => {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+}
+
 // Note: This component expects the route to be [slug] instead of [id]
 // File should be located at: app/blog/[slug]/page.tsx
 export default function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
   const [post, setPost] = useState<BlogPost | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  
+  const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([])
+
   // Unwrap the params promise using React.use
   const resolvedParams = use(params)
 
@@ -130,6 +141,9 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
               slug: data.slug || generateSlugFromTitle(data.title || ''),
               createdAt: timestamp.toISOString()
             } as BlogPost)
+
+            // Fetch related posts
+            await fetchRelatedPosts(data.category, data.tags, foundPost.id)
           } else {
             setError('Blog post not found')
           }
@@ -139,6 +153,54 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
         setError('Failed to load blog post')
       } finally {
         setLoading(false)
+      }
+    }
+
+    // Fetch related posts based on category and tags
+    async function fetchRelatedPosts(category: string, tags: string[], currentPostId: string) {
+      try {
+        const postsQuery = query(
+          collection(db, 'posts'),
+          where('status', '==', 'published')
+        )
+
+        const querySnapshot = await getDocs(postsQuery)
+
+        // Score and filter related posts
+        const scoredPosts = querySnapshot.docs
+          .filter(doc => doc.id !== currentPostId)
+          .map(doc => {
+            const data = doc.data()
+            let score = 0
+
+            // Same category = 2 points
+            if (data.category === category) score += 2
+
+            // Matching tags = 1 point each
+            if (tags && data.tags) {
+              const matchingTags = data.tags.filter((tag: string) => tags.includes(tag))
+              score += matchingTags.length
+            }
+
+            return {
+              score,
+              post: {
+                id: doc.id,
+                ...data,
+                slug: data.slug || generateSlugFromTitle(data.title || doc.id),
+                createdAt: data.createdAt?.toDate?.().toISOString() || new Date().toISOString()
+              } as BlogPost
+            }
+          })
+          .filter(item => item.score > 0) // Only posts with at least some relevance
+          .sort((a, b) => b.score - a.score) // Sort by relevance
+          .slice(0, 3) // Take top 3
+          .map(item => item.post)
+
+        setRelatedPosts(scoredPosts)
+      } catch (err) {
+        console.error('Error fetching related posts:', err)
+        // Don't set error - related posts are optional
       }
     }
 
@@ -453,6 +515,67 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
             </motion.div>
           </div>
         </article>
+
+        {/* Related Articles */}
+        {relatedPosts.length > 0 && (
+          <section className="py-16 bg-gray-50 border-t border-gray-100">
+            <div className="container mx-auto px-4">
+              <div className="max-w-6xl mx-auto">
+                <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center">
+                  Continue Reading
+                </h2>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {relatedPosts.map((relatedPost) => (
+                    <Link
+                      key={relatedPost.id}
+                      href={`/blog/${relatedPost.slug}`}
+                      className="group"
+                    >
+                      <motion.div
+                        className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 h-full flex flex-col"
+                        whileHover={{ y: -4 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        {relatedPost.imageUrl && (
+                          <div className="aspect-video overflow-hidden">
+                            <img
+                              src={relatedPost.imageUrl}
+                              alt={relatedPost.title}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                          </div>
+                        )}
+                        <div className="p-5 flex flex-col flex-1">
+                          {relatedPost.category && (
+                            <span className="inline-flex w-fit px-3 py-1 text-xs font-medium text-blue-600 bg-blue-50 rounded-full mb-3">
+                              {relatedPost.category.split('-').map(word =>
+                                word.charAt(0).toUpperCase() + word.slice(1)
+                              ).join(' ')}
+                            </span>
+                          )}
+                          <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                            {relatedPost.title}
+                          </h3>
+                          <p className="text-sm text-gray-600 line-clamp-2 mb-4 flex-1">
+                            {relatedPost.excerpt}
+                          </p>
+                          <div className="flex items-center justify-between text-sm text-gray-500">
+                            <span>{relatedPost.readTime}</span>
+                            <span className="flex items-center gap-1 text-blue-600 group-hover:gap-2 transition-all">
+                              Read more
+                              <ArrowRight className="h-3 w-3" />
+                            </span>
+                          </div>
+                        </div>
+                      </motion.div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
       </main>
       <Footer />
     </div>
