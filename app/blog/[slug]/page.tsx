@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
+import Head from 'next/head'
 
 const initializeFirebase = () => {
   if (typeof window === 'undefined') return null;
@@ -40,6 +41,7 @@ interface BlogPost {
   createdAt: string
   readTime: string
   status: 'draft' | 'published'
+  category?: string
   tags?: string[]
   imageUrl?: string
 }
@@ -204,8 +206,76 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
   const formattedDate = formatDate(post.createdAt)
   const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
 
+  // Generate structured data for the blog post
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": post.title,
+    "description": post.excerpt,
+    "image": post.imageUrl || "https://bytesavy.com/og-image.jpg",
+    "author": {
+      "@type": "Person",
+      "name": post.author,
+      "url": "https://bytesavy.com/about"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Bytesavy",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://bytesavy.com/logo.png"
+      }
+    },
+    "datePublished": post.createdAt,
+    "dateModified": post.createdAt,
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": currentUrl
+    },
+    "keywords": post.tags?.join(', ') || '',
+    "articleSection": post.category || 'Technology',
+    "inLanguage": "en-CA",
+    "isAccessibleForFree": "true",
+    "isPartOf": {
+      "@type": "Blog",
+      "@id": "https://bytesavy.com/portal"
+    }
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
+      <Head>
+        <title>{post.title} | Bytesavy Blog</title>
+        <meta name="description" content={post.excerpt} />
+        <meta name="keywords" content={post.tags?.join(', ')} />
+        <meta name="author" content={post.author} />
+
+        {/* Open Graph */}
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={post.excerpt} />
+        <meta property="og:url" content={currentUrl} />
+        {post.imageUrl && <meta property="og:image" content={post.imageUrl} />}
+        <meta property="article:published_time" content={post.createdAt} />
+        <meta property="article:author" content={post.author} />
+        {post.tags?.map(tag => (
+          <meta key={tag} property="article:tag" content={tag} />
+        ))}
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={post.title} />
+        <meta name="twitter:description" content={post.excerpt} />
+        {post.imageUrl && <meta name="twitter:image" content={post.imageUrl} />}
+
+        {/* Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData)
+          }}
+        />
+      </Head>
       <Header />
       <main className="flex-1 pt-40 pb-20">
         <article className="container mx-auto px-4">
