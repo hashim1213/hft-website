@@ -33,32 +33,8 @@ import {
 // Disable static generation for this page
 export const dynamic = 'force-dynamic'
 
-// Firebase initialization (only on client side)
-const isBrowser = typeof window !== 'undefined'
-
-let app: any = null
+// Firebase will be initialized in the component
 let db: any = null
-
-if (isBrowser && process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
-  try {
-    const firebaseConfig = {
-      apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-      authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-      projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-      storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-      messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-      appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-    }
-
-    // Initialize Firebase
-    app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
-    if (app) {
-      db = getFirestore(app)
-    }
-  } catch (error) {
-    console.error('Firebase initialization failed:', error)
-  }
-}
 
 // Types
 interface BlogPost {
@@ -103,6 +79,26 @@ export default function Dashboard() {
   const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
+    // Initialize Firebase on client side only
+    if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
+      try {
+        const firebaseConfig = {
+          apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+          authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+          projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+          storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+          messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+          appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+        }
+
+        const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
+        if (app) {
+          db = getFirestore(app)
+        }
+      } catch (error) {
+        console.error('Firebase initialization failed:', error)
+      }
+    }
     setIsClient(true)
   }, [])
 
