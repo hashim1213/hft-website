@@ -30,23 +30,35 @@ import {
   where,
 } from "firebase/firestore"
 
-// Firebase configuration check
-if (!process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
-  throw new Error("Missing Firebase configuration. Please check your environment variables.")
-}
+// Disable static generation for this page
+export const dynamic = 'force-dynamic'
 
-const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-}
+// Firebase initialization (only on client side)
+const isBrowser = typeof window !== 'undefined'
 
-// Initialize Firebase
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
-const db = getFirestore(app)
+let app: any = null
+let db: any = null
+
+if (isBrowser && process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
+  try {
+    const firebaseConfig = {
+      apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+      authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+      projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+      storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+      appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+    }
+
+    // Initialize Firebase
+    app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
+    if (app) {
+      db = getFirestore(app)
+    }
+  } catch (error) {
+    console.error('Firebase initialization failed:', error)
+  }
+}
 
 // Types
 interface BlogPost {
@@ -88,6 +100,22 @@ const CATEGORIES = [
 
 export default function Dashboard() {
   const router = useRouter()
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  if (!isClient || !db) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Dashboard Unavailable</h1>
+          <p className="text-gray-600">Firebase configuration is required</p>
+        </div>
+      </div>
+    )
+  }
 
   // State management
   const [posts, setPosts] = useState<BlogPost[]>([])
