@@ -8,12 +8,12 @@ import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import BookingDialog from "@/components/BookingDialog"
 import BlogSection from "@/components/BlogSection"
-import ProductsSection from "@/components/ProductsSection"
 import Image from "next/image"
 import MediaSection from '@/components/MediaSection'
 import Script from 'next/script'
 import ServicesSection from "@/components/Services"
 import { organizationSchema, localBusinessSchema, faqSchema, howToSchema, breadcrumbSchema } from "@/lib/structured-data"
+import { useState, useEffect } from "react"
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -32,6 +32,13 @@ const staggerChildren = {
     }
   }
 }
+
+// Hero slideshow images
+const heroImages = [
+  "/hero1.jpg",
+  "/hero2.jpg",
+  "/hero3.jpg"
+]
 
 // Comprehensive JSON-LD Schema for SEO, AEO, and GEO
 const jsonLdGraph = {
@@ -90,8 +97,19 @@ const jsonLdGraph = {
 };
 
 export default function Website() {
+  const [currentSlide, setCurrentSlide] = useState(0)
+
+  // Auto-rotate slideshow
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroImages.length)
+    }, 5000) // Change slide every 5 seconds
+
+    return () => clearInterval(timer)
+  }, [])
+
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex flex-col min-h-screen">
       {/* Enhanced Structured Data for AI Understanding */}
       <Script
         id="json-ld-graph"
@@ -107,7 +125,7 @@ export default function Website() {
         {/* Hero Section - Reduced padding */}
         <section
           id="hero"
-          className="pt-24 pb-12 md:pt-32 md:pb-16 overflow-hidden bg-gradient-to-b from-gray-50 to-white"
+          className="pt-24 pb-32 md:pt-32 md:pb-40 overflow-hidden bg-white relative"
           aria-label="Hero section"
         >
           <div className="container mx-auto px-4 md:px-6">
@@ -119,29 +137,18 @@ export default function Website() {
                 animate="visible"
                 variants={staggerChildren}
               >
-                <motion.div
-                  variants={fadeInUp}
-                  className="inline-flex items-center justify-center w-fit px-4 py-1.5 mb-6 text-sm font-medium bg-blue-50 text-blue-700 rounded-full border border-blue-100"
-                >
-                  <Sparkles className="w-4 h-4 mr-2 text-blue-600" aria-hidden="true" />
-                  <span>Custom Software Development</span>
-                </motion.div>
-
                 <motion.h1
                   variants={fadeInUp}
-                  className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 tracking-tight"
+                  className="text-4xl md:text-5xl lg:text-6xl font-bold text-secondary mb-6 tracking-tight"
                 >
-                  Bytesavy
-                  <span className="block text-2xl md:text-3xl font-normal mt-2 text-gray-600">
-                    A custom software studio
-                  </span>
+                  Your <span className="italic font-serif">Operations Have Evolved</span>. Your Software Should Too.
                 </motion.h1>
 
                 <motion.p
                   variants={fadeInUp}
-                  className="text-lg text-gray-600 mb-8 leading-relaxed"
+                  className="text-lg text-primary mb-8 leading-relaxed"
                 >
-                  We build custom software solutions that solve your unique business challenges and drive measurable results. Our expert team delivers tailored applications that streamline operations and accelerate growth.
+                  Bytesavy partners with agribusiness and industrial organizations to replace outdated systems with practical, modern software built to perform in real-world conditions from day one.
                 </motion.p>
 
                 <motion.div
@@ -156,7 +163,7 @@ export default function Website() {
                     <Button
                       size="lg"
                       variant="outline"
-                      className="group border-gray-300 text-gray-700 hover:text-gray-900 hover:border-gray-400 w-full sm:w-auto"
+                      className="group border-accent text-accent hover:bg-accent hover:text-accent-foreground w-full sm:w-auto"
                     >
                       Our Solutions
                       <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
@@ -206,59 +213,107 @@ export default function Website() {
                 </motion.div>
               </motion.div>
 
-              {/* Right column - Image with chat bubble */}
+              {/* Right column - Image Slideshow */}
               <motion.div
                 className="relative"
                 initial="hidden"
                 animate="visible"
                 variants={fadeInRight}
               >
-                <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                  <Image
-                    src="/bg12.jpg"
-                    alt="ByteSavy - Custom Software Development"
-                    width={800}
-                    height={600}
-                    className="object-cover w-full h-full rounded-2xl"
-                    priority
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/40 via-transparent to-transparent rounded-2xl" />
-                </div>
+                <div className="relative rounded-2xl overflow-hidden shadow-2xl h-[400px] md:h-[500px]">
+                  {heroImages.map((image, index) => (
+                    <div
+                      key={index}
+                      className={`absolute inset-0 transition-opacity duration-1000 ${
+                        index === currentSlide ? 'opacity-100' : 'opacity-0'
+                      }`}
+                    >
+                      <Image
+                        src={image}
+                        alt={`ByteSavy - Custom Software Development ${index + 1}`}
+                        fill
+                        className="object-cover rounded-2xl"
+                        priority={index === 0}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-tr from-primary/30 via-accent/10 to-transparent rounded-2xl" />
+                    </div>
+                  ))}
 
-                {/* Chat bubble overlay - professional design */}
-                <div className="absolute -bottom-4 -right-4 bg-white rounded-xl p-4 shadow-xl max-w-xs border border-gray-100">
-                  <div className="flex gap-3">
-                    <div className="flex-shrink-0">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-sm">
-                        <span className="text-white font-semibold text-sm">BS</span>
-                      </div>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-700 leading-relaxed">
-                        "Let us transform your business with custom software that addresses your specific needs."
-                      </p>
-                    </div>
+                  {/* Slideshow dots */}
+                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
+                    {heroImages.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentSlide(index)}
+                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                          index === currentSlide
+                            ? 'bg-white w-8'
+                            : 'bg-white/50 hover:bg-white/75'
+                        }`}
+                        aria-label={`Go to slide ${index + 1}`}
+                      />
+                    ))}
                   </div>
                 </div>
               </motion.div>
             </div>
           </div>
-        </section>
 
-        {/* Services Section - Reduced spacing, added background */}
-        <section className="py-12 md:py-16 bg-white border-t border-gray-100">
-          <ServicesSection/>
-        </section>
+          {/* Wave Divider - Positioned at bottom of hero */}
+          <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0]" style={{ marginBottom: '-1px' }}>
+            {/* First Wave Layer (Green) - Bigger */}
+            <svg
+              className="block w-full h-[180px]"
+              viewBox="0 0 1200 120"
+              preserveAspectRatio="none"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{ display: 'block' }}
+            >
+              <path
+                d="M0,0 Q300,50 600,20 T1200,0 L1200,120 L0,120 Z"
+                fill="#5EA852"
+                opacity="0.7"
+              />
+            </svg>
 
-        {/* Products Section - Subtle background for separation */}
-        <section className="py-12 md:py-16 bg-gradient-to-b from-gray-50 to-white">
-          <div className="container mx-auto px-4 md:px-6">
-            <ProductsSection />
+            {/* Second Wave Layer (Primary Navy Blue) */}
+            <svg
+              className="block w-full h-[120px] -mt-28"
+              viewBox="0 0 1200 120"
+              preserveAspectRatio="none"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{ display: 'block' }}
+            >
+              <path
+                d="M0,10 Q300,60 600,30 T1200,10 L1200,120 L0,120 Z"
+                fill="#01345F"
+                opacity="0.8"
+              />
+            </svg>
+
+            {/* Third Wave Layer (White - matches services bg) */}
+            <svg
+              className="block w-full h-[120px] -mt-24"
+              viewBox="0 0 1200 120"
+              preserveAspectRatio="none"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{ display: 'block' }}
+            >
+              <path
+                d="M0,25 Q300,75 600,45 T1200,25 L1200,120 L0,120 Z"
+                fill="#ffffff"
+              />
+            </svg>
           </div>
         </section>
 
+        {/* Services Section - Reduced spacing, added background */}
+        <section className="bg-white pt-0 md:pt-0 pb-12 md:pb-16">
+          <ServicesSection/>
+        </section>
+
         {/* Blog Section - Clean spacing, removed weird bottom div */}
-        <section className="py-12 md:py-16 bg-white border-t border-gray-100">
+        <section className="py-12 md:py-16 bg-white">
           <div className="container mx-auto px-4 md:px-6">
             <BlogSection />
           </div>

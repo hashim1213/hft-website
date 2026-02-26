@@ -19,7 +19,7 @@ const processSteps = [
   {
     icon: <Users className="w-6 h-6" />,
     title: "Collaborative Partnership",
-    description: "You'll work directly with our developers—no account managers or middlemen—ensuring clear communication and faster decision-making."
+    description: "You'll work directly with our developers - no account managers or middlemen - ensuring clear communication and faster decision-making."
   },
   {
     icon: <Clock className="w-6 h-6" />,
@@ -37,7 +37,7 @@ export default function OurApproachSection() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-blue-600 font-medium"
+            className="text-primary font-medium"
           >
             Our Approach
           </motion.span>
@@ -75,15 +75,15 @@ export default function OurApproachSection() {
             
             <ul className="space-y-5">
               {[
-                "Local expertise with global standards — based in Manitoba with experience building enterprise solutions",
-                "Dedicated small team structure — the same developers work on your project from start to finish",
-                "Technical founders who code — we understand both business strategy and implementation details",
-                "Fixed price projects with transparent milestones — no surprise costs or scope creep",
-                "Design-centered approach — creating intuitive interfaces that users actually enjoy"
+                "Local expertise with global standards - based in Manitoba with experience building enterprise solutions",
+                "Dedicated small team structure - the same developers work on your project from start to finish",
+                "Technical founders who code - we understand both business strategy and implementation details",
+                "Fixed price projects with transparent milestones - no surprise costs or scope creep",
+                "Design-centered approach - creating intuitive interfaces that users actually enjoy"
               ].map((item, index) => (
                 <li key={index} className="flex gap-3">
-                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center mt-0.5">
-                    <span className="text-blue-600 text-sm font-medium">{index + 1}</span>
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
+                    <span className="text-primary text-sm font-medium">{index + 1}</span>
                   </div>
                   <span className="text-gray-700">{item}</span>
                 </li>
@@ -103,8 +103,8 @@ export default function OurApproachSection() {
             <div className="space-y-6">
               {processSteps.map((step, index) => (
                 <div key={index} className="flex gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                    <div className="text-blue-600">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <div className="text-primary">
                       {step.icon}
                     </div>
                   </div>
@@ -122,20 +122,20 @@ export default function OurApproachSection() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="bg-blue-600 rounded-2xl p-8 md:p-12 text-white text-center max-w-3xl mx-auto"
+          className="bg-primary rounded-2xl p-8 md:p-12 text-white text-center max-w-3xl mx-auto"
         >
           <h3 className="text-2xl md:text-3xl font-bold mb-4">Ready to Transform Your Business?</h3>
-          <p className="text-blue-100 mb-8 max-w-xl mx-auto">
+          <p className="text-primary-foreground/80 mb-8 max-w-xl mx-auto">
             Let's discuss how our custom software solutions can address your specific challenges and drive measurable results.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild variant="secondary" size="lg" className="bg-white text-blue-600 hover:bg-blue-50">
+            <Button asChild variant="secondary" size="lg" className="bg-white text-primary hover:bg-secondary">
               <Link href="/contact">
                 Schedule a Consultation
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-white text-blue-600 hover:bg-blue-700">
+            <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-primary/90">
               <Link href="/product">
                 Our Solutions
               </Link>

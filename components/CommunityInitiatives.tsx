@@ -34,7 +34,7 @@ export default function CommunityInitiatives() {
                   hidden: { opacity: 0, y: 20 },
                   visible: { opacity: 1, y: 0 }
                 }}
-                className="inline-flex items-center gap-2 text-blue-600"
+                className="inline-flex items-center gap-2 text-primary"
               >
                 <Heart className="w-5 h-5" />
                 <span className="font-medium">Community Impact</span>
@@ -85,23 +85,23 @@ export default function CommunityInitiatives() {
                   'Technical implementation support'
                 ].map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
-                    <ArrowRight className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+                    <ArrowRight className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                     <span className="text-gray-700">{item}</span>
                   </li>
                 ))}
               </ul>
 
               <div className="pt-4 space-y-4">
-                <a 
+                <a
                   href="mailto:community@bytesavy.com"
-                  className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors"
+                  className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
                 >
                   <Mail className="w-5 h-5" />
                   community@bytesavy.com
                 </a>
 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button asChild className="bg-blue-600 hover:bg-blue-700 flex-1">
+                  <Button asChild className="bg-primary hover:bg-primary/90 flex-1">
                     <Link href="/contact">
                       Get in Touch
                       <ArrowRight className="ml-2 h-4 w-4" />

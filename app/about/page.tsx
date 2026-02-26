@@ -13,25 +13,25 @@ export default function AboutPage() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative pt-40 pb-16 px-4 bg-gray-50 border-b border-gray-100">
+        <section className="relative pt-40 pb-16 px-4 bg-gradient-to-b from-accent/5 to-transparent">
           <div className="container mx-auto max-w-5xl">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               className="text-center space-y-4"
             >
-              <h1 className="text-4xl font-bold sm:text-5xl text-gray-900">
+              <h1 className="text-4xl font-bold sm:text-5xl text-primary">
                 Transforming Ideas into Digital Reality
               </h1>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                We specialize in developing innovative software solutions that help businesses thrive in the digital age, with a focus on AI integration and cutting-edge technology.
+                We specialize in developing practical software solutions for agribusiness and industrial organizations, with a focus on AI integration and modern technology that performs in real-world conditions.
               </p>
             </motion.div>
           </div>
         </section>
 
-        {/* Mission and Values */}
+        {/* Mission and Vision */}
         <section className="py-24 px-4 bg-white">
           <div className="container mx-auto max-w-6xl">
             <motion.div
@@ -42,10 +42,16 @@ export default function AboutPage() {
               className="grid md:grid-cols-2 gap-16 items-center"
             >
               <div className="space-y-6">
-                <h2 className="text-3xl font-bold text-gray-900">Our Mission</h2>
+                <h2 className="text-3xl font-bold text-primary">Our Mission</h2>
                 <p className="text-lg text-gray-600">
-                  At Bytesavy, we are dedicated to empowering businesses through innovative software solutions. Our mission is to bridge the gap between advanced technology and practical business applications, making cutting-edge solutions accessible and impactful.
+                  Bytesavy designs and delivers custom software that modernizes outdated operations for agribusiness and industrial organizations. By listening first, building practical tools, and working alongside clients as long-term partners, Bytesavy creates technology that performs reliably in real-world conditions and generates measurable impact from day one.
                 </p>
+
+                <h2 className="text-3xl font-bold text-primary mt-12">Our Vision</h2>
+                <p className="text-lg text-gray-600">
+                  To be the trusted technology partner transforming traditional industries through practical, modern software that drives efficiency, profitability, and long-term resilience.
+                </p>
+
                 <div className="space-y-5 mt-8">
                   {[
                     {
@@ -63,12 +69,12 @@ export default function AboutPage() {
                   ].map((value, index) => (
                     <div key={index} className="flex items-start gap-4">
                       <div className="mt-1">
-                        <div className="h-6 w-6 rounded-full bg-blue-100 flex items-center justify-center">
-                          <Check className="h-4 w-4 text-blue-600" />
+                        <div className="h-6 w-6 rounded-full bg-accent/10 flex items-center justify-center">
+                          <Check className="h-4 w-4 text-accent" />
                         </div>
                       </div>
                       <div>
-                        <h3 className="font-medium text-gray-900 mb-1">{value.title}</h3>
+                        <h3 className="font-medium text-primary mb-1">{value.title}</h3>
                         <p className="text-gray-600">{value.description}</p>
                       </div>
                     </div>
@@ -76,7 +82,7 @@ export default function AboutPage() {
                 </div>
               </div>
               <div className="relative h-[400px] rounded-xl overflow-hidden shadow-md">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-blue-600/10 rounded-xl z-10" />
+                <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-primary/10 rounded-xl z-10" />
                 <Image
                   src="/mission-image.jpg"
                   alt="Mission visualization"
@@ -92,14 +98,14 @@ export default function AboutPage() {
         {/* Expertise */}
         <section className="py-24 px-4 bg-gray-50">
           <div className="container mx-auto max-w-6xl">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Expertise</h2>
+              <h2 className="text-3xl font-bold text-primary mb-4">Our Expertise</h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                 We combine technical excellence with industry knowledge to deliver solutions that drive business growth and innovation.
               </p>
@@ -147,12 +153,12 @@ export default function AboutPage() {
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                     viewport={{ once: true }}
                   >
-                    <Card className="border border-gray-200 shadow-sm hover:shadow-md hover:border-blue-100 transition-all h-full">
+                    <Card className="border border-accent shadow-lg hover:shadow-xl hover:border-primary transition-all h-full">
                       <CardContent className="p-6">
-                        <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center mb-4">
-                          <Icon className="h-6 w-6 text-blue-600" />
+                        <div className="h-12 w-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
+                          <Icon className="h-6 w-6 text-accent" />
                         </div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">{service.title}</h3>
+                        <h3 className="text-lg font-semibold text-primary mb-2">{service.title}</h3>
                         <p className="text-gray-600">{service.description}</p>
                       </CardContent>
                     </Card>
@@ -166,14 +172,14 @@ export default function AboutPage() {
         {/* Our Approach */}
         <section className="py-24 px-4 bg-white">
           <div className="container mx-auto max-w-6xl">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Approach</h2>
+              <h2 className="text-3xl font-bold text-primary mb-4">Our Approach</h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                 We believe in a collaborative approach that combines technical expertise with a deep understanding of our clients&apos; business needs.
               </p>
@@ -212,10 +218,10 @@ export default function AboutPage() {
                     viewport={{ once: true }}
                     className="text-center"
                   >
-                    <div className="h-16 w-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-6">
-                      <Icon className="h-8 w-8 text-blue-600" />
+                    <div className="h-16 w-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-6">
+                      <Icon className="h-8 w-8 text-accent" />
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-3">{item.title}</h3>
+                    <h3 className="text-lg font-semibold text-primary mb-3">{item.title}</h3>
                     <p className="text-gray-600">{item.description}</p>
                   </motion.div>
                 )
@@ -225,7 +231,7 @@ export default function AboutPage() {
         </section>
 
         {/* Call to Action */}
-        <section className="py-16 px-4 bg-gray-900 text-white">
+        <section className="py-16 px-4 bg-primary text-white">
           <div className="container mx-auto max-w-4xl text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -234,14 +240,14 @@ export default function AboutPage() {
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-3xl font-bold">Ready to transform your business?</h2>
-              <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-                Let&apos;s collaborate to build custom software solutions that address your unique challenges and drive growth.
+              <h2 className="text-3xl font-bold">Ready to Transform Your Operations?</h2>
+              <p className="text-lg text-white/80 max-w-2xl mx-auto">
+                Let&apos;s collaborate to build practical software solutions that modernize your operations and drive measurable results.
               </p>
               <div className="mt-8">
-                <a 
-                  href="/contact" 
-                  className="inline-flex items-center justify-center px-6 py-3 bg-white text-gray-900 font-medium rounded-md hover:bg-gray-100 transition-colors"
+                <a
+                  href="/contact"
+                  className="inline-flex items-center justify-center px-6 py-3 bg-secondary text-secondary-foreground font-medium rounded-md hover:bg-secondary/90 transition-colors"
                 >
                   Get in touch
                 </a>

@@ -36,10 +36,10 @@ const MediaSection = () => {
   ];
 
   return (
-    <section className="w-full py-16 bg-gray-50 border-t border-gray-100">
+    <section className="w-full py-8 bg-gray-50 border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p className="text-lg font-semibold text-gray-600 mb-12 text-center">Featured In</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-12 items-center justify-items-center">
+        <p className="text-lg font-semibold text-gray-600 mb-6 text-center">Featured In</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-8 items-center justify-items-center">
           {mediaItems.map((item, index) => (
             <a
               key={index}
@@ -52,7 +52,7 @@ const MediaSection = () => {
               <img
                 src={item.logo}
                 alt={`${item.source} logo`}
-                className="h-12 md:h-14 lg:h-16 w-auto object-contain max-w-full"
+                className="h-10 md:h-11 lg:h-12 w-auto object-contain max-w-full"
               />
             </a>
           ))}

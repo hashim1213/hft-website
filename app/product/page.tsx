@@ -102,18 +102,18 @@ export default function ServicesPage() {
         {/* Hero Section */}
         <section className="pt-40 pb-24 px-4 bg-gray-50 border-b border-gray-100">
           <div className="container mx-auto max-w-5xl">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               className="text-center space-y-6"
             >
-              <span className="text-blue-600 font-medium">Our Expertise</span>
+              <span className="text-primary font-medium">Our Expertise</span>
               <h1 className="text-4xl font-bold sm:text-5xl text-gray-900 mt-2">
                 Solutions & Services
               </h1>
               <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-                Empowering businesses with innovative technology solutions and comprehensive services for digital transformation.
+                Practical software solutions built for agribusiness and industrial organizations that need reliable technology to modernize operations.
               </p>
             </motion.div>
           </div>
@@ -141,31 +141,31 @@ export default function ServicesPage() {
                     viewport={{ once: true }}
                   >
                     <Link href={solution.href} className="block h-full group">
-                      <div className="border border-gray-200 rounded-2xl p-8 h-full bg-white hover:shadow-md transition-shadow group-hover:border-blue-100">
+                      <div className="border border-accent rounded-2xl p-8 h-full bg-white hover:shadow-md transition-shadow group-hover:border-primary">
                         <div className="flex items-center mb-6">
-                          <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-                            <Icon className="h-6 w-6 text-blue-600" />
+                          <div className="h-12 w-12 rounded-full bg-accent/10 flex items-center justify-center">
+                            <Icon className="h-6 w-6 text-accent" />
                           </div>
-                          <h3 className="font-semibold text-xl text-gray-900 ml-4 group-hover:text-blue-600 transition-colors">
+                          <h3 className="font-semibold text-xl text-gray-900 ml-4 group-hover:text-primary transition-colors">
                             {solution.title}
                           </h3>
                         </div>
-                        
+
                         <p className="text-gray-600 mb-6">{solution.description}</p>
-                        
+
                         <div className="space-y-4">
                           <h4 className="font-medium text-gray-900">Capabilities:</h4>
                           <ul className="space-y-3">
                             {solution.features.map((feature, i) => (
                               <li key={i} className="text-gray-700 flex items-center gap-2">
-                                <Check className="h-4 w-4 text-blue-600 flex-shrink-0" />
+                                <Check className="h-4 w-4 text-primary flex-shrink-0" />
                                 {feature}
                               </li>
                             ))}
                           </ul>
                         </div>
-                        
-                        <div className="mt-8 text-blue-600 font-medium flex items-center opacity-70 group-hover:opacity-100 transition-opacity">
+
+                        <div className="mt-8 text-primary font-medium flex items-center opacity-70 group-hover:opacity-100 transition-opacity">
                           Learn more
                           <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                         </div>
@@ -200,31 +200,31 @@ export default function ServicesPage() {
                     viewport={{ once: true }}
                   >
                     <Link href={service.href} className="block h-full group">
-                      <div className="border border-gray-200 rounded-2xl p-8 h-full bg-white hover:shadow-md transition-shadow group-hover:border-blue-100">
+                      <div className="border border-accent rounded-2xl p-8 h-full bg-white hover:shadow-md transition-shadow group-hover:border-primary">
                         <div className="flex items-center mb-6">
-                          <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-                            <Icon className="h-6 w-6 text-blue-600" />
+                          <div className="h-12 w-12 rounded-full bg-accent/10 flex items-center justify-center">
+                            <Icon className="h-6 w-6 text-accent" />
                           </div>
-                          <h3 className="font-semibold text-xl text-gray-900 ml-4 group-hover:text-blue-600 transition-colors">
+                          <h3 className="font-semibold text-xl text-gray-900 ml-4 group-hover:text-primary transition-colors">
                             {service.title}
                           </h3>
                         </div>
-                        
+
                         <p className="text-gray-600 mb-6">{service.description}</p>
-                        
+
                         <div className="space-y-4">
                           <h4 className="font-medium text-gray-900">Features:</h4>
                           <ul className="space-y-3">
                             {service.features.map((feature, i) => (
                               <li key={i} className="text-gray-700 flex items-center gap-2">
-                                <Check className="h-4 w-4 text-blue-600 flex-shrink-0" />
+                                <Check className="h-4 w-4 text-primary flex-shrink-0" />
                                 {feature}
                               </li>
                             ))}
                           </ul>
                         </div>
-                        
-                        <div className="mt-8 text-blue-600 font-medium flex items-center opacity-70 group-hover:opacity-100 transition-opacity">
+
+                        <div className="mt-8 text-primary font-medium flex items-center opacity-70 group-hover:opacity-100 transition-opacity">
                           Learn more
                           <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                         </div>
@@ -240,21 +240,21 @@ export default function ServicesPage() {
         {/* CTA Section */}
         <section className="py-16 px-4 bg-gray-900 text-white">
           <div className="container mx-auto max-w-5xl text-center">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-3xl font-bold">Ready to Transform Your Business?</h2>
+              <h2 className="text-3xl font-bold">Ready to Modernize Your Operations?</h2>
               <p className="max-w-2xl mx-auto text-gray-400">
-                Let's discuss how our custom software solutions can address your specific challenges and drive measurable results.
+                Let's discuss how practical, custom software can help your organization work more efficiently and reliably.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button 
-                  size="lg" 
-                  className="bg-white text-gray-900 hover:bg-gray-100"
+                <Button
+                  size="lg"
+                  className="bg-secondary text-secondary-foreground hover:bg-secondary/90"
                   asChild
                 >
                   <Link href="/contact">
@@ -262,8 +262,7 @@ export default function ServicesPage() {
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
-                
-             
+
               </div>
             </motion.div>
           </div>

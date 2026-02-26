@@ -80,25 +80,25 @@ export default function DevelopmentPage() {
       icon: Monitor,
       title: "Web Development",
       technologies: ["React", "Next.js", "Vue.js", "Node.js", "TypeScript"],
-      color: "from-blue-500 to-blue-600"
+      color: "from-accent to-primary"
     },
     {
       icon: Smartphone,
       title: "Mobile Development",
       technologies: ["React Native", "iOS", "Android", "Flutter"],
-      color: "from-purple-500 to-purple-600"
+      color: "from-accent to-primary"
     },
     {
       icon: Server,
       title: "Backend Systems",
       technologies: ["Python", "Java", ".NET", "Go", "Microservices"],
-      color: "from-green-500 to-green-600"
+      color: "from-accent to-primary"
     },
     {
       icon: Shield,
       title: "Security & DevOps",
       technologies: ["CI/CD", "Docker", "Kubernetes", "AWS", "Azure"],
-      color: "from-orange-500 to-orange-600"
+      color: "from-accent to-primary"
     }
   ]
 
@@ -108,7 +108,7 @@ export default function DevelopmentPage() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative pt-32 md:pt-40 pb-16 px-4 bg-gradient-to-b from-gray-50 to-white">
+        <section className="relative pt-32 md:pt-40 pb-16 px-4 bg-gradient-to-b from-accent/5 to-white">
           <div className="container mx-auto max-w-6xl">
             <motion.div
               initial="hidden"
@@ -116,17 +116,9 @@ export default function DevelopmentPage() {
               variants={staggerChildren}
               className="text-center space-y-6"
             >
-              <motion.div
-                variants={fadeInUp}
-                className="inline-flex items-center justify-center w-fit px-4 py-1.5 mb-4 text-sm font-medium bg-blue-50 text-blue-700 rounded-full border border-blue-100"
-              >
-                <Zap className="w-4 h-4 mr-2 text-blue-600" />
-                <span>Professional Software Development</span>
-              </motion.div>
-
               <motion.h1
                 variants={fadeInUp}
-                className="text-4xl font-bold sm:text-5xl lg:text-6xl text-gray-900 tracking-tight"
+                className="text-4xl font-bold sm:text-5xl lg:text-6xl text-primary tracking-tight"
               >
                 Development Excellence
               </motion.h1>
@@ -135,14 +127,14 @@ export default function DevelopmentPage() {
                 variants={fadeInUp}
                 className="text-gray-600 max-w-3xl mx-auto text-lg leading-relaxed"
               >
-                We transform complex requirements into elegant software solutions through our proven development process and technical expertise. From concept to deployment, we deliver quality software that drives business growth.
+                Building reliable, practical software for agribusiness and industrial organizations. From concept to deployment, we deliver quality solutions that modernize operations and drive measurable results.
               </motion.p>
 
               <motion.div variants={fadeInUp}>
                 <Button
                   size="lg"
                   onClick={() => router.push('/contact')}
-                  className="bg-blue-600 hover:bg-blue-700"
+                  className="bg-secondary text-secondary-foreground hover:bg-secondary/90"
                 >
                   Start Your Project
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -179,20 +171,20 @@ export default function DevelopmentPage() {
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                     viewport={{ once: true }}
                   >
-                    <Card className="border-gray-200 hover:shadow-xl transition-all duration-300 overflow-hidden">
+                    <Card className="border-2 border-accent hover:border-primary hover:shadow-xl transition-all duration-300 overflow-hidden">
                       <CardContent className="p-0">
                         <div className="flex flex-col md:flex-row">
                           {/* Step Number & Icon */}
-                          <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-8 md:w-1/4 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-gray-200">
+                          <div className="bg-gradient-to-br from-accent/10 to-accent/20 p-8 md:w-1/4 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-accent">
                             <div className="relative mb-4">
-                              <div className="absolute -top-2 -left-2 w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                              <div className="absolute -top-2 -left-2 w-12 h-12 bg-gradient-to-br from-accent to-primary rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
                                 {index + 1}
                               </div>
                               <div className="w-20 h-20 rounded-2xl bg-white flex items-center justify-center shadow-md">
-                                <Icon className="h-10 w-10 text-blue-600" />
+                                <Icon className="h-10 w-10 text-accent" />
                               </div>
                             </div>
-                            <h3 className="font-bold text-lg text-center text-gray-900">{step.title}</h3>
+                            <h3 className="font-bold text-lg text-center text-primary">{step.title}</h3>
                           </div>
 
                           {/* Content */}
@@ -205,7 +197,7 @@ export default function DevelopmentPage() {
                               {step.highlights.map((highlight, hIndex) => (
                                 <span
                                   key={hIndex}
-                                  className="px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium border border-blue-100"
+                                  className="px-3 py-1.5 bg-accent/10 text-accent rounded-full text-sm font-medium border border-accent"
                                 >
                                   {highlight}
                                 </span>
@@ -249,18 +241,18 @@ export default function DevelopmentPage() {
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                     viewport={{ once: true }}
                   >
-                    <Card className="border-gray-200 hover:shadow-xl transition-all duration-300 h-full">
+                    <Card className="border-2 border-accent hover:border-primary hover:shadow-xl transition-all duration-300 h-full">
                       <CardContent className="p-6">
                         <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${expertise.color} flex items-center justify-center mb-4 shadow-lg`}>
                           <Icon className="h-7 w-7 text-white" />
                         </div>
 
-                        <h3 className="font-bold text-lg mb-3 text-gray-900">{expertise.title}</h3>
+                        <h3 className="font-bold text-lg mb-3 text-primary">{expertise.title}</h3>
 
                         <div className="space-y-2">
                           {expertise.technologies.map((tech, tIndex) => (
                             <div key={tIndex} className="flex items-center text-sm text-gray-600">
-                              <div className="w-1.5 h-1.5 rounded-full bg-blue-600 mr-2" />
+                              <div className="w-1.5 h-1.5 rounded-full bg-accent mr-2" />
                               {tech}
                             </div>
                           ))}
@@ -275,7 +267,7 @@ export default function DevelopmentPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 px-4 bg-gradient-to-br from-blue-600 to-blue-700 text-white">
+        <section className="py-20 px-4 bg-gradient-to-br from-primary to-primary text-white">
           <div className="container mx-auto max-w-4xl text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -285,14 +277,13 @@ export default function DevelopmentPage() {
               className="space-y-6"
             >
               <h2 className="text-3xl md:text-4xl font-bold">Ready to Start Your Development Project?</h2>
-              <p className="max-w-2xl mx-auto text-blue-50 text-lg leading-relaxed">
-                Let's discuss how we can help bring your software vision to life with our proven development process and technical expertise.
+              <p className="max-w-2xl mx-auto text-white/80 text-lg leading-relaxed">
+                Let's discuss how we can build reliable, practical software that modernizes your operations and delivers measurable results.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
                 <Button
-                  variant="secondary"
                   size="lg"
-                  className="bg-white text-blue-600 hover:bg-gray-100 font-semibold"
+                  className="bg-secondary text-secondary-foreground hover:bg-secondary/90 font-semibold"
                   onClick={() => router.push('/contact')}
                 >
                   Discuss Your Project
@@ -301,7 +292,7 @@ export default function DevelopmentPage() {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="border-2 border-white text-white hover:bg-white hover:text-blue-600 font-semibold"
+                  className="border-2 border-white text-white hover:bg-white hover:text-primary font-semibold"
                   onClick={() => router.push('/product')}
                 >
                   View Our Solutions

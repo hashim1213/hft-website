@@ -23,29 +23,29 @@ export default function SupportPage() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative pt-32 md:pt-40 pb-16 px-4 bg-white">
+        <section className="relative pt-32 md:pt-40 pb-16 px-4 bg-gradient-to-b from-accent/5 to-transparent">
           <div className="container mx-auto max-w-5xl">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               className="text-center space-y-6"
             >
-              <div className="h-20 w-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
-                <LifeBuoy className="h-10 w-10 text-primary" />
+              <div className="h-20 w-20 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-6">
+                <LifeBuoy className="h-10 w-10 text-accent" />
               </div>
-              <h1 className="text-4xl font-bold sm:text-5xl">
+              <h1 className="text-4xl font-bold sm:text-5xl text-primary">
                 24/7 Technical Support
               </h1>
               <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-                Dedicated technical support to ensure your systems run smoothly and efficiently.
+                Dedicated technical support to keep your agribusiness and industrial systems running smoothly and efficiently.
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
-                <Button size="lg" className="min-w-[200px]">
+                <Button size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 min-w-[200px]">
                   Contact Support
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
-                <Button size="lg" variant="outline" className="min-w-[200px]">
+                <Button size="lg" variant="outline" className="border-2 border-accent text-accent hover:bg-accent hover:text-white min-w-[200px]">
                   View Documentation
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -84,12 +84,12 @@ export default function SupportPage() {
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                     viewport={{ once: true }}
                   >
-                    <Card className="border-none shadow-lg h-full">
+                    <Card className="border border-accent shadow-lg h-full hover:shadow-xl transition-shadow">
                       <CardContent className="pt-6">
-                        <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                          <Icon className="h-6 w-6 text-primary" />
+                        <div className="h-12 w-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
+                          <Icon className="h-6 w-6 text-accent" />
                         </div>
-                        <h3 className="font-semibold mb-2">{feature.title}</h3>
+                        <h3 className="font-semibold mb-2 text-primary">{feature.title}</h3>
                         <p className="text-gray-600">{feature.description}</p>
                       </CardContent>
                     </Card>
@@ -103,14 +103,14 @@ export default function SupportPage() {
         {/* Support Process */}
         <section className="py-16 px-4 bg-white">
           <div className="container mx-auto max-w-5xl">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl font-bold mb-4">Support Process</h2>
+              <h2 className="text-3xl font-bold mb-4 text-primary">Support Process</h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
                 A structured approach to resolving technical issues efficiently and effectively.
               </p>
@@ -143,11 +143,11 @@ export default function SupportPage() {
                   }
                 ].map((step, index) => (
                   <div key={index} className="flex gap-4">
-                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <span className="text-primary font-semibold">{index + 1}</span>
+                    <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
+                      <span className="text-accent font-semibold">{index + 1}</span>
                     </div>
                     <div>
-                      <h3 className="font-semibold mb-1">{step.title}</h3>
+                      <h3 className="font-semibold mb-1 text-primary">{step.title}</h3>
                       <p className="text-gray-600">{step.description}</p>
                     </div>
                   </div>
@@ -160,9 +160,9 @@ export default function SupportPage() {
                 transition={{ duration: 0.5 }}
                 viewport={{ once: true }}
               >
-                <Card className="border-none shadow-lg">
+                <Card className="border border-accent shadow-lg">
                   <CardHeader>
-                    <CardTitle>Contact Methods</CardTitle>
+                    <CardTitle className="text-primary">Contact Methods</CardTitle>
                     <CardDescription>
                       Multiple ways to reach our support team
                     </CardDescription>
@@ -172,31 +172,31 @@ export default function SupportPage() {
                       {
                         icon: Mail,
                         title: "Email Support",
-                        detail: "hello@bytesavvytech.com",
+                        detail: "support@bytesavy.com",
                         description: "Urgent email support with 1-hour response time for critical issues"
                       },
                       {
                         icon: Phone,
                         title: "Phone Support",
-                        detail: "Unavaliable at this time",
-                        description: "Phone support is unavaliable at this time please use our email"
+                        detail: "Unavailable at this time",
+                        description: "Phone support is unavailable at this time, please use our email"
                       },
                       {
                         icon: MessageCircle,
                         title: "Live Chat",
                         detail: "24/7 support for issues",
-                        description: "this feature is only avaliable to enterprise user"
+                        description: "This feature is only available to enterprise users"
                       }
                     ].map((method, index) => {
                       const Icon = method.icon
                       return (
                         <div key={index} className="flex gap-4">
-                          <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                            <Icon className="h-5 w-5 text-primary" />
+                          <div className="h-10 w-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                            <Icon className="h-5 w-5 text-accent" />
                           </div>
                           <div>
-                            <h4 className="font-semibold">{method.title}</h4>
-                            <p className="text-sm text-primary">{method.detail}</p>
+                            <h4 className="font-semibold text-primary">{method.title}</h4>
+                            <p className="text-sm text-accent font-medium">{method.detail}</p>
                             <p className="text-sm text-gray-600">{method.description}</p>
                           </div>
                         </div>
@@ -212,14 +212,14 @@ export default function SupportPage() {
         {/* FAQs */}
         <section className="py-16 px-4">
           <div className="container mx-auto max-w-3xl">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
+              <h2 className="text-3xl font-bold mb-4 text-primary">Frequently Asked Questions</h2>
               <p className="text-gray-600">
                 Common questions about our support services and processes.
               </p>
@@ -254,9 +254,7 @@ export default function SupportPage() {
         </section>
       </main>
 
-      <center>
       <Footer />
-      </center>
     </div>
   )
 }

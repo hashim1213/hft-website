@@ -84,20 +84,20 @@ export default function ContactPage() {
 
   const whyWorkWithUs = [
     {
-      title: "Technical Excellence",
-      description: "Expert development team with deep technical expertise."
+      title: "Industry Focus",
+      description: "Specialized expertise in agribusiness and industrial software solutions."
     },
     {
-      title: "AI Integration",
-      description: "Enhance your software with cutting-edge AI capabilities."
+      title: "Practical Solutions",
+      description: "Technology built to perform reliably in real-world conditions."
     },
     {
-      title: "Agile Development",
-      description: "Flexible, iterative approach to deliver value faster."
+      title: "Measurable Results",
+      description: "Software that delivers impact and efficiency from day one."
     },
     {
-      title: "Ongoing Support",
-      description: "Comprehensive maintenance and support services."
+      title: "Long-Term Partnership",
+      description: "Ongoing support and collaboration to ensure lasting success."
     }
   ]
 
@@ -107,13 +107,13 @@ export default function ContactPage() {
 
       <main className="flex-1 pt-40 pb-24 px-4">
         <div className="max-w-6xl mx-auto">
-          <motion.div 
+          <motion.div
             className="text-center space-y-4 mb-16"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="text-4xl font-bold sm:text-5xl text-gray-900">Get in Touch</h1>
+            <h1 className="text-4xl font-bold sm:text-5xl text-primary">Get in Touch</h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Ready to build your next software solution? Let&apos;s discuss how we can help you transform your business.
             </p>
@@ -125,9 +125,9 @@ export default function ContactPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              <Card className="border border-gray-200 shadow-sm">
+              <Card className="border border-accent shadow-lg">
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-2xl text-gray-900">Contact Us</CardTitle>
+                  <CardTitle className="text-2xl text-primary">Contact Us</CardTitle>
                   <CardDescription className="text-gray-600">
                     Fill out the form below and we&apos;ll get back to you within 24 hours.
                   </CardDescription>
@@ -140,8 +140,8 @@ export default function ContactPage() {
                   )}
 
                   {success && (
-                    <Alert className="mb-6 bg-green-50 text-green-800 border-green-200">
-                      <Check className="h-4 w-4 text-green-600 mr-2" />
+                    <Alert className="mb-6 bg-accent/10 text-accent border-accent">
+                      <Check className="h-4 w-4 text-accent mr-2" />
                       <AlertDescription>
                         Thank you for your message! We&apos;ll get back to you soon.
                       </AlertDescription>
@@ -156,7 +156,7 @@ export default function ContactPage() {
                           name="name"
                           value={formData.name}
                           onChange={handleInputChange}
-                          className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+                          className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                           placeholder="Your Name"
                           type="text"
                           required
@@ -168,7 +168,7 @@ export default function ContactPage() {
                           name="company"
                           value={formData.company}
                           onChange={handleInputChange}
-                          className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+                          className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                           placeholder="Company Name"
                           type="text"
                         />
@@ -181,7 +181,7 @@ export default function ContactPage() {
                         name="email"
                         value={formData.email}
                         onChange={handleInputChange}
-                        className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+                        className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                         placeholder="you@company.com"
                         type="email"
                         required
@@ -194,7 +194,7 @@ export default function ContactPage() {
                         value={formData.projectType}
                         onValueChange={handleProjectTypeChange}
                       >
-                        <SelectTrigger className="border-gray-200 focus:ring-blue-600">
+                        <SelectTrigger className="border-gray-200 focus:ring-accent">
                           <SelectValue placeholder="Select project type" />
                         </SelectTrigger>
                         <SelectContent>
@@ -213,15 +213,15 @@ export default function ContactPage() {
                         name="message"
                         value={formData.message}
                         onChange={handleInputChange}
-                        className="flex min-h-[120px] w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+                        className="flex min-h-[120px] w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                         placeholder="Tell us about your project requirements"
                         required
                       />
                     </div>
 
-                    <Button 
-                      type="submit" 
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white" 
+                    <Button
+                      type="submit"
+                      className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90"
                       disabled={loading}
                     >
                       {loading ? (
@@ -247,21 +247,21 @@ export default function ContactPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                <Card className="border border-gray-200 shadow-sm">
+                <Card className="border border-accent shadow-lg">
                   <CardHeader className="pb-4">
-                    <CardTitle className="text-2xl text-gray-900">Why Work With Us?</CardTitle>
+                    <CardTitle className="text-2xl text-primary">Why Work With Us?</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-5">
                       {whyWorkWithUs.map((item, i) => (
                         <div key={i} className="flex gap-4">
                           <div className="mt-0.5">
-                            <div className="h-6 w-6 rounded-full bg-blue-100 flex items-center justify-center">
-                              <Check className="h-4 w-4 text-blue-600" />
+                            <div className="h-6 w-6 rounded-full bg-accent/10 flex items-center justify-center">
+                              <Check className="h-4 w-4 text-accent" />
                             </div>
                           </div>
                           <div>
-                            <h3 className="font-medium text-gray-900 mb-1">{item.title}</h3>
+                            <h3 className="font-medium text-primary mb-1">{item.title}</h3>
                             <p className="text-gray-600">{item.description}</p>
                           </div>
                         </div>
@@ -276,25 +276,25 @@ export default function ContactPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
               >
-                <Card className="border-0 bg-gray-900 text-white shadow-md">
+                <Card className="border-0 bg-primary text-white shadow-md">
                   <CardHeader className="pb-4">
                     <CardTitle className="text-xl text-white">Quick Contact</CardTitle>
-                    <CardDescription className="text-gray-300">
+                    <CardDescription className="text-white/80">
                       Prefer to reach out directly?
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      <a href="mailto:sales@bytesavy.com" className="flex items-center gap-3 hover:text-blue-300 transition-colors">
-                        <Mail className="h-5 w-5 text-blue-400" />
+                      <a href="mailto:sales@bytesavy.com" className="flex items-center gap-3 hover:text-accent transition-colors">
+                        <Mail className="h-5 w-5 text-accent" />
                         <span>sales@bytesavy.com</span>
                       </a>
-                      <a href="tel:+12045969355" className="flex items-center gap-3 hover:text-blue-300 transition-colors">
-                        <Phone className="h-5 w-5 text-blue-400" />
+                      <a href="tel:+12045969355" className="flex items-center gap-3 hover:text-accent transition-colors">
+                        <Phone className="h-5 w-5 text-accent" />
                         <span>+1 (204) 596-9355</span>
                       </a>
                       <div className="flex items-center gap-3">
-                        <MapPin className="h-5 w-5 text-blue-400" />
+                        <MapPin className="h-5 w-5 text-accent" />
                         <span>Brandon, Manitoba</span>
                       </div>
                     </div>

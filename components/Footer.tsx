@@ -22,19 +22,28 @@ const FOOTER_LINKS = {
   ],
   legal: [
     { name: 'Privacy Policy', href: '/privacy' },
-    { name: 'Terms of Service', href: '/privacy' }
+    { name: 'Terms of Service', href: '/privacy' },
+    { name: 'Sitemap', href: '/site-pages' }
   ],
   social: [
-    { name: 'GitHub', href: 'https://github.com/bytesavy', icon: Icons.Github },
-    { name: 'LinkedIn', href: 'https://linkedin.com/company/bytesavy', icon: Icons.Linkedin },
-    { name: 'Twitter', href: 'https://twitter.com/bytesavy', icon: Icons.Twitter }
+    { name: 'LinkedIn', href: 'https://www.linkedin.com/company/98775344/', icon: Icons.Linkedin }
   ]
 }
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-300 border-t border-gray-800">
-      <div className="container mx-auto px-4 md:px-6 py-12 md:py-16">
+    <footer className="bg-gray-900 text-gray-300 border-t border-gray-800 relative overflow-hidden">
+      {/* Background Icon */}
+      <div className="absolute -bottom-20 -right-20 w-[500px] h-[500px] opacity-10 pointer-events-none">
+        <Image
+          src="/icon2.png"
+          alt=""
+          fill
+          className="object-contain brightness-0 invert"
+        />
+      </div>
+
+      <div className="container mx-auto px-4 md:px-6 py-12 md:py-16 relative z-10">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 mb-12">
           {/* Company Info */}
@@ -61,7 +70,7 @@ export default function Footer() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="h-10 w-10 rounded-full bg-gray-800 hover:bg-blue-600 flex items-center justify-center transition-colors duration-200"
+                    className="h-10 w-10 rounded-full bg-gray-800 hover:bg-accent flex items-center justify-center transition-colors duration-200"
                     aria-label={link.name}
                   >
                     <Icon className="h-5 w-5" />
@@ -119,15 +128,6 @@ export default function Footer() {
                   </Link>
                 </li>
               ))}
-              <li>
-                <Link
-                  href="/login"
-                  className="text-gray-400 hover:text-white transition-colors duration-200 text-sm inline-flex items-center gap-2"
-                >
-                  <Icons.LogIn className="h-4 w-4" />
-                  Admin Portal
-                </Link>
-              </li>
             </ul>
           </div>
         </div>

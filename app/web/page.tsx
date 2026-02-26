@@ -25,22 +25,23 @@ export default function WebDevPage() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative pt-32 md:pt-40 pb-16 px-4 bg-gradient-to-b from-primary/5 to-transparent">
+        <section className="relative pt-32 md:pt-40 pb-16 px-4 bg-gradient-to-b from-accent/5 to-transparent">
           <div className="container mx-auto max-w-5xl">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               className="text-center space-y-6"
             >
-              <h1 className="text-4xl font-bold sm:text-5xl">
+              <h1 className="text-4xl font-bold sm:text-5xl text-primary">
                 Web Development Services
               </h1>
               <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-                Creating modern, high-performance web applications that drive business growth and enhance user engagement.
+                Custom web applications built for agribusiness and industrial organizations that need reliable, practical technology to modernize operations and improve efficiency.
               </p>
-              <Button 
+              <Button
                 size="lg"
+                className="bg-secondary text-secondary-foreground hover:bg-secondary/90"
                 onClick={() => window.location.href = '/contact'}
               >
                 Start Your Project
@@ -114,17 +115,17 @@ export default function WebDevPage() {
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                     viewport={{ once: true }}
                   >
-                    <Card className="border-none shadow-lg h-full">
+                    <Card className="border border-accent shadow-lg h-full hover:shadow-xl transition-shadow">
                       <CardContent className="pt-6">
-                        <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                          <Icon className="h-6 w-6 text-primary" />
+                        <div className="h-12 w-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
+                          <Icon className="h-6 w-6 text-accent" />
                         </div>
-                        <h3 className="font-semibold mb-2">{service.title}</h3>
+                        <h3 className="font-semibold mb-2 text-primary">{service.title}</h3>
                         <p className="text-gray-600 mb-4">{service.description}</p>
                         <ul className="space-y-2">
                           {service.features.map((feature, i) => (
                             <li key={i} className="text-sm text-gray-600 flex items-center gap-2">
-                              <div className="h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
+                              <div className="h-1.5 w-1.5 rounded-full bg-accent flex-shrink-0" />
                               {feature}
                             </li>
                           ))}
@@ -187,10 +188,10 @@ export default function WebDevPage() {
                     viewport={{ once: true }}
                     className="text-center"
                   >
-                    <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                      <Icon className="h-8 w-8 text-primary" />
+                    <div className="h-16 w-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-4">
+                      <Icon className="h-8 w-8 text-accent" />
                     </div>
-                    <h3 className="font-semibold mb-2">{step.title}</h3>
+                    <h3 className="font-semibold mb-2 text-primary">{step.title}</h3>
                     <p className="text-gray-600">{step.description}</p>
                   </motion.div>
                 )
@@ -202,21 +203,20 @@ export default function WebDevPage() {
         {/* CTA Section */}
         <section className="py-16 px-4 bg-primary text-white">
           <div className="container mx-auto max-w-5xl text-center">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-3xl font-bold">Ready to Build Your Web Solution?</h2>
+              <h2 className="text-3xl font-bold">Ready to Modernize Your Web Systems?</h2>
               <p className="max-w-2xl mx-auto text-white/80">
-                Let&apos;s discuss how we can help you create a powerful web presence that drives results.
+                Let's discuss how practical, custom web applications can help your organization operate more efficiently.
               </p>
-              <Button 
-                variant="secondary" 
-                size="lg" 
-                className="bg-white text-primary hover:bg-white/90"
+              <Button
+                size="lg"
+                className="bg-secondary text-secondary-foreground hover:bg-secondary/90"
                 onClick={() => window.location.href = '/contact'}
               >
                 Schedule a Consultation
@@ -227,9 +227,7 @@ export default function WebDevPage() {
         </section>
       </main>
 
-      <center>
       <Footer />
-      </center>
     </div>
   )
 }

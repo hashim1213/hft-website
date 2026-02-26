@@ -307,10 +307,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html 
+    <html
       lang="en-CA"
       suppressHydrationWarning
-      className="scroll-smooth"
+      className="scroll-smooth h-full"
     >
       <head>
         {/* Enhanced preconnect and DNS prefetch */}
@@ -355,13 +355,11 @@ export default function RootLayout({
         <meta httpEquiv="Cache-Control" content="public, max-age=31536000, immutable" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-white text-gray-900`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}
         itemScope
         itemType="https://schema.org/WebPage"
       >
-        <div className="flex flex-col min-h-screen">
-          {children}
-        </div>
+        {children}
         
         {/* Analytics and Performance Monitoring */}
         <Analytics />

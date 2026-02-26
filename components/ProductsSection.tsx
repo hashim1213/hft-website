@@ -22,8 +22,8 @@ const ProductItem = ({ name, description, icon, appStoreLink }: Product) => (
     viewport={{ once: true }}
   >
     <div className="relative">
-      <div className="absolute inset-0 bg-gradient-to-b from-blue-100 to-transparent rounded-3xl transform -rotate-6 transition-transform group-hover:rotate-3" />
-      <div className="absolute inset-0 bg-gradient-to-b from-blue-100 to-transparent rounded-3xl transform rotate-3 transition-transform group-hover:-rotate-6" />
+      <div className="absolute inset-0 bg-gradient-to-b from-accent/20 to-transparent rounded-3xl transform -rotate-6 transition-transform group-hover:rotate-3" />
+      <div className="absolute inset-0 bg-gradient-to-b from-accent/20 to-transparent rounded-3xl transform rotate-3 transition-transform group-hover:-rotate-6" />
       <div className="relative w-20 h-20 rounded-3xl overflow-hidden">
         <Image
           src={icon}
@@ -37,13 +37,13 @@ const ProductItem = ({ name, description, icon, appStoreLink }: Product) => (
     </div>
 
     <div className="mt-6 text-center max-w-xs">
-      <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+      <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-accent transition-colors">
         {name}
       </h3>
       <p className="text-sm text-gray-600 mb-4 line-clamp-3">
         {description}
       </p>
-      <div className="inline-flex items-center text-blue-600 opacity-75 group-hover:opacity-100 transition-opacity">
+      <div className="inline-flex items-center text-accent opacity-75 group-hover:opacity-100 transition-opacity">
         <span className="text-sm font-medium">Download Free</span>
         <ExternalLink className="w-3 h-3 ml-1 transition-transform group-hover:translate-x-1" />
       </div>
@@ -88,7 +88,7 @@ export default function ProductsSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="inline-flex items-center justify-center gap-2 text-blue-600 font-medium mb-4">
+          <div className="inline-flex items-center justify-center gap-2 text-accent font-medium mb-4">
             <Gift className="w-5 h-5" />
             <span>Community Apps</span>
           </div>
