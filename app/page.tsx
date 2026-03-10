@@ -2,19 +2,7 @@
 
 import { motion } from "framer-motion"
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
-import CodeIcon from '@mui/icons-material/Code'
-import EcoIcon from '@mui/icons-material/Eco'
-import BoltIcon from '@mui/icons-material/Bolt'
-import PeopleIcon from '@mui/icons-material/People'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import TrendingUpIcon from '@mui/icons-material/TrendingUp'
-import SecurityIcon from '@mui/icons-material/Security'
-import SmartphoneIcon from '@mui/icons-material/Smartphone'
-import PublicIcon from '@mui/icons-material/Public'
-import PsychologyIcon from '@mui/icons-material/Psychology'
-import MemoryIcon from '@mui/icons-material/Memory'
-import GpsFixedIcon from '@mui/icons-material/GpsFixed'
-import BarChartIcon from '@mui/icons-material/BarChart'
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Header from "@/components/Header"
