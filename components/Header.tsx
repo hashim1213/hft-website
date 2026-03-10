@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, ChevronDown } from "lucide-react";
+import MenuIcon from '@mui/icons-material/Menu';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
@@ -25,27 +26,29 @@ export default function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      setScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <header className="fixed w-full z-50 pt-6 pb-2">
-      <div className={`container mx-auto px-4 md:px-6 transition-all duration-300 rounded-2xl border border-accent ${
-        scrolled ? "bg-white/80 backdrop-blur-md shadow-md" : "bg-white"
-      }`}>
-        <div className="flex items-center h-16 justify-between px-6">
+    <header className={`fixed w-full z-50 transition-all duration-300 ${
+      scrolled
+        ? "bg-white/95 backdrop-blur-lg shadow-sm border-b border-gray-100"
+        : "bg-white/80 backdrop-blur-md"
+    }`}>
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="flex items-center h-20 justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <div className="relative h-12 w-36">
+            <div className="relative h-10 w-32">
               <Image
                 src="/logo2.png"
-                alt="Bytesavy Logo"
+                alt="Bytesavy Technologies"
                 fill
                 priority
-                sizes="144px"
+                sizes="128px"
                 style={{ objectFit: "contain" }}
                 className="transition-transform duration-300 hover:scale-105"
               />
@@ -53,15 +56,14 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8">
+          <nav className="hidden lg:flex items-center space-x-1">
             {NAVIGATION_LINKS.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
-                className="group inline-flex items-center text-base font-bold text-primary hover:text-primary/80 transition-colors relative px-4 py-2 rounded-xl"
+                className="relative text-sm font-medium text-gray-700 hover:text-primary transition-colors px-4 py-2 rounded-lg hover:bg-gray-50"
               >
                 {link.name}
-                <span className="absolute bottom-0 left-0 w-0 h-full bg-primary/5 rounded-xl -z-10 transition-all duration-300 ease-out group-hover:w-full" />
               </Link>
             ))}
 
@@ -73,102 +75,111 @@ export default function Header() {
             >
               <Link
                 href="/product"
-                className="group inline-flex items-center text-base font-bold text-primary hover:text-primary/80 transition-colors relative px-4 py-2 rounded-xl"
+                className="relative inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary transition-colors px-4 py-2 rounded-lg hover:bg-gray-50"
               >
                 Solutions
-                <ChevronDown className={`ml-1 h-4 w-4 transition-transform ${solutionsOpen ? 'rotate-180' : ''}`} />
-                <span className="absolute bottom-0 left-0 w-0 h-full bg-primary/5 rounded-xl -z-10 transition-all duration-300 ease-out group-hover:w-full" />
+                <KeyboardArrowDownIcon sx={{ fontSize: 16, marginLeft: '0.25rem' }} className={`transition-transform duration-200 ${solutionsOpen ? 'rotate-180' : ''}`} />
               </Link>
 
               {solutionsOpen && (
-                <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50">
+                <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-100 py-3 animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="px-3 pb-2 mb-2 border-b border-gray-100">
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Our Solutions</p>
+                  </div>
                   {SOLUTIONS_LINKS.map((solution) => (
                     <Link
                       key={solution.name}
                       href={solution.href}
-                      className="block px-4 py-3 text-sm font-medium text-gray-700 hover:bg-primary/5 hover:text-primary transition-colors"
+                      className="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors rounded-md mx-2"
                     >
                       {solution.name}
                     </Link>
                   ))}
+                  <div className="mt-3 pt-3 border-t border-gray-100 mx-2">
+                    <Link
+                      href="/product"
+                      className="block px-4 py-2.5 text-sm font-medium text-primary hover:bg-primary/5 transition-colors rounded-md"
+                    >
+                      View All Solutions →
+                    </Link>
+                  </div>
                 </div>
               )}
             </div>
+          </nav>
 
-            {/* Contact Button */}
+          {/* Right Side Actions */}
+          <div className="hidden lg:flex items-center gap-3">
             <Link href="/contact">
               <Button
-                variant="default"
-                className="group bg-secondary text-secondary-foreground hover:bg-secondary/90 transition-all duration-300 rounded-xl px-6 font-bold"
+                className="bg-primary hover:bg-primary/90 text-white shadow-sm text-sm font-medium px-6"
               >
-                Contact
+                Get Started
               </Button>
             </Link>
-          </nav>
+          </div>
 
           {/* Mobile menu */}
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden rounded-xl">
-                <Menu className="h-6 w-6" />
+              <Button variant="ghost" size="icon" className="lg:hidden">
+                <MenuIcon sx={{ fontSize: 24 }} />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right">
-              <SheetHeader>
-                <SheetTitle>Menu</SheetTitle>
+            <SheetContent side="right" className="w-full sm:w-96">
+              <SheetHeader className="border-b pb-4">
+                <SheetTitle className="text-left">Menu</SheetTitle>
               </SheetHeader>
-              <nav className="flex flex-col gap-6 mt-8">
+              <nav className="flex flex-col gap-2 mt-6">
                 {NAVIGATION_LINKS.map((link) => (
                   <Link
                     key={link.name}
                     href={link.href}
-                    className="text-lg font-bold text-primary hover:text-primary/80 transition-colors group flex items-center gap-2 px-4 py-2 rounded-xl relative"
+                    className="text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors px-4 py-3 rounded-lg"
                   >
                     {link.name}
-                    <span className="absolute bottom-0 left-0 w-0 h-full bg-primary/5 rounded-xl -z-10 transition-all duration-300 group-hover:w-full" />
                   </Link>
                 ))}
 
                 {/* Solutions Dropdown for Mobile */}
-                <div>
-                  <div className="flex items-center gap-2">
-                    <Link
-                      href="/product"
-                      className="flex-1 text-lg font-bold text-primary hover:text-primary/80 transition-colors group px-4 py-2 rounded-xl relative"
-                    >
-                      Solutions
-                      <span className="absolute bottom-0 left-0 w-0 h-full bg-primary/5 rounded-xl -z-10 transition-all duration-300 group-hover:w-full" />
-                    </Link>
-                    <button
-                      onClick={() => setSolutionsOpen(!solutionsOpen)}
-                      className="px-2 py-2 text-primary hover:text-primary/80 transition-colors"
-                    >
-                      <ChevronDown className={`h-4 w-4 transition-transform ${solutionsOpen ? 'rotate-180' : ''}`} />
-                    </button>
-                  </div>
+                <div className="border-t border-b py-2 my-2">
+                  <button
+                    onClick={() => setSolutionsOpen(!solutionsOpen)}
+                    className="w-full flex items-center justify-between text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors px-4 py-3 rounded-lg"
+                  >
+                    <span>Solutions</span>
+                    <KeyboardArrowDownIcon sx={{ fontSize: 16 }} className={`transition-transform ${solutionsOpen ? 'rotate-180' : ''}`} />
+                  </button>
                   {solutionsOpen && (
-                    <div className="ml-4 mt-2 flex flex-col gap-2">
+                    <div className="ml-4 mt-2 flex flex-col gap-1">
                       {SOLUTIONS_LINKS.map((solution) => (
                         <Link
                           key={solution.name}
                           href={solution.href}
-                          className="text-base font-medium text-gray-700 hover:text-primary transition-colors px-4 py-2 rounded-lg hover:bg-primary/5"
+                          className="text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50 transition-colors px-4 py-2.5 rounded-lg"
                         >
                           {solution.name}
                         </Link>
                       ))}
+                      <Link
+                        href="/product"
+                        className="text-sm font-medium text-primary hover:bg-primary/5 transition-colors px-4 py-2.5 rounded-lg mt-1"
+                      >
+                        View All Solutions →
+                      </Link>
                     </div>
                   )}
                 </div>
 
-                <Link href="/contact" className="mt-4">
-                  <Button
-                    variant="default"
-                    className="w-full group bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-xl font-bold"
-                  >
-                    Contact
-                  </Button>
-                </Link>
+                <div className="mt-4">
+                  <Link href="/contact">
+                    <Button
+                      className="w-full bg-primary hover:bg-primary/90 text-white text-sm font-medium"
+                    >
+                      Get Started
+                    </Button>
+                  </Link>
+                </div>
               </nav>
             </SheetContent>
           </Sheet>

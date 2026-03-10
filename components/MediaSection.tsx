@@ -36,7 +36,7 @@ const MediaSection = () => {
   ];
 
   return (
-    <section className="w-full py-8 bg-gray-50 border-t border-gray-100">
+    <section className="w-full py-8 bg-white border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <p className="text-lg font-semibold text-gray-600 mb-6 text-center">Featured In</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-8 items-center justify-items-center">

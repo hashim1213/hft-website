@@ -1,7 +1,20 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Sparkles, ArrowRight } from "lucide-react"
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import CodeIcon from '@mui/icons-material/Code'
+import EcoIcon from '@mui/icons-material/Eco'
+import BoltIcon from '@mui/icons-material/Bolt'
+import PeopleIcon from '@mui/icons-material/People'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import TrendingUpIcon from '@mui/icons-material/TrendingUp'
+import SecurityIcon from '@mui/icons-material/Security'
+import SmartphoneIcon from '@mui/icons-material/Smartphone'
+import PublicIcon from '@mui/icons-material/Public'
+import PsychologyIcon from '@mui/icons-material/Psychology'
+import MemoryIcon from '@mui/icons-material/Memory'
+import GpsFixedIcon from '@mui/icons-material/GpsFixed'
+import BarChartIcon from '@mui/icons-material/BarChart'
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Header from "@/components/Header"
@@ -11,36 +24,24 @@ import BlogSection from "@/components/BlogSection"
 import Image from "next/image"
 import MediaSection from '@/components/MediaSection'
 import Script from 'next/script'
-import ServicesSection from "@/components/Services"
-import { organizationSchema, localBusinessSchema, faqSchema, howToSchema, breadcrumbSchema } from "@/lib/structured-data"
-import { useState, useEffect } from "react"
+import { organizationSchema, localBusinessSchema, faqSchema, howToSchema } from "@/lib/structured-data"
+import { useState } from "react"
+import Orb from "@/components/Orb"
 
 const fadeInUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 }
-}
-
-const fadeInRight = {
-  hidden: { opacity: 0, x: 20 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.6 }}
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 }}
 }
 
 const staggerChildren = {
   visible: {
     transition: {
-      staggerChildren: 0.2
+      staggerChildren: 0.15
     }
   }
 }
 
-// Hero slideshow images
-const heroImages = [
-  "/hero1.jpg",
-  "/hero2.jpg",
-  "/hero3.jpg"
-]
-
-// Comprehensive JSON-LD Schema for SEO, AEO, and GEO
+// JSON-LD Schema for SEO
 const jsonLdGraph = {
   "@context": "https://schema.org",
   "@graph": [
@@ -52,65 +53,19 @@ const jsonLdGraph = {
       "@type": "WebSite",
       "@id": "https://bytesavy.com/#website",
       "url": "https://bytesavy.com",
-      "name": "Bytesavy - Custom Software Development & AI Solutions in Canada",
-      "description": "Leading Canadian software development company offering custom web apps, mobile applications, AI integration, and enterprise solutions. Serving businesses across Toronto, Vancouver, Montreal, Calgary, and all of Canada.",
+      "name": "Bytesavy Technologies - Agricultural Software Development Partner",
+      "description": "We accelerate operational efficiency and growth for agricultural organizations with custom software solutions built for real-world conditions.",
       "publisher": {
         "@id": "https://bytesavy.com/#organization"
       },
-      "inLanguage": "en-CA",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": {
-          "@type": "EntryPoint",
-          "urlTemplate": "https://bytesavy.com/search?q={search_term_string}"
-        },
-        "query-input": "required name=search_term_string"
-      }
-    },
-    {
-      "@type": "ProfessionalService",
-      "name": "Bytesavy Software Development Services",
-      "priceRange": "$$$$",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "123 Innovation Drive",
-        "addressLocality": "Toronto",
-        "addressRegion": "ON",
-        "postalCode": "M5V 3A8",
-        "addressCountry": "CA"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 43.6426,
-        "longitude": -79.3871
-      },
-      "url": "https://bytesavy.com",
-      "telephone": "+1-647-XXX-XXXX",
-      "openingHoursSpecification": {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        "opens": "09:00",
-        "closes": "18:00"
-      }
+      "inLanguage": "en-CA"
     }
   ]
 };
 
 export default function Website() {
-  const [currentSlide, setCurrentSlide] = useState(0)
-
-  // Auto-rotate slideshow
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroImages.length)
-    }, 5000) // Change slide every 5 seconds
-
-    return () => clearInterval(timer)
-  }, [])
-
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Enhanced Structured Data for AI Understanding */}
+    <div className="flex flex-col min-h-screen bg-white">
       <Script
         id="json-ld-graph"
         type="application/ld+json"
@@ -121,205 +76,468 @@ export default function Website() {
       <Header />
 
       <main className="flex-1">
+        {/* Hero Section */}
+        <section className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden bg-white">
+          {/* Orb Background */}
+          <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/3 w-[1080px] h-[1080px] pointer-events-auto opacity-40 hidden lg:block">
+            <Orb
+              hue={91}
+              hoverIntensity={0.7}
+              rotateOnHover
+              forceHoverState={false}
+            />
+          </div>
 
-        {/* Hero Section - Reduced padding */}
-        <section
-          id="hero"
-          className="pt-24 pb-32 md:pt-32 md:pb-40 overflow-hidden bg-white relative"
-          aria-label="Hero section"
-        >
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-              {/* Left column - Text content */}
+          <div className="container mx-auto px-4 md:px-6 relative z-10">
+            <div className="max-w-4xl">
               <motion.div
-                className="max-w-xl"
                 initial="hidden"
                 animate="visible"
                 variants={staggerChildren}
+                className="space-y-8"
               >
                 <motion.h1
                   variants={fadeInUp}
-                  className="text-4xl md:text-5xl lg:text-6xl font-bold text-secondary mb-6 tracking-tight"
+                  className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 tracking-tight leading-[1.1]"
                 >
-                  Your <span className="italic font-serif">Operations Have Evolved</span>. Your Software Should Too.
+                  The agricultural software modernization partner
                 </motion.h1>
 
                 <motion.p
                   variants={fadeInUp}
-                  className="text-lg text-primary mb-8 leading-relaxed"
+                  className="text-xl md:text-2xl text-gray-600 max-w-2xl leading-relaxed"
                 >
-                  Bytesavy partners with agribusiness and industrial organizations to replace outdated systems with practical, modern software built to perform in real-world conditions from day one.
+                  Bytesavy Technologies accelerates operational efficiency and growth with custom software solutions built for agriculture.
                 </motion.p>
 
                 <motion.div
                   variants={fadeInUp}
-                  className="flex flex-col sm:flex-row gap-4"
+                  className="pt-2"
                 >
-                  <BookingDialog
-                    onOpenChange={() => {}}
-                  />
-
-                  <Link href="/product" passHref>
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="group border-accent text-accent hover:bg-accent hover:text-accent-foreground w-full sm:w-auto"
-                    >
-                      Our Solutions
-                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
-                    </Button>
-                  </Link>
+                  <BookingDialog onOpenChange={() => {}} />
                 </motion.div>
 
-                {/* Trusted by section - integrated into hero */}
+                {/* Trusted by logos */}
                 <motion.div
                   variants={fadeInUp}
-                  className="mt-8 pt-6 border-t border-gray-100"
+                  className="pt-8"
                 >
-                  <div className="flex flex-wrap items-center gap-8 md:gap-12">
-                    {/* Manitoba Crop Alliance Logo */}
-                    <div className="grayscale hover:grayscale-0 transition-all duration-300 opacity-50 hover:opacity-100">
+                  <p className="text-sm text-gray-500 mb-6">Trusted by leading agricultural organizations</p>
+                  <div className="flex flex-wrap items-center gap-12">
+                    <div className="grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
                       <Image
                         src="/MCA_logo.png"
                         alt="Manitoba Crop Alliance"
                         width={140}
-                        height={48}
-                        className="h-9 w-auto object-contain"
+                        height={50}
+                        className="h-10 w-auto object-contain"
                       />
                     </div>
-
-                    {/* Alberta Grains Logo */}
-                    <div className="grayscale hover:grayscale-0 transition-all duration-300 opacity-50 hover:opacity-100">
+                    <div className="grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
                       <Image
                         src="/ab_grains.png"
                         alt="Alberta Grains"
                         width={140}
-                        height={48}
+                        height={50}
                         className="h-12 w-auto object-contain"
                       />
                     </div>
-
-                    {/* South East Research Farm Logo */}
-                    <div className="grayscale hover:grayscale-0 transition-all duration-300 opacity-50 hover:opacity-100">
+                    <div className="grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
                       <Image
                         src="/serf.jpg"
                         alt="South East Research Farm"
                         width={140}
-                        height={48}
+                        height={50}
                         className="h-12 w-auto object-contain"
                       />
                     </div>
                   </div>
                 </motion.div>
               </motion.div>
+            </div>
+          </div>
+        </section>
 
-              {/* Right column - Image Slideshow */}
-              <motion.div
-                className="relative"
-                initial="hidden"
-                animate="visible"
-                variants={fadeInRight}
-              >
-                <div className="relative rounded-2xl overflow-hidden shadow-2xl h-[400px] md:h-[500px]">
-                  {heroImages.map((image, index) => (
-                    <div
-                      key={index}
-                      className={`absolute inset-0 transition-opacity duration-1000 ${
-                        index === currentSlide ? 'opacity-100' : 'opacity-0'
-                      }`}
-                    >
-                      <Image
-                        src={image}
-                        alt={`ByteSavy - Custom Software Development ${index + 1}`}
-                        fill
-                        className="object-cover rounded-2xl"
-                        priority={index === 0}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-tr from-primary/30 via-accent/10 to-transparent rounded-2xl" />
-                    </div>
-                  ))}
+        {/* Software Lifecycle Journey - Visual Timeline with Curve */}
+        <section className="relative py-24 bg-white overflow-hidden">
+          <div className="container mx-auto px-4 md:px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-8"
+            >
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                Software that supports your <span className="italic">entire operation</span>
+              </h2>
+              <p className="text-lg text-gray-600">End-to-end solutions across your agricultural workflow</p>
+            </motion.div>
 
-                  {/* Slideshow dots */}
-                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
-                    {heroImages.map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setCurrentSlide(index)}
-                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                          index === currentSlide
-                            ? 'bg-white w-8'
-                            : 'bg-white/50 hover:bg-white/75'
-                        }`}
-                        aria-label={`Go to slide ${index + 1}`}
-                      />
+            {/* Desktop horizontal curve */}
+            <div className="max-w-6xl mx-auto relative hidden md:block" style={{ height: '180px' }}>
+              {/* SVG with Curve Path */}
+              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1200 180" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                  <linearGradient id="curveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="hsl(var(--accent))" stopOpacity="0.8" />
+                    <stop offset="25%" stopColor="hsl(var(--primary))" stopOpacity="0.9" />
+                    <stop offset="50%" stopColor="hsl(var(--accent))" stopOpacity="0.8" />
+                    <stop offset="75%" stopColor="hsl(var(--primary))" stopOpacity="0.9" />
+                    <stop offset="100%" stopColor="hsl(var(--accent))" stopOpacity="0.8" />
+                  </linearGradient>
+                </defs>
+
+                {/* Main curve path */}
+                <path
+                  d="M 50 70 Q 150 30, 250 50 Q 350 70, 480 40 Q 610 10, 730 35 Q 850 60, 960 40 Q 1070 20, 1150 10"
+                  stroke="url(#curveGradient)"
+                  strokeWidth="5"
+                  fill="none"
+                  strokeLinecap="round"
+                />
+
+                {/* Vertical dotted lines from curve to text */}
+                <line x1="140" y1="57" x2="140" y2="110" stroke="#D1D5DB" strokeWidth="2" strokeDasharray="4 4" opacity="0.5" />
+                <line x1="360" y1="57" x2="360" y2="110" stroke="#D1D5DB" strokeWidth="2" strokeDasharray="4 4" opacity="0.5" />
+                <line x1="600" y1="20" x2="600" y2="110" stroke="#D1D5DB" strokeWidth="2" strokeDasharray="4 4" opacity="0.5" />
+                <line x1="850" y1="50" x2="850" y2="110" stroke="#D1D5DB" strokeWidth="2" strokeDasharray="4 4" opacity="0.5" />
+                <line x1="1080" y1="17" x2="1080" y2="110" stroke="#D1D5DB" strokeWidth="2" strokeDasharray="4 4" opacity="0.5" />
+              </svg>
+
+              {/* Text labels positioned below */}
+              <div className="absolute bottom-0 left-0 right-0">
+                {[
+                  {
+                    title: "Plan",
+                    description: "Strategic planning and requirements gathering.",
+                    xPos: 140
+                  },
+                  {
+                    title: "Build",
+                    description: "Custom development tailored to your needs.",
+                    xPos: 360
+                  },
+                  {
+                    title: "Deploy",
+                    description: "Seamless integration with existing systems.",
+                    xPos: 600
+                  },
+                  {
+                    title: "Optimize",
+                    description: "Continuous improvement and scaling.",
+                    xPos: 850
+                  },
+                  {
+                    title: "Support",
+                    description: "Ongoing maintenance and expert assistance.",
+                    xPos: 1080
+                  }
+                ].map((stage, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.15 }}
+                    className="absolute text-center"
+                    style={{
+                      left: `calc(${(stage.xPos / 1200) * 100}% - 90px)`,
+                      width: '180px'
+                    }}
+                  >
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">{stage.title}</h3>
+                    <p className="text-sm text-gray-600 leading-relaxed hidden md:block">{stage.description}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Mobile vertical layout */}
+            <div className="md:hidden max-w-md mx-auto">
+              {[
+                {
+                  title: "Plan",
+                  description: "Strategic planning and requirements gathering."
+                },
+                {
+                  title: "Build",
+                  description: "Custom development tailored to your needs."
+                },
+                {
+                  title: "Deploy",
+                  description: "Seamless integration with existing systems."
+                },
+                {
+                  title: "Optimize",
+                  description: "Continuous improvement and scaling."
+                },
+                {
+                  title: "Support",
+                  description: "Ongoing maintenance and expert assistance."
+                }
+              ].map((stage, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="relative flex items-start gap-4 mb-8 last:mb-0"
+                >
+                  {/* Vertical line with dot */}
+                  <div className="flex flex-col items-center">
+                    <div className="w-4 h-4 rounded-full bg-accent flex-shrink-0"></div>
+                    {index < 4 && (
+                      <div className="w-0.5 h-20 bg-gradient-to-b from-accent to-primary opacity-50 mt-2"></div>
+                    )}
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 pt-0">
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">{stage.title}</h3>
+                    <p className="text-sm text-gray-600 leading-relaxed">{stage.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Services Grid - Card Based */}
+        <section className="py-24 bg-white">
+          <div className="container mx-auto px-4 md:px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mb-16"
+            >
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                The seamless blend of technology, data and agricultural expertise
+              </h2>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 gap-6 max-w-5xl">
+              {[
+                {
+                  title: "Custom Software Development",
+                  description: "Purpose-built applications that modernize agricultural operations, reduce manual work and drive measurable results.",
+                  links: [
+                    { name: "Web Development", href: "/web" },
+                    { name: "Mobile Applications", href: "/mobile" },
+                    { name: "System Integration", href: "/solutions" }
+                  ]
+                },
+                {
+                  title: "Process Automation",
+                  description: "Intelligent automation and AI-powered workflows that eliminate repetitive tasks and improve accuracy across your operations.",
+                  links: [
+                    { name: "Workflow Automation", href: "/ai" },
+                    { name: "Data Processing", href: "/ai" }
+                  ]
+                },
+                {
+                  title: "Legacy System Modernization",
+                  description: "Transform outdated systems into modern, cloud-based solutions that scale with your business and integrate seamlessly.",
+                  links: [
+                    { name: "System Modernization", href: "/consulting" },
+                    { name: "Cloud Migration", href: "/development" }
+                  ]
+                },
+                {
+                  title: "Support & Maintenance",
+                  description: "Expert ongoing support and proactive maintenance to ensure your software performs reliably when you need it most.",
+                  links: [
+                    { name: "Technical Support", href: "/support" },
+                    { name: "System Monitoring", href: "/support" }
+                  ]
+                }
+              ].map((service, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="bg-white border border-gray-200 rounded-lg p-8 hover:shadow-md transition-shadow"
+                >
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">{service.title}</h3>
+                  <p className="text-gray-600 mb-6 leading-relaxed">{service.description}</p>
+                  <div className="space-y-3">
+                    {service.links.map((link, i) => (
+                      <Link
+                        key={i}
+                        href={link.href}
+                        className="flex items-center text-primary hover:text-primary/80 font-medium group"
+                      >
+                        <span>{link.name}</span>
+                        <ArrowForwardIcon sx={{ fontSize: 16, marginLeft: '0.5rem' }} className="transition-transform group-hover:translate-x-1" />
+                      </Link>
                     ))}
                   </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Case Study / Results Section - Dark with Image */}
+        <section className="py-24 bg-gray-900 text-white relative overflow-hidden">
+          <div className="container mx-auto px-4 md:px-6">
+            <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+              >
+                <div className="mb-4">
+                  <span className="inline-block px-3 py-1 bg-accent/20 text-accent rounded-full text-sm font-medium">
+                    CASE STUDY
+                  </span>
                 </div>
+                <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                  Delivering practical software with real-world impact
+                </h2>
+                <p className="text-lg text-gray-300 mb-6 leading-relaxed">
+                  Our custom solutions help agricultural organizations modernize operations, streamline workflows, and achieve measurable results from day one.
+                </p>
+                <div className="space-y-4 mb-8">
+                  <div className="flex items-start gap-3">
+                    <CheckCircleIcon sx={{ fontSize: 24, color: 'hsl(var(--accent))', marginTop: '0.25rem' }} className="flex-shrink-0" />
+                    <div>
+                      <p className="font-semibold">Reduced data entry time by 60%</p>
+                      <p className="text-sm text-gray-400">Through intelligent automation and process optimization</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircleIcon sx={{ fontSize: 24, color: 'hsl(var(--accent))', marginTop: '0.25rem' }} className="flex-shrink-0" />
+                    <div>
+                      <p className="font-semibold">Improved reporting accuracy</p>
+                      <p className="text-sm text-gray-400">Real-time dashboards replacing manual spreadsheets</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircleIcon sx={{ fontSize: 24, color: 'hsl(var(--accent))', marginTop: '0.25rem' }} className="flex-shrink-0" />
+                    <div>
+                      <p className="font-semibold">Seamless mobile access</p>
+                      <p className="text-sm text-gray-400">Field teams working offline with automatic sync</p>
+                    </div>
+                  </div>
+                </div>
+                <Link href="/about">
+                  <Button className="bg-accent hover:bg-accent/90 text-white border-0">
+                    Learn more about our approach
+                    <ArrowForwardIcon sx={{ fontSize: 16, marginLeft: '0.5rem' }} />
+                  </Button>
+                </Link>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="relative h-96 md:h-[500px] rounded-lg overflow-hidden"
+              >
+                <Image
+                  src="/hero1.jpg"
+                  alt="Agricultural technology in action"
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent"></div>
               </motion.div>
             </div>
           </div>
+        </section>
 
-          {/* Wave Divider - Positioned at bottom of hero */}
-          <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0]" style={{ marginBottom: '-1px' }}>
-            {/* First Wave Layer (Green) - Bigger */}
-            <svg
-              className="block w-full h-[180px]"
-              viewBox="0 0 1200 120"
-              preserveAspectRatio="none"
-              xmlns="http://www.w3.org/2000/svg"
-              style={{ display: 'block' }}
-            >
-              <path
-                d="M0,0 Q300,50 600,20 T1200,0 L1200,120 L0,120 Z"
-                fill="#5EA852"
-                opacity="0.7"
-              />
-            </svg>
+        {/* Transformation Differentiators */}
+        <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
+          <div className="container mx-auto px-4 md:px-6">
+            <div className="max-w-5xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="mb-16"
+              >
+                <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                  Transformation built for agriculture
+                </h2>
+                <p className="text-xl text-gray-600">Our approach to agricultural software development</p>
+              </motion.div>
 
-            {/* Second Wave Layer (Primary Navy Blue) */}
-            <svg
-              className="block w-full h-[120px] -mt-28"
-              viewBox="0 0 1200 120"
-              preserveAspectRatio="none"
-              xmlns="http://www.w3.org/2000/svg"
-              style={{ display: 'block' }}
-            >
-              <path
-                d="M0,10 Q300,60 600,30 T1200,10 L1200,120 L0,120 Z"
-                fill="#01345F"
-                opacity="0.8"
-              />
-            </svg>
-
-            {/* Third Wave Layer (White - matches services bg) */}
-            <svg
-              className="block w-full h-[120px] -mt-24"
-              viewBox="0 0 1200 120"
-              preserveAspectRatio="none"
-              xmlns="http://www.w3.org/2000/svg"
-              style={{ display: 'block' }}
-            >
-              <path
-                d="M0,25 Q300,75 600,45 T1200,25 L1200,120 L0,120 Z"
-                fill="#ffffff"
-              />
-            </svg>
+              <div className="grid md:grid-cols-2 gap-8">
+                {[
+                  {
+                    title: "Agricultural expertise",
+                    description: "We understand the unique challenges of agricultural operations and build software that works in real-world field conditions."
+                  },
+                  {
+                    title: "Built to last",
+                    description: "No shortcuts. We create robust, maintainable software that performs reliably for years, not months."
+                  },
+                  {
+                    title: "Practical and outcome-focused",
+                    description: "Every feature serves a purpose. We focus on delivering tangible results that improve your bottom line."
+                  },
+                  {
+                    title: "Seamless integration",
+                    description: "Our solutions work with your existing systems and processes, minimizing disruption during implementation."
+                  }
+                ].map((item, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    className="flex gap-4"
+                  >
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center">
+                        <CheckCircleIcon sx={{ fontSize: 24, color: 'hsl(var(--accent))' }} />
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900 mb-2">{item.title}</h3>
+                      <p className="text-gray-600 leading-relaxed">{item.description}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* Services Section - Reduced spacing, added background */}
-        <section className="bg-white pt-0 md:pt-0 pb-12 md:pb-16">
-          <ServicesSection/>
+        {/* Final CTA - Green Accent */}
+        <section className="py-24 bg-accent relative overflow-hidden">
+          <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
+          <div className="container mx-auto px-4 md:px-6 relative z-10">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center max-w-3xl mx-auto"
+            >
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+                Ready to modernize your operations?
+              </h2>
+              <p className="text-xl text-white/90 mb-8">
+                Let's discuss how custom software can transform your agricultural business.
+              </p>
+              <BookingDialog onOpenChange={() => {}} />
+            </motion.div>
+          </div>
         </section>
 
-        {/* Blog Section - Clean spacing, removed weird bottom div */}
-        <section className="py-12 md:py-16 bg-white">
+        {/* Blog Section */}
+        <section className="py-24 bg-white">
           <div className="container mx-auto px-4 md:px-6">
             <BlogSection />
           </div>
         </section>
 
-        {/* Media Section - has its own padding and background */}
+        {/* Media Section */}
         <MediaSection />
       </main>
 

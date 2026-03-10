@@ -1,7 +1,12 @@
 'use client'
 
 import { useState } from "react"
-import * as Icons from "lucide-react"
+import CodeIcon from '@mui/icons-material/Code'
+import PsychologyIcon from '@mui/icons-material/Psychology'
+import BarChartIcon from '@mui/icons-material/BarChart'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
+import CircularProgress from '@mui/material/CircularProgress'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -36,17 +41,17 @@ const SERVICES: Service[] = [
   {
     title: "Software Development",
     description: "Discuss your software development needs",
-    icon: Icons.Code
+    icon: CodeIcon
   },
   {
     title: "AI Integration",
     description: "Explore how AI can enhance your software",
-    icon: Icons.Brain
+    icon: PsychologyIcon
   },
   {
     title: "Technical Consultation",
     description: "Get expert guidance on your tech strategy",
-    icon: Icons.BarChart
+    icon: BarChartIcon
   }
 ]
 
@@ -158,7 +163,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({ onOpenChange }) => {
       <DialogTrigger asChild>
         <Button className="bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all" size="lg">
           Book Free Consultation
-          <Icons.Calendar className="ml-2 h-4 w-4" />
+          <CalendarMonthIcon sx={{ fontSize: 16, marginLeft: '0.5rem' }} />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px]">
@@ -301,7 +306,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({ onOpenChange }) => {
               <Button type="submit" disabled={loading}>
                 {loading ? (
                   <>
-                    <Icons.Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <CircularProgress size={16} sx={{ marginRight: '0.5rem' }} />
                     Booking...
                   </>
                 ) : (
@@ -316,7 +321,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({ onOpenChange }) => {
         {step === 4 && (
           <div className="space-y-6 text-center">
             <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-              <Icons.Check className="h-8 w-8 text-green-600" />
+              <CheckCircleIcon sx={{ fontSize: 32, color: '#059669' }} />
             </div>
             <div className="space-y-2">
               <h3 className="text-lg font-semibold">Booking Request Received!</h3>

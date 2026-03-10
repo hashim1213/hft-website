@@ -1,7 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Check, ArrowRight } from 'lucide-react';
+import CheckIcon from '@mui/icons-material/Check';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
@@ -82,7 +83,7 @@ export default function ServicesSection() {
                   <ul className="space-y-3">
                     {service.features.map((feature, i) => (
                       <li key={i} className="flex items-start gap-2">
-                        <Check className="w-4 h-4 text-primary mt-0.5" />
+                        <CheckIcon sx={{ fontSize: 16, color: 'hsl(var(--primary))', marginTop: '0.125rem' }} />
                         <span className="text-sm text-gray-700">{feature}</span>
                       </li>
                     ))}
@@ -103,7 +104,7 @@ export default function ServicesSection() {
           <Button asChild size="lg">
             <Link href="/product">
               Explore Our Services
-              <ArrowRight className="ml-2 h-4 w-4" />
+              <ArrowForwardIcon sx={{ fontSize: 16, marginLeft: '0.5rem' }} />
             </Link>
           </Button>
         </motion.div>
