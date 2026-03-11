@@ -10,7 +10,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 
 const NAVIGATION_LINKS = [
   { name: "Home", href: "/" },
-  { name: "Blog", href: "/portal" },
+  { name: "Blog", href: "/blog" },
   { name: "About", href: "/about" },
 ];
 

@@ -239,7 +239,7 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
         <main className="flex-1 pt-40 pb-20">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
-              <Link href="/portal" className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-8 transition-colors">
+              <Link href="/blog" className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-8 transition-colors">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to all articles
               </Link>
@@ -252,7 +252,7 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
               
               <div className="text-center mt-8">
                 <Button asChild>
-                  <Link href="/portal">
+                  <Link href="/blog">
                     View all articles
                   </Link>
                 </Button>
@@ -300,7 +300,7 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
     "isAccessibleForFree": "true",
     "isPartOf": {
       "@type": "Blog",
-      "@id": "https://bytesavy.com/portal"
+      "@id": "https://bytesavy.com/blog"
     }
   }
 
@@ -343,7 +343,7 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
         <article className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
             <Link 
-              href="/portal" 
+              href="/blog" 
               className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-8 transition-colors"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
@@ -505,7 +505,7 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
               <div className="mt-16 pt-8 border-t border-gray-200">
                 <div className="flex justify-center">
                   <Button asChild size="lg">
-                    <Link href="/portal" className="inline-flex items-center gap-2">
+                    <Link href="/blog" className="inline-flex items-center gap-2">
                       <ArrowLeft className="h-4 w-4" />
                       Back to all articles
                     </Link>

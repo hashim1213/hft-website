@@ -49,14 +49,14 @@ const generateSlugFromTitle = (title: string): string => {
 const BlogPostCard = ({ post }: { post: BlogPost }) => {
   // Use slug if available, otherwise fall back to id (for backward compatibility during migration)
   const postUrl = post.slug ? `/blog/${post.slug}` : `/blog/${post.id}`
-  
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
       viewport={{ once: true }}
-      className="group h-full border border-gray-200 rounded-xl overflow-hidden hover:border-primary/20 hover:shadow-md transition-all duration-200"
+      className="group h-full overflow-hidden hover:shadow-lg transition-all duration-200"
     >
       <Link href={postUrl} className="block h-full" aria-label={`Read ${post.title}`}>
         <div className="flex flex-col h-full">
@@ -70,9 +70,9 @@ const BlogPostCard = ({ post }: { post: BlogPost }) => {
               />
             </div>
           )}
-          
+
           <div className="flex flex-col p-6 flex-grow">
-            <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
+            <div className="flex items-center gap-2 text-sm text-gray-500 mb-4">
               <Clock className="h-4 w-4 text-primary" aria-hidden="true" />
               <span>{post.readTime}</span>
               <span className="mx-2" aria-hidden="true">•</span>
@@ -84,35 +84,16 @@ const BlogPostCard = ({ post }: { post: BlogPost }) => {
                 }).format(new Date(post.createdAt))}
               </time>
             </div>
-            
+
             <h3 className="text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors line-clamp-2 mb-3">
               {post.title}
             </h3>
-            
+
             <p className="text-gray-600 line-clamp-3 mb-4 flex-grow">
               {post.excerpt}
             </p>
-            
-            {post.tags && post.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-4">
-                {post.tags.slice(0, 3).map(tag => (
-                  <span
-                    key={tag}
-                    className="inline-flex px-2 py-1 text-xs text-primary bg-primary/10 rounded-full"
-                  >
-                    {tag}
-                  </span>
-                ))}
-                {post.tags.length > 3 && (
-                  <span className="inline-flex px-2 py-1 text-xs text-gray-500 bg-gray-100 rounded-full">
-                    +{post.tags.length - 3} more
-                  </span>
-                )}
-              </div>
-            )}
-            
-            <div className="flex items-center justify-between pt-4 mt-auto border-t border-gray-100">
-              <span className="text-sm font-medium text-gray-900">{post.author}</span>
+
+            <div className="flex items-center justify-end pt-4 mt-auto">
               <span className="inline-flex items-center gap-1 text-sm font-medium text-primary opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200">
                 Read article
                 <ArrowRight className="h-4 w-4" />
@@ -229,7 +210,7 @@ export default function BlogSection() {
             {posts.length > 0 && (
               <div className="mt-12 text-center">
                 <Link
-                  href="/portal"
+                  href="/blog"
                   className="inline-flex items-center text-primary hover:text-primary/80 font-medium transition-colors"
                 >
                   View all articles

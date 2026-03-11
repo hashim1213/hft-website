@@ -14,7 +14,7 @@ const sitePages = [
       { name: "Home", href: "/" },
       { name: "About", href: "/about" },
       { name: "Contact", href: "/contact" },
-      { name: "Blog", href: "/portal" },
+      { name: "Blog", href: "/blog" },
     ]
   },
   {
