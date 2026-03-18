@@ -72,7 +72,7 @@ interface FormData {
 }
 
 interface BookingDialogProps {
-  onOpenChange: (open: boolean) => void;
+  onOpenChange?: (open: boolean) => void;
 }
 
 const initialFormData: FormData = {

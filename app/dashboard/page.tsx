@@ -78,8 +78,29 @@ export default function Dashboard() {
   const router = useRouter()
   const [isClient, setIsClient] = useState(false)
 
+  // State management - MUST be declared before any conditional returns
+  const [posts, setPosts] = useState<BlogPost[]>([])
+  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([])
+  const [formData, setFormData] = useState({
+    title: "",
+    excerpt: "",
+    content: "",
+    category: "",
+    imageUrl: "",
+    tags: "",
+    author: "Bytesavy Team",
+  })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
+  const [editingPost, setEditingPost] = useState<BlogPost | null>(null)
+  const [isSheetOpen, setIsSheetOpen] = useState(false)
+  const [isFullscreen, setIsFullscreen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [activeTab, setActiveTab] = useState("all")
+
+  // Initialize Firebase on client side
   useEffect(() => {
-    // Initialize Firebase on client side only
     if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
       try {
         const firebaseConfig = {
@@ -102,42 +123,12 @@ export default function Dashboard() {
     setIsClient(true)
   }, [])
 
-  if (!isClient || !db) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Dashboard Unavailable</h1>
-          <p className="text-gray-600">Firebase configuration is required</p>
-        </div>
-      </div>
-    )
-  }
-
-  // State management
-  const [posts, setPosts] = useState<BlogPost[]>([])
-  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([])
-  const [formData, setFormData] = useState({
-    title: "",
-    excerpt: "",
-    content: "",
-    category: "",
-    imageUrl: "",
-    tags: "",
-    author: "Bytesavy Team",
-  })
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
-  const [success, setSuccess] = useState("")
-  const [editingPost, setEditingPost] = useState<BlogPost | null>(null)
-  const [isSheetOpen, setIsSheetOpen] = useState(false)
-  const [isFullscreen, setIsFullscreen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [activeTab, setActiveTab] = useState("all")
-
   // Load posts on mount
   useEffect(() => {
-    loadPosts()
-  }, [])
+    if (isClient && db) {
+      loadPosts()
+    }
+  }, [isClient])
 
   // Filter posts based on search and tab
   useEffect(() => {
@@ -353,6 +344,18 @@ export default function Dashboard() {
       return () => clearTimeout(timer)
     }
   }, [success, error])
+
+  // Show loading state while Firebase initializes
+  if (!isClient || !db) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Loading Dashboard...</h1>
+          <p className="text-gray-600">Initializing Firebase...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
