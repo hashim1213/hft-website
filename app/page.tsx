@@ -64,9 +64,9 @@ export default function Website() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden bg-white">
+        <section className="relative pt-40 pb-24 md:pt-48 md:pb-32 overflow-hidden bg-white">
           {/* Botanical Illustration Background */}
-          <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-32 w-[1080px] h-[1080px] pointer-events-none opacity-70 hidden lg:block">
+          <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-40 w-[1080px] h-[1080px] pointer-events-none opacity-70 hidden lg:block">
             <Image
               src="/canola_wire.png"
               alt="Canola botanical illustration"

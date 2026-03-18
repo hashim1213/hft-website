@@ -135,22 +135,20 @@ export default function Footer() {
         {/* Bottom Section */}
         <div className="border-t border-gray-800 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <span className="text-sm text-gray-400">
-                © {new Date().getFullYear()} Bytesavy. All rights reserved.
-              </span>
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-500">Made in</span>
-                <div className="relative h-4 w-6">
-                  <Image
-                    src="/canada-flag.jpeg"
-                    alt="Canada"
-                    fill
-                    className="object-contain rounded"
-                  />
-                </div>
-                <span className="text-xs text-gray-500 font-medium">Canada</span>
+            <span className="text-sm text-gray-400">
+              © {new Date().getFullYear()} Bytesavy. All rights reserved.
+            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-500">Made in</span>
+              <div className="relative h-4 w-6">
+                <Image
+                  src="/canada-flag.jpeg"
+                  alt="Canada"
+                  fill
+                  className="object-contain rounded"
+                />
               </div>
+              <span className="text-xs text-gray-500 font-medium">Canada</span>
             </div>
             <div className="flex items-center gap-6">
               {FOOTER_LINKS.legal.map((link) => (

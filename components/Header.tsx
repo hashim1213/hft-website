@@ -7,6 +7,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import TopBar from './TopBar';
 
 const NAVIGATION_LINKS = [
   { name: "Home", href: "/" },
@@ -33,11 +34,16 @@ export default function Header() {
   }, []);
 
   return (
-    <header className={`fixed w-full z-50 transition-all duration-300 ${
-      scrolled
-        ? "bg-white/95 backdrop-blur-lg shadow-sm border-b border-gray-100"
-        : "bg-white/80 backdrop-blur-md"
-    }`}>
+    <header className="fixed w-full z-50">
+      {/* Top Bar */}
+      <TopBar />
+
+      {/* Main Header */}
+      <div className={`transition-all duration-300 ${
+        scrolled
+          ? "bg-white/95 backdrop-blur-lg shadow-sm border-b border-gray-100"
+          : "bg-white/80 backdrop-blur-md"
+      }`}>
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center h-20 justify-between">
           {/* Logo */}
@@ -112,9 +118,9 @@ export default function Header() {
           <div className="hidden lg:flex items-center gap-3">
             <Link href="/contact">
               <Button
-                className="bg-primary hover:bg-primary/90 text-white shadow-sm text-sm font-medium px-6"
+                className="bg-accent hover:bg-accent/90 text-white shadow-sm text-sm font-medium px-6"
               >
-                Get Started
+                Contact Us
               </Button>
             </Link>
           </div>
@@ -174,9 +180,9 @@ export default function Header() {
                 <div className="mt-4">
                   <Link href="/contact">
                     <Button
-                      className="w-full bg-primary hover:bg-primary/90 text-white text-sm font-medium"
+                      className="w-full bg-accent hover:bg-accent/90 text-white text-sm font-medium"
                     >
-                      Get Started
+                      Contact Us
                     </Button>
                   </Link>
                 </div>
@@ -184,6 +190,7 @@ export default function Header() {
             </SheetContent>
           </Sheet>
         </div>
+      </div>
       </div>
     </header>
   );

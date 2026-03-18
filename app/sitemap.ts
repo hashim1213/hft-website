@@ -30,6 +30,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { route: '', priority: 1.0, changeFrequency: 'daily' as const },
     { route: '/about', priority: 0.9, changeFrequency: 'monthly' as const },
     { route: '/contact', priority: 0.9, changeFrequency: 'monthly' as const },
+
+    // Location pages - High priority for SEO
+    { route: '/locations/manitoba', priority: 0.95, changeFrequency: 'weekly' as const },
+    { route: '/locations/alberta', priority: 0.95, changeFrequency: 'weekly' as const },
+    { route: '/locations/saskatchewan', priority: 0.95, changeFrequency: 'weekly' as const },
+
+    // Service pages
     { route: '/services', priority: 0.9, changeFrequency: 'weekly' as const },
     { route: '/web', priority: 0.9, changeFrequency: 'weekly' as const },
     { route: '/mobile', priority: 0.9, changeFrequency: 'weekly' as const },
@@ -37,9 +44,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { route: '/consulting', priority: 0.9, changeFrequency: 'weekly' as const },
     { route: '/development', priority: 0.9, changeFrequency: 'weekly' as const },
     { route: '/support', priority: 0.8, changeFrequency: 'weekly' as const },
+    { route: '/solutions', priority: 0.9, changeFrequency: 'weekly' as const },
+
+    // Blog and other pages
     { route: '/blog', priority: 0.8, changeFrequency: 'daily' as const },
     { route: '/canmade', priority: 0.7, changeFrequency: 'monthly' as const },
     { route: '/privacy', priority: 0.5, changeFrequency: 'yearly' as const },
+    { route: '/site-pages', priority: 0.5, changeFrequency: 'yearly' as const },
   ]
 
   const staticSitemap = staticRoutes.map(({ route, priority, changeFrequency }) => ({

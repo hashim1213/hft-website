@@ -39,10 +39,10 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://bytesavy.com"),
   title: {
-    default: "Bytesavy | AI-Powered Digital Solutions & Software Development",
-    template: "%s | Bytesavy - Expert Digital Solutions"
+    default: "Bytesavy | Custom Software Development Company | Manitoba, Alberta, Saskatchewan",
+    template: "%s | Bytesavy - Agricultural Software Development Experts"
   },
-  description: "Bytesavy is a premier technology company specializing in AI-driven digital solutions, custom web development, mobile applications, and enterprise software. We transform businesses through innovative technology solutions, machine learning implementations, and cutting-edge software development. Trusted by startups and Fortune 500 companies.",
+  description: "Leading agricultural software development company serving Manitoba, Alberta, Saskatchewan, and across Canada. Custom software development, app development, and agtech solutions for farming operations. Expert software developers specializing in agricultural technology, farm management systems, and business automation. Trusted by agricultural organizations across the Canadian Prairies.",
   
   // Enhanced application metadata
   applicationName: "Bytesavy Digital Solutions",
@@ -52,32 +52,53 @@ export const metadata: Metadata = {
   ],
   generator: "Next.js 14",
   
-  // Comprehensive keywords for AI understanding
+  // Comprehensive keywords for AI understanding and geo-targeting
   keywords: [
-    // Core services
+    // Core services - General
+    "custom software development", "software development company", "software development companies",
+    "custom software development company", "app development", "app development company",
+    "mobile app development", "web application development", "enterprise software development",
+
+    // Agricultural focus
+    "agricultural software development", "agribusiness software", "farm management software",
+    "agricultural technology", "agtech software", "farming software solutions",
+    "crop management software", "precision agriculture software", "agricultural ERP",
+
+    // Location-specific - Manitoba
+    "software development Manitoba", "software development company Manitoba", "software development companies Manitoba",
+    "app development Manitoba", "app development company Manitoba", "mobile app development Winnipeg",
+    "custom software development Winnipeg", "software developers Manitoba", "Winnipeg software company",
+    "Manitoba app developers", "agricultural software Manitoba", "agtech Manitoba",
+
+    // Location-specific - Alberta
+    "software development Alberta", "software development company Alberta", "software development companies Alberta",
+    "app development Alberta", "app development company Calgary", "Calgary software developers",
+    "custom software development Calgary", "Edmonton software development", "Alberta app development",
+    "software developers Alberta", "agricultural software Alberta", "agtech Alberta",
+
+    // Location-specific - Saskatchewan
+    "software development Saskatchewan", "software development company Saskatchewan", "software development companies Saskatchewan",
+    "app development Saskatchewan", "Saskatoon software development", "Regina software developers",
+    "custom software development Saskatchewan", "Saskatchewan app developers", "agricultural software Saskatchewan",
+    "agtech Saskatchewan", "farm software Saskatchewan",
+
+    // Location-specific - Canada
+    "software development Canada", "Canadian software development", "software development companies Canada",
+    "app development Canada", "app development companies Canada", "Canadian app developers",
+    "custom software development Canada", "Canadian software companies", "software developers Canada",
+
+    // AI and modern tech
     "AI solutions", "artificial intelligence development", "machine learning consulting",
-    "web development", "custom web applications", "responsive web design",
-    "mobile app development", "iOS development", "Android development", "React Native",
-    "enterprise software", "business automation", "digital transformation",
-    
+    "ChatGPT integration", "OpenAI development", "AI automation",
+
     // Technical expertise
-    "Next.js development", "React development", "TypeScript development",
-    "Node.js backend", "API development", "cloud solutions", "AWS services",
-    "database design", "Firebase development", "full-stack development",
-    
-    // Industry terms
-    "software consulting", "technology consulting", "startup development",
-    "SaaS development", "e-commerce solutions", "fintech development",
-    "healthcare software", "EdTech solutions", "PropTech development",
-    
-    // Location and certification
-    "Canadian software company", "Toronto tech company", "CanMade certified",
-    "Made in Canada", "North American software development",
-    
-    // AI-specific terms
-    "ChatGPT integration", "OpenAI development", "LLM implementation",
-    "natural language processing", "computer vision", "predictive analytics",
-    "AI automation", "intelligent systems", "ML model deployment"
+    "web development", "mobile app development", "iOS development", "Android development",
+    "React Native development", "Next.js development", "React development",
+    "cloud solutions", "API development", "full-stack development",
+
+    // Industry-specific
+    "SaaS development", "enterprise applications", "business automation",
+    "digital transformation", "legacy system modernization", "cloud migration"
   ],
   
   referrer: "origin-when-cross-origin",
@@ -97,9 +118,9 @@ export const metadata: Metadata = {
   // Enhanced Open Graph for social sharing
   openGraph: {
     type: "website",
-    siteName: "Bytesavy - AI-Powered Digital Solutions",
-    title: "Bytesavy - Transforming Ideas into Intelligent Digital Reality",
-    description: "Expert AI-powered digital solutions for modern businesses. Custom software development, machine learning implementation, and enterprise-grade applications. Trusted by industry leaders worldwide.",
+    siteName: "Bytesavy - Agricultural Software Development Company",
+    title: "Bytesavy - Custom Software Development | Manitoba, Alberta, Saskatchewan",
+    description: "Leading agricultural software development company serving Manitoba, Alberta, Saskatchewan, and across Canada. Custom software development, app development, and agtech solutions for farming operations.",
     url: "https://bytesavy.com",
     locale: "en_CA",
     countryName: "Canada",
@@ -110,14 +131,14 @@ export const metadata: Metadata = {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Bytesavy - AI-Powered Digital Solutions for Modern Businesses",
+        alt: "Bytesavy - Agricultural Software Development for Manitoba, Alberta, Saskatchewan",
         type: "image/jpeg",
       },
       {
         url: "/og-image-square.jpg",
         width: 1200,
         height: 1200,
-        alt: "Bytesavy Logo - Digital Innovation",
+        alt: "Bytesavy - Custom Software Development Company Canada",
         type: "image/jpeg",
       },
     ],

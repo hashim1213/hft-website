@@ -14,7 +14,7 @@ export const organizationSchema = {
     "width": 200,
     "height": 60
   },
-  "description": "Leading Canadian AI-powered digital solutions company specializing in custom software development, machine learning implementation, web development, mobile apps, and enterprise applications. Trusted by businesses across North America.",
+  "description": "Leading agricultural software development company serving Manitoba, Alberta, Saskatchewan, and across Canada. Specializing in custom software development, mobile app development, and agtech solutions for agricultural operations. Expert developers creating farm management systems, crop tracking software, and agricultural business automation.",
   "foundingDate": "2020",
   "foundingLocation": {
     "@type": "Place",
@@ -44,12 +44,72 @@ export const organizationSchema = {
       "name": "Canada"
     },
     {
-      "@type": "Country",
-      "name": "United States"
+      "@type": "State",
+      "name": "Manitoba",
+      "containedIn": {
+        "@type": "Country",
+        "name": "Canada"
+      }
+    },
+    {
+      "@type": "State",
+      "name": "Alberta",
+      "containedIn": {
+        "@type": "Country",
+        "name": "Canada"
+      }
+    },
+    {
+      "@type": "State",
+      "name": "Saskatchewan",
+      "containedIn": {
+        "@type": "Country",
+        "name": "Canada"
+      }
+    },
+    {
+      "@type": "City",
+      "name": "Winnipeg",
+      "containedIn": {
+        "@type": "State",
+        "name": "Manitoba"
+      }
+    },
+    {
+      "@type": "City",
+      "name": "Calgary",
+      "containedIn": {
+        "@type": "State",
+        "name": "Alberta"
+      }
+    },
+    {
+      "@type": "City",
+      "name": "Edmonton",
+      "containedIn": {
+        "@type": "State",
+        "name": "Alberta"
+      }
+    },
+    {
+      "@type": "City",
+      "name": "Saskatoon",
+      "containedIn": {
+        "@type": "State",
+        "name": "Saskatchewan"
+      }
+    },
+    {
+      "@type": "City",
+      "name": "Regina",
+      "containedIn": {
+        "@type": "State",
+        "name": "Saskatchewan"
+      }
     },
     {
       "@type": "AdministrativeArea",
-      "name": "North America"
+      "name": "Canadian Prairies"
     }
   ],
   "contactPoint": [
@@ -85,51 +145,82 @@ export const organizationSchema = {
     "https://instagram.com/bytesavy"
   ],
   "knowsAbout": [
-    "Artificial Intelligence",
-    "Machine Learning",
-    "Web Development",
-    "Mobile App Development",
-    "Software Engineering",
-    "Cloud Computing",
-    "Enterprise Solutions",
-    "Digital Transformation",
+    "Agricultural Software Development",
+    "Agribusiness Technology",
+    "Farm Management Software",
+    "Precision Agriculture",
+    "Crop Management Systems",
+    "Agricultural Data Analytics",
     "Custom Software Development",
-    "AI Integration",
+    "Mobile App Development",
+    "Web Application Development",
+    "Enterprise Software Solutions",
+    "Cloud Computing",
     "API Development",
-    "Full Stack Development"
+    "Database Design",
+    "Business Automation",
+    "Digital Transformation",
+    "Legacy System Modernization",
+    "AI Integration",
+    "Software Development Manitoba",
+    "Software Development Alberta",
+    "Software Development Saskatchewan",
+    "Canadian Software Development"
   ],
   "makesOffer": [
     {
       "@type": "Offer",
       "itemOffered": {
         "@type": "Service",
-        "name": "AI & Machine Learning Solutions",
-        "description": "Custom AI solutions, ChatGPT integration, machine learning models, and intelligent automation"
-      }
+        "name": "Agricultural Software Development",
+        "description": "Custom software solutions for agricultural operations including farm management systems, crop tracking, and precision agriculture tools"
+      },
+      "areaServed": ["Manitoba", "Alberta", "Saskatchewan", "Canada"]
     },
     {
       "@type": "Offer",
       "itemOffered": {
         "@type": "Service",
-        "name": "Custom Web Development",
-        "description": "Responsive web applications, e-commerce solutions, and enterprise web platforms"
-      }
+        "name": "Custom Software Development",
+        "description": "Tailored software solutions built with modern technologies for agricultural businesses and organizations"
+      },
+      "areaServed": ["Manitoba", "Alberta", "Saskatchewan", "Canada"]
     },
     {
       "@type": "Offer",
       "itemOffered": {
         "@type": "Service",
         "name": "Mobile App Development",
-        "description": "iOS, Android, and cross-platform mobile applications"
-      }
+        "description": "iOS and Android mobile applications for agricultural field operations, data collection, and farm management"
+      },
+      "areaServed": ["Manitoba", "Alberta", "Saskatchewan", "Canada"]
     },
     {
       "@type": "Offer",
       "itemOffered": {
         "@type": "Service",
-        "name": "Enterprise Software Solutions",
-        "description": "Custom business software, SaaS platforms, and enterprise integrations"
-      }
+        "name": "Web Application Development",
+        "description": "Modern web-based platforms for agricultural data management, reporting, and business operations"
+      },
+      "areaServed": ["Manitoba", "Alberta", "Saskatchewan", "Canada"]
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Legacy System Modernization",
+        "description": "Modernizing outdated agricultural systems with cloud-based solutions and modern interfaces"
+      },
+      "areaServed": ["Manitoba", "Alberta", "Saskatchewan", "Canada"]
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "AI & Automation Solutions",
+        "description": "Intelligent automation and AI-powered workflows for agricultural data processing and analysis"
+      },
+      "areaServed": ["Manitoba", "Alberta", "Saskatchewan", "Canada"]
     }
   ],
   "slogan": "Transforming Ideas into Intelligent Digital Reality",
@@ -180,31 +271,55 @@ export const faqSchema = {
       "name": "What services does Bytesavy offer?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Bytesavy offers comprehensive digital solutions including AI-powered software development, custom web applications, mobile app development (iOS and Android), enterprise software solutions, machine learning integration, ChatGPT and OpenAI implementation, cloud solutions, and digital transformation consulting. We specialize in creating intelligent, scalable solutions for businesses across Canada and North America."
+        "text": "Bytesavy offers comprehensive agricultural software development including custom software development, mobile app development (iOS and Android), web application development, farm management systems, precision agriculture tools, legacy system modernization, and AI-powered automation. We specialize in creating practical, scalable solutions for agricultural organizations across Manitoba, Alberta, Saskatchewan, and Canada."
       }
     },
     {
       "@type": "Question",
-      "name": "Does Bytesavy serve clients across Canada?",
+      "name": "Do you provide software development services in Manitoba, Alberta, and Saskatchewan?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes! Bytesavy proudly serves clients across all of Canada, including Toronto, Vancouver, Montreal, Calgary, Ottawa, and all provinces and territories. We offer both on-site consultations in the Greater Toronto Area and remote development services for clients anywhere in Canada and North America. We are a Canadian-certified (CanMade) technology company committed to delivering world-class solutions to Canadian businesses."
+        "text": "Yes! Bytesavy proudly serves agricultural businesses and organizations across Manitoba (Winnipeg, Brandon), Alberta (Calgary, Edmonton), Saskatchewan (Saskatoon, Regina), and all of Canada. We specialize in agricultural software development and offer remote development services for clients anywhere in the Canadian Prairies. We are a Canadian company committed to delivering practical software solutions to Canadian agricultural operations."
       }
     },
     {
       "@type": "Question",
-      "name": "How can AI and machine learning benefit my business?",
+      "name": "What is the best software development company in Manitoba?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "AI and machine learning can transform your business through intelligent automation, predictive analytics, customer service chatbots, personalized recommendations, data analysis, process optimization, and enhanced decision-making. Bytesavy specializes in implementing practical AI solutions including ChatGPT integration, custom ML models, natural language processing, and intelligent automation that deliver measurable ROI. We help Canadian businesses leverage AI to stay competitive in the digital economy."
+        "text": "Bytesavy is a leading software development company serving Manitoba with expertise in agricultural software development. We build custom software solutions, mobile apps, and web applications for Manitoba farms and agricultural businesses. Our team understands Manitoba's agricultural sector and creates practical software that performs reliably in real-world farming conditions."
       }
     },
     {
       "@type": "Question",
-      "name": "What industries does Bytesavy work with?",
+      "name": "Where can I find app development companies in Alberta?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Bytesavy works with diverse industries including FinTech, HealthTech, EdTech, E-commerce, PropTech, Legal Tech, SaaS, Manufacturing, Retail, Professional Services, and Startups. Our Canadian team has deep expertise in regulated industries and understands compliance requirements including PIPEDA, PHIPA, and industry-specific regulations across Canada."
+        "text": "Bytesavy provides expert app development services across Alberta including Calgary, Edmonton, and rural communities. We specialize in mobile app development for agricultural operations, creating iOS and Android applications for farm management, field data collection, and business operations. Our Alberta clients trust us for practical, reliable software solutions."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Who provides agricultural software development in Saskatchewan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Bytesavy specializes in agricultural software development for Saskatchewan farms and agribusinesses. We serve clients in Saskatoon, Regina, and across rural Saskatchewan with custom farm management software, crop tracking systems, and agricultural business applications. Our software is built specifically for Saskatchewan's agricultural sector."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much does custom software development cost in Canada?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Custom software development costs vary based on project scope, complexity, and features. Agricultural web applications typically start from $15,000 CAD, while comprehensive farm management systems can range from $50,000 to $200,000+ CAD. Mobile apps for field operations typically range from $30,000 to $100,000 CAD. Bytesavy offers flexible engagement models for Manitoba, Alberta, and Saskatchewan clients. Contact us for a free consultation and detailed quote."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What makes Bytesavy different from other software development companies?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Bytesavy specializes in agricultural software development with deep understanding of farming operations in Manitoba, Alberta, and Saskatchewan. We focus on practical, reliable software that performs in real-world agricultural conditions. We build long-term partnerships with agricultural organizations, listen first before building, and create software that generates measurable impact from day one. We're trusted by leading agricultural organizations like Manitoba Crop Alliance and Alberta Grains."
       }
     },
     {
