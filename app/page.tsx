@@ -14,7 +14,6 @@ import MediaSection from '@/components/MediaSection'
 import Script from 'next/script'
 import { organizationSchema, localBusinessSchema, faqSchema, howToSchema } from "@/lib/structured-data"
 import { useState } from "react"
-import Orb from "@/components/Orb"
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -66,13 +65,14 @@ export default function Website() {
       <main className="flex-1">
         {/* Hero Section */}
         <section className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden bg-white">
-          {/* Orb Background */}
-          <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/3 w-[1080px] h-[1080px] pointer-events-auto opacity-40 hidden lg:block">
-            <Orb
-              hue={91}
-              hoverIntensity={0.7}
-              rotateOnHover
-              forceHoverState={false}
+          {/* Botanical Illustration Background */}
+          <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-32 w-[1080px] h-[1080px] pointer-events-none opacity-70 hidden lg:block">
+            <Image
+              src="/canola_wire.png"
+              alt="Canola botanical illustration"
+              fill
+              className="object-contain saturate-150 brightness-110"
+              priority
             />
           </div>
 

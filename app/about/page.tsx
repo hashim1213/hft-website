@@ -230,6 +230,75 @@ export default function AboutPage() {
           </div>
         </section>
 
+        {/* Team Section */}
+        <section className="py-24 px-4 bg-gray-50">
+          <div className="container mx-auto max-w-6xl">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-3xl font-bold text-primary mb-4">Meet Our Team</h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Our diverse team of experts brings together years of experience in software development, AI integration, and industry-specific solutions.
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+              {[
+                {
+                  name: "Hashim Farooq",
+                  role: "CEO & Founder",
+                  bio: "Leading the vision to transform traditional industries through practical, modern software solutions.",
+                  image: "/team/hashim.jpg"
+                },
+                {
+                  name: "Bryce Cotton",
+                  role: "Software Engineer",
+                  bio: "Building scalable and efficient software solutions with expertise in modern development practices.",
+                  image: "/team/bryce.jpg"
+                }
+              ].map((member, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="group"
+                >
+                  <Card className="border border-gray-200 shadow-md hover:shadow-xl transition-all h-full overflow-hidden">
+                    <CardContent className="p-0">
+                      {/* Team Member Photo */}
+                      <div className="relative w-full h-64 bg-gradient-to-br from-accent/20 to-primary/10 overflow-hidden">
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <Users className="h-24 w-24 text-gray-300" />
+                        </div>
+                        {/* Uncomment when you add real images */}
+                        {/* <Image
+                          src={member.image}
+                          alt={member.name}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        /> */}
+                      </div>
+
+                      {/* Team Member Info */}
+                      <div className="p-6">
+                        <h3 className="text-xl font-bold text-primary mb-1">{member.name}</h3>
+                        <p className="text-sm font-medium text-accent mb-3">{member.role}</p>
+                        <p className="text-gray-600 text-sm leading-relaxed">{member.bio}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Call to Action */}
         <section className="py-16 px-4 bg-primary text-white">
           <div className="container mx-auto max-w-4xl text-center">
