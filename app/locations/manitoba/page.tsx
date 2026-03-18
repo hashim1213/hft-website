@@ -41,7 +41,7 @@ export default function ManitobaPage() {
             <p className="text-xl text-gray-600 mb-8 max-w-3xl">
               Bytesavy delivers custom software development and mobile app development services across Manitoba. From Winnipeg to rural farming communities, we build practical agricultural software and business applications that modernize operations.
             </p>
-            <BookingDialog onOpenChange={() => {}} />
+            <BookingDialog />
           </div>
         </section>
 
@@ -166,7 +166,7 @@ export default function ManitobaPage() {
             <p className="text-lg text-white/90 mb-8">
               Let's discuss how custom software can transform your agricultural business or organization in Manitoba.
             </p>
-            <BookingDialog onOpenChange={() => {}} />
+            <BookingDialog />
           </div>
         </section>
       </main>

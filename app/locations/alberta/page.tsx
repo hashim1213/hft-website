@@ -42,7 +42,7 @@ export default function AlbertaPage() {
             <p className="text-xl text-gray-600 mb-8 max-w-3xl">
               Bytesavy provides custom software development and mobile app development services across Alberta. From Calgary to Edmonton to rural farming communities, we build practical agricultural software and business applications that drive efficiency.
             </p>
-            <BookingDialog onOpenChange={() => {}} />
+            <BookingDialog />
           </div>
         </section>
 
@@ -167,7 +167,7 @@ export default function AlbertaPage() {
             <p className="text-lg text-white/90 mb-8">
               Let's discuss how custom software can transform your agricultural business or organization in Alberta.
             </p>
-            <BookingDialog onOpenChange={() => {}} />
+            <BookingDialog />
           </div>
         </section>
       </main>
