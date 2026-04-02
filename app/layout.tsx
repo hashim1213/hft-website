@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import PrivacyBanner from "@/components/PrivacyBanner";
 
 // Font configurations with enhanced performance
 const geistSans = localFont({
@@ -394,6 +395,9 @@ export default function RootLayout({
 
           {/* Analytics and Performance Monitoring */}
           <Analytics />
+
+          {/* Privacy Banner */}
+          <PrivacyBanner />
 
           {/* Skip to main content for accessibility */}
           <a
