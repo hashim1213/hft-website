@@ -15,6 +15,7 @@ import Script from 'next/script'
 import { organizationSchema, localBusinessSchema, faqSchema, howToSchema } from "@/lib/structured-data"
 import { useState } from "react"
 import { useLanguage } from "@/contexts/LanguageContext"
+import RotatingIndustry from "@/components/RotatingIndustry"
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -94,14 +95,14 @@ export default function Website() {
                   variants={fadeInUp}
                   className="text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.1] drop-shadow-lg"
                 >
-                  {t('hero.title')}
+                  The <RotatingIndustry /> software modernization partner
                 </motion.h1>
 
                 <motion.p
                   variants={fadeInUp}
                   className="text-xl md:text-2xl text-white/90 max-w-2xl leading-relaxed drop-shadow-md"
                 >
-                  {t('hero.subtitle')}
+                  Bytesavy Technologies accelerates operational efficiency and growth with custom software solutions built for your industry.
                 </motion.p>
 
                 <motion.div
