@@ -7,13 +7,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { usePathname } from 'next/navigation';
+import { useLanguage } from '@/contexts/LanguageContext';
 import TopBar from './TopBar';
-
-const NAVIGATION_LINKS = [
-  { name: "Home", href: "/" },
-  { name: "Blog", href: "/blog" },
-  { name: "About", href: "/about" },
-];
 
 const SOLUTIONS_LINKS = [
   { name: "Web Development", href: "/web" },
@@ -24,6 +20,15 @@ const SOLUTIONS_LINKS = [
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [solutionsOpen, setSolutionsOpen] = useState(false);
+  const pathname = usePathname();
+  const isHomePage = pathname === '/';
+  const { t } = useLanguage();
+
+  const NAVIGATION_LINKS = [
+    { name: t('nav.home'), href: "/" },
+    { name: t('nav.blog'), href: "/blog" },
+    { name: t('nav.about'), href: "/about" },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,6 +38,24 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.solutions-dropdown')) {
+        setSolutionsOpen(false);
+      }
+    };
+
+    if (solutionsOpen) {
+      document.addEventListener('click', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [solutionsOpen]);
+
   return (
     <header className="fixed w-full z-50">
       {/* Top Bar */}
@@ -40,9 +63,11 @@ export default function Header() {
 
       {/* Main Header */}
       <div className={`transition-all duration-300 ${
-        scrolled
-          ? "bg-white/95 backdrop-blur-lg shadow-sm border-b border-gray-100"
-          : "bg-white/80 backdrop-blur-md"
+        isHomePage
+          ? scrolled
+            ? "bg-black/30 backdrop-blur-lg shadow-sm border-b border-white/10"
+            : "bg-transparent"
+          : "bg-white/95 backdrop-blur-lg shadow-sm border-b border-gray-100"
       }`}>
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center h-20 justify-between">
@@ -56,7 +81,7 @@ export default function Header() {
                 priority
                 sizes="128px"
                 style={{ objectFit: "contain" }}
-                className="transition-transform duration-300 hover:scale-105"
+                className={`transition-transform duration-300 hover:scale-105 ${isHomePage ? 'brightness-0 invert' : ''}`}
               />
             </div>
           </Link>
@@ -67,7 +92,11 @@ export default function Header() {
               <Link
                 key={link.name}
                 href={link.href}
-                className="relative text-sm font-medium text-gray-700 hover:text-primary transition-colors px-4 py-2 rounded-lg hover:bg-gray-50"
+                className={`relative text-sm font-medium transition-colors px-4 py-2 rounded-lg ${
+                  isHomePage
+                    ? 'text-white hover:text-white/80 hover:bg-white/10'
+                    : 'text-gray-700 hover:text-primary hover:bg-gray-50'
+                }`}
               >
                 {link.name}
               </Link>
@@ -75,28 +104,32 @@ export default function Header() {
 
             {/* Solutions Dropdown */}
             <div
-              className="relative"
+              className="relative solutions-dropdown"
               onMouseEnter={() => setSolutionsOpen(true)}
               onMouseLeave={() => setSolutionsOpen(false)}
             >
               <Link
                 href="/product"
-                className="relative inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary transition-colors px-4 py-2 rounded-lg hover:bg-gray-50"
+                className={`relative inline-flex items-center text-sm font-medium transition-colors px-4 py-2 rounded-lg ${
+                  isHomePage
+                    ? 'text-white hover:text-white/80 hover:bg-white/10'
+                    : 'text-gray-700 hover:text-primary hover:bg-gray-50'
+                }`}
               >
-                Solutions
-                <KeyboardArrowDownIcon sx={{ fontSize: 16, marginLeft: '0.25rem' }} className={`transition-transform duration-200 ${solutionsOpen ? 'rotate-180' : ''}`} />
+                {t('nav.solutions')}
+                <KeyboardArrowDownIcon sx={{ fontSize: 16, marginLeft: '0.25rem', color: isHomePage ? 'white' : undefined }} className={`transition-transform duration-200 ${solutionsOpen ? 'rotate-180' : ''}`} />
               </Link>
 
               {solutionsOpen && (
-                <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-100 py-3 animate-in fade-in slide-in-from-top-2 duration-200">
-                  <div className="px-3 pb-2 mb-2 border-b border-gray-100">
+                <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-100 py-3 animate-in fade-in slide-in-from-top-2 duration-200 z-50">
+                  <div className="px-4 pb-2 mb-2 border-b border-gray-100">
                     <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Our Solutions</p>
                   </div>
                   {SOLUTIONS_LINKS.map((solution) => (
                     <Link
                       key={solution.name}
                       href={solution.href}
-                      className="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors rounded-md mx-2"
+                      className="block px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors rounded-md mx-2"
                     >
                       {solution.name}
                     </Link>
@@ -104,7 +137,7 @@ export default function Header() {
                   <div className="mt-3 pt-3 border-t border-gray-100 mx-2">
                     <Link
                       href="/product"
-                      className="block px-4 py-2.5 text-sm font-medium text-primary hover:bg-primary/5 transition-colors rounded-md"
+                      className="block px-4 py-3 text-sm font-medium text-primary hover:bg-primary/5 transition-colors rounded-md"
                     >
                       View All Solutions →
                     </Link>
@@ -120,7 +153,7 @@ export default function Header() {
               <Button
                 className="bg-accent hover:bg-accent/90 text-white shadow-sm text-sm font-medium px-6"
               >
-                Contact Us
+                {t('nav.contact')}
               </Button>
             </Link>
           </div>
@@ -128,8 +161,8 @@ export default function Header() {
           {/* Mobile menu */}
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden">
-                <MenuIcon sx={{ fontSize: 24 }} />
+              <Button variant="ghost" size="icon" className={`lg:hidden ${isHomePage ? 'text-white hover:bg-white/10' : 'text-gray-700 hover:bg-gray-50'}`}>
+                <MenuIcon sx={{ fontSize: 24, color: isHomePage ? 'white' : undefined }} />
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-full sm:w-96">
@@ -153,7 +186,7 @@ export default function Header() {
                     onClick={() => setSolutionsOpen(!solutionsOpen)}
                     className="w-full flex items-center justify-between text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors px-4 py-3 rounded-lg"
                   >
-                    <span>Solutions</span>
+                    <span>{t('nav.solutions')}</span>
                     <KeyboardArrowDownIcon sx={{ fontSize: 16 }} className={`transition-transform ${solutionsOpen ? 'rotate-180' : ''}`} />
                   </button>
                   {solutionsOpen && (
@@ -182,7 +215,7 @@ export default function Header() {
                     <Button
                       className="w-full bg-accent hover:bg-accent/90 text-white text-sm font-medium"
                     >
-                      Contact Us
+                      {t('nav.contact')}
                     </Button>
                   </Link>
                 </div>

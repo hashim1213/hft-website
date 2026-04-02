@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 
 // Font configurations with enhanced performance
 const geistSans = localFont({
@@ -380,18 +381,20 @@ export default function RootLayout({
         itemScope
         itemType="https://schema.org/WebPage"
       >
-        {children}
-        
-        {/* Analytics and Performance Monitoring */}
-        <Analytics />
-        
-        {/* Skip to main content for accessibility */}
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded-md z-50"
-        >
-          Skip to main content
-        </a>
+        <LanguageProvider>
+          {children}
+
+          {/* Analytics and Performance Monitoring */}
+          <Analytics />
+
+          {/* Skip to main content for accessibility */}
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded-md z-50"
+          >
+            Skip to main content
+          </a>
+        </LanguageProvider>
       </body>
     </html>
   );

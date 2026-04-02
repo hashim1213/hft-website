@@ -3,6 +3,7 @@ import Link from "next/link"
 import Image from "next/image"
 import * as Icons from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useLanguage } from "@/contexts/LanguageContext"
 
 const FOOTER_LINKS = {
   solutions: [
@@ -31,6 +32,8 @@ const FOOTER_LINKS = {
 }
 
 export default function Footer() {
+  const { t } = useLanguage();
+
   return (
     <footer className="bg-gray-900 text-gray-300 border-t border-gray-800 relative overflow-hidden">
       {/* Background Icon */}
@@ -136,10 +139,10 @@ export default function Footer() {
         <div className="border-t border-gray-800 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <span className="text-sm text-gray-400">
-              © {new Date().getFullYear()} Bytesavy. All rights reserved.
+              {t('footer.copyright')}
             </span>
             <div className="flex items-center gap-2">
-              <span className="text-xs text-gray-500">Made in</span>
+              <span className="text-xs text-gray-500">{t('footer.made_in')}</span>
               <div className="relative h-4 w-6">
                 <Image
                   src="/canada-flag.jpeg"

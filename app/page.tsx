@@ -14,6 +14,7 @@ import MediaSection from '@/components/MediaSection'
 import Script from 'next/script'
 import { organizationSchema, localBusinessSchema, faqSchema, howToSchema } from "@/lib/structured-data"
 import { useState } from "react"
+import { useLanguage } from "@/contexts/LanguageContext"
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -51,6 +52,8 @@ const jsonLdGraph = {
 };
 
 export default function Website() {
+  const { t } = useLanguage();
+
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <Script
@@ -65,15 +68,18 @@ export default function Website() {
       <main className="flex-1">
         {/* Hero Section */}
         <section className="relative pt-40 pb-24 md:pt-48 md:pb-32 overflow-hidden bg-white">
-          {/* Botanical Illustration Background */}
-          <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-40 w-[1080px] h-[1080px] pointer-events-none opacity-70 hidden lg:block">
-            <Image
-              src="/canola_wire.png"
-              alt="Canola botanical illustration"
-              fill
-              className="object-contain saturate-150 brightness-110"
-              priority
-            />
+          {/* Video Background */}
+          <div className="absolute inset-0 w-full h-full overflow-hidden">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+            >
+              <source src="/background.mp4" type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/30"></div>
           </div>
 
           <div className="container mx-auto px-4 md:px-6 relative z-10">
@@ -86,16 +92,16 @@ export default function Website() {
               >
                 <motion.h1
                   variants={fadeInUp}
-                  className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 tracking-tight leading-[1.1]"
+                  className="text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.1] drop-shadow-lg"
                 >
-                  The agricultural software modernization partner
+                  {t('hero.title')}
                 </motion.h1>
 
                 <motion.p
                   variants={fadeInUp}
-                  className="text-xl md:text-2xl text-gray-600 max-w-2xl leading-relaxed"
+                  className="text-xl md:text-2xl text-white/90 max-w-2xl leading-relaxed drop-shadow-md"
                 >
-                  Bytesavy Technologies accelerates operational efficiency and growth with custom software solutions built for agriculture.
+                  {t('hero.subtitle')}
                 </motion.p>
 
                 <motion.div
@@ -110,33 +116,33 @@ export default function Website() {
                   variants={fadeInUp}
                   className="pt-8"
                 >
-                  <p className="text-sm text-gray-500 mb-6">Trusted by leading agricultural organizations</p>
+                  <p className="text-sm text-white/80 mb-6 drop-shadow-md">{t('hero.trusted')}</p>
                   <div className="flex flex-wrap items-center gap-12">
-                    <div className="grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
+                    <div className="opacity-80 hover:opacity-100 transition-all duration-300">
                       <Image
                         src="/MCA_logo.png"
                         alt="Manitoba Crop Alliance"
                         width={140}
                         height={50}
-                        className="h-10 w-auto object-contain"
+                        className="h-10 w-auto object-contain brightness-0 invert drop-shadow-md"
                       />
                     </div>
-                    <div className="grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
+                    <div className="opacity-80 hover:opacity-100 transition-all duration-300">
                       <Image
                         src="/ab_grains.png"
                         alt="Alberta Grains"
                         width={140}
                         height={50}
-                        className="h-12 w-auto object-contain"
+                        className="h-12 w-auto object-contain brightness-0 invert drop-shadow-md"
                       />
                     </div>
-                    <div className="grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
+                    <div className="opacity-80 hover:opacity-100 transition-all duration-300">
                       <Image
-                        src="/serf.jpg"
+                        src="/serf_logo.png"
                         alt="South East Research Farm"
                         width={140}
                         height={50}
-                        className="h-12 w-auto object-contain"
+                        className="h-12 w-auto object-contain brightness-0 invert drop-shadow-md"
                       />
                     </div>
                   </div>
@@ -301,15 +307,15 @@ export default function Website() {
               className="mb-16"
             >
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                The seamless blend of technology, data and agricultural expertise
+                {t('services.title')}
               </h2>
             </motion.div>
 
             <div className="grid md:grid-cols-2 gap-6 max-w-5xl">
               {[
                 {
-                  title: "Custom Software Development",
-                  description: "Purpose-built applications that modernize agricultural operations, reduce manual work and drive measurable results.",
+                  title: t('services.custom.title'),
+                  description: t('services.custom.description'),
                   links: [
                     { name: "Web Development", href: "/web" },
                     { name: "Mobile Applications", href: "/mobile" },
@@ -317,24 +323,24 @@ export default function Website() {
                   ]
                 },
                 {
-                  title: "Process Automation",
-                  description: "Intelligent automation and AI-powered workflows that eliminate repetitive tasks and improve accuracy across your operations.",
+                  title: t('services.automation.title'),
+                  description: t('services.automation.description'),
                   links: [
                     { name: "Workflow Automation", href: "/ai" },
                     { name: "Data Processing", href: "/ai" }
                   ]
                 },
                 {
-                  title: "Legacy System Modernization",
-                  description: "Transform outdated systems into modern, cloud-based solutions that scale with your business and integrate seamlessly.",
+                  title: t('services.legacy.title'),
+                  description: t('services.legacy.description'),
                   links: [
                     { name: "System Modernization", href: "/consulting" },
                     { name: "Cloud Migration", href: "/development" }
                   ]
                 },
                 {
-                  title: "Support & Maintenance",
-                  description: "Expert ongoing support and proactive maintenance to ensure your software performs reliably when you need it most.",
+                  title: t('services.support.title'),
+                  description: t('services.support.description'),
                   links: [
                     { name: "Technical Support", href: "/support" },
                     { name: "System Monitoring", href: "/support" }
@@ -497,9 +503,8 @@ export default function Website() {
           </div>
         </section>
 
-        {/* Final CTA - Green Accent */}
-        <section className="py-24 bg-accent relative overflow-hidden">
-          <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
+        {/* Final CTA */}
+        <section className="py-24 bg-white relative overflow-hidden">
           <div className="container mx-auto px-4 md:px-6 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -507,11 +512,11 @@ export default function Website() {
               viewport={{ once: true }}
               className="text-center max-w-3xl mx-auto"
             >
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                Ready to modernize your operations?
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                {t('cta.title')}
               </h2>
-              <p className="text-xl text-white/90 mb-8">
-                Let's discuss how custom software can transform your agricultural business.
+              <p className="text-xl text-gray-600 mb-8">
+                {t('cta.subtitle')}
               </p>
               <BookingDialog onOpenChange={() => {}} />
             </motion.div>
