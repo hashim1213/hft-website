@@ -16,6 +16,7 @@ import { organizationSchema, localBusinessSchema, faqSchema, howToSchema } from 
 import { useState } from "react"
 import { useLanguage } from "@/contexts/LanguageContext"
 import RotatingIndustry from "@/components/RotatingIndustry"
+import SEOFaq from "@/components/SEOFaq"
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -534,6 +535,9 @@ export default function Website() {
         {/* Media Section */}
         <MediaSection />
       </main>
+
+      {/* SEO FAQ - Hidden but accessible to search engines */}
+      <SEOFaq />
 
       <Footer />
     </div>
