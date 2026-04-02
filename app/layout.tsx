@@ -181,7 +181,7 @@ export const metadata: Metadata = {
       "only screen and (max-width: 600px)": "https://m.bytesavy.com", // Mobile version if different
     },
     types: {
-      "application/rss+xml": "https://bytesavy.com/rss.xml", // RSS feed
+      "application/rss+xml": "https://bytesavy.com/feed.xml", // RSS feed
     },
   },
   
@@ -343,7 +343,15 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://firebase.googleapis.com" />
-        
+
+        {/* RSS Feed Discovery */}
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="Bytesavy Blog RSS Feed"
+          href="/feed.xml"
+        />
+
         {/* Structured Data for AI and search engines */}
         <script
           type="application/ld+json"

@@ -6,6 +6,7 @@ import { Loader2, AlertCircle, Clock, ArrowRight, Search, Tag } from "lucide-rea
 import Link from "next/link"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
+import Breadcrumb from "@/components/Breadcrumb"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import {
@@ -175,6 +176,14 @@ export default function BlogPage() {
         {/* Page Title and Filters */}
         <div className="border-b border-gray-200 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            {/* Breadcrumb */}
+            <Breadcrumb
+              items={[
+                { label: 'Home', href: '/' },
+                { label: 'Blog', href: '/blog' }
+              ]}
+            />
+
             {/* Title */}
             <div className="mb-8">
               <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-2">Insights</h1>

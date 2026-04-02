@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import { User, Calendar, Clock, Twitter, Linkedin, Link as LinkIcon, ArrowLeft, ArrowRight } from 'lucide-react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import Breadcrumb from '@/components/Breadcrumb'
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Skeleton } from "@/components/ui/skeleton"
 import Link from 'next/link'
@@ -342,8 +343,17 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
       <main className="flex-1 pt-40 pb-20">
         <article className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
-            <Link 
-              href="/blog" 
+            {/* Breadcrumb Navigation */}
+            <Breadcrumb
+              items={[
+                { label: 'Home', href: '/' },
+                { label: 'Blog', href: '/blog' },
+                { label: post.title, href: `/blog/${post.slug || post.id}` }
+              ]}
+            />
+
+            <Link
+              href="/blog"
               className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-8 transition-colors"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
