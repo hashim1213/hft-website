@@ -246,62 +246,83 @@ export default function AboutPage() {
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-3 gap-12 max-w-6xl mx-auto">
+            <div className="flex flex-wrap justify-center items-start gap-8 max-w-6xl mx-auto">
               {[
                 {
                   name: "Hashim Farooq",
                   role: "CEO & Founder",
                   bio: "Leading the vision to transform traditional industries through practical, modern software solutions.",
-                  image: "/Hashim.png"
+                  image: "/Hashim.png",
+                  rotation: "-3deg",
+                  color: "bg-yellow-100"
                 },
                 {
                   name: "Bryce Cotton",
                   role: "Software Engineer",
                   bio: "Building scalable and efficient software solutions with expertise in modern development practices.",
-                  image: "/Bryce.jpg"
+                  image: "/Bryce.jpg",
+                  rotation: "2deg",
+                  color: "bg-blue-100"
                 },
                 {
                   name: "Speedy the Fish",
                   role: "Company Pet & Morale Officer",
                   bio: "Keeping the team inspired with his calm presence and reminding everyone to go with the flow.",
-                  image: "/Speedy2.png"
+                  image: "/Speedy2.png",
+                  rotation: "-2deg",
+                  color: "bg-green-100"
                 }
               ].map((member, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 20, rotate: 0 }}
+                  whileInView={{ opacity: 1, y: 0, rotate: member.rotation }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="group"
+                  className="group relative"
+                  style={{ transform: `rotate(${member.rotation})` }}
                 >
-                  <Card className="border border-gray-200 shadow-md hover:shadow-xl transition-all h-full overflow-hidden">
-                    <CardContent className="p-0">
-                      {/* Team Member Photo */}
-                      <div className="relative w-full h-64 bg-gradient-to-br from-accent/20 to-primary/10 overflow-hidden">
-                        <Image
-                          src={member.image}
-                          alt={member.name}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-300"
-                          style={
-                            member.name === "Hashim Farooq"
-                              ? { objectPosition: "center top" }
-                              : member.name === "Speedy the Fish"
-                              ? { transform: "scale(1.2)", objectPosition: "center 0%" }
-                              : undefined
-                          }
-                        />
-                      </div>
+                  {/* Polaroid Card */}
+                  <div className="bg-white p-4 shadow-2xl hover:shadow-3xl transition-all duration-300 group-hover:rotate-0 group-hover:scale-105 w-80">
+                    {/* Photo */}
+                    <div className="relative w-full h-80 bg-gray-100 overflow-hidden mb-4">
+                      <Image
+                        src={member.image}
+                        alt={member.name}
+                        fill
+                        className="object-cover"
+                        style={
+                          member.name === "Hashim Farooq"
+                            ? { objectPosition: "center top" }
+                            : member.name === "Speedy the Fish"
+                            ? { transform: "scale(1.2)", objectPosition: "center 0%" }
+                            : undefined
+                        }
+                      />
+                    </div>
 
-                      {/* Team Member Info */}
-                      <div className="p-6">
-                        <h3 className="text-xl font-bold text-primary mb-1">{member.name}</h3>
-                        <p className="text-sm font-medium text-accent mb-3">{member.role}</p>
-                        <p className="text-gray-600 text-sm leading-relaxed">{member.bio}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
+                    {/* Handwritten-style caption */}
+                    <div className="space-y-2 px-2">
+                      <h3 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'cursive' }}>
+                        {member.name}
+                      </h3>
+                      <p className="text-sm font-semibold text-accent uppercase tracking-wide">
+                        {member.role}
+                      </p>
+                      <p className="text-sm text-gray-700 leading-relaxed italic">
+                        {member.bio}
+                      </p>
+                    </div>
+
+                    {/* Decorative tape */}
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-20 h-6 bg-amber-200/70 shadow-sm transform -rotate-1"></div>
+
+                    {/* Color accent corner */}
+                    <div className={`absolute bottom-4 right-4 w-8 h-8 ${member.color} rounded-full opacity-40`}></div>
+                  </div>
+
+                  {/* Pin shadow effect */}
+                  <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-3 h-3 bg-red-400 rounded-full shadow-lg z-10"></div>
                 </motion.div>
               ))}
             </div>
