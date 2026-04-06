@@ -246,19 +246,25 @@ export default function AboutPage() {
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-12 max-w-6xl mx-auto">
               {[
                 {
                   name: "Hashim Farooq",
                   role: "CEO & Founder",
                   bio: "Leading the vision to transform traditional industries through practical, modern software solutions.",
-                  image: "/team/hashim.jpg"
+                  image: "/Hashim.png"
                 },
                 {
                   name: "Bryce Cotton",
                   role: "Software Engineer",
                   bio: "Building scalable and efficient software solutions with expertise in modern development practices.",
-                  image: "/team/bryce.jpg"
+                  image: "/Bryce.jpg"
+                },
+                {
+                  name: "Speedy the Fish",
+                  role: "Company Pet & Morale Officer",
+                  bio: "Keeping the team inspired with his calm presence and reminding everyone to go with the flow.",
+                  image: "/Speedy2.png"
                 }
               ].map((member, index) => (
                 <motion.div
@@ -273,16 +279,19 @@ export default function AboutPage() {
                     <CardContent className="p-0">
                       {/* Team Member Photo */}
                       <div className="relative w-full h-64 bg-gradient-to-br from-accent/20 to-primary/10 overflow-hidden">
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <Users className="h-24 w-24 text-gray-300" />
-                        </div>
-                        {/* Uncomment when you add real images */}
-                        {/* <Image
+                        <Image
                           src={member.image}
                           alt={member.name}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        /> */}
+                          style={
+                            member.name === "Hashim Farooq"
+                              ? { objectPosition: "center top" }
+                              : member.name === "Speedy the Fish"
+                              ? { transform: "scale(1.2)", objectPosition: "center 0%" }
+                              : undefined
+                          }
+                        />
                       </div>
 
                       {/* Team Member Info */}

@@ -23,7 +23,7 @@ const generateSlugFromTitle = (title: string): string => {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://bytesavy.com'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://bytesavy.com'
 
   // Define your static routes with priorities
   const staticRoutes = [
@@ -64,31 +64,34 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let blogSitemap: MetadataRoute.Sitemap = []
 
   try {
-    const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
-    const db = getFirestore(app)
+    // Only attempt to fetch if Firebase config is present
+    if (firebaseConfig.apiKey && firebaseConfig.projectId) {
+      const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
+      const db = getFirestore(app)
 
-    const postsQuery = query(
-      collection(db, 'posts'),
-      where('status', '==', 'published')
-    )
+      const postsQuery = query(
+        collection(db, 'posts'),
+        where('status', '==', 'published')
+      )
 
-    const querySnapshot = await getDocs(postsQuery)
+      const querySnapshot = await getDocs(postsQuery)
 
-    blogSitemap = querySnapshot.docs.map((doc) => {
-      const data = doc.data()
-      const slug = data.slug || generateSlugFromTitle(data.title || doc.id)
-      const createdAt = data.createdAt?.toDate?.() || new Date()
+      blogSitemap = querySnapshot.docs.map((doc) => {
+        const data = doc.data()
+        const slug = data.slug || generateSlugFromTitle(data.title || doc.id)
+        const createdAt = data.createdAt?.toDate?.() || new Date()
 
-      return {
-        url: `${baseUrl}/blog/${slug}`,
-        lastModified: createdAt,
-        changeFrequency: 'weekly' as const,
-        priority: 0.7,
-      }
-    })
+        return {
+          url: `${baseUrl}/blog/${slug}`,
+          lastModified: createdAt,
+          changeFrequency: 'weekly' as const,
+          priority: 0.7,
+        }
+      })
+    }
   } catch (error) {
     console.error('Error fetching blog posts for sitemap:', error)
-    // Return static sitemap even if blog posts fail
+    // Continue without blog posts - static sitemap will still be returned
   }
 
   return [...staticSitemap, ...blogSitemap]

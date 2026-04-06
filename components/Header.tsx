@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { usePathname } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
-import TopBar from './TopBar';
 
 const SOLUTIONS_LINKS = [
   { name: "Web Development", href: "/web" },
@@ -58,9 +57,6 @@ export default function Header() {
 
   return (
     <header className="fixed w-full z-50">
-      {/* Top Bar */}
-      <TopBar />
-
       {/* Main Header */}
       <div className={`transition-all duration-300 ${
         isHomePage
