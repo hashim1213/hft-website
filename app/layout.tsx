@@ -42,9 +42,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://bytesavy.com"),
   title: {
     default: "Bytesavy | Custom Software Development Company | Manitoba, Alberta, Saskatchewan",
-    template: "%s | Bytesavy - Agricultural Software Development Experts"
+    template: "%s | Bytesavy - Legacy Industry Software Development Experts"
   },
-  description: "Leading agricultural software development company serving Manitoba, Alberta, Saskatchewan, and across Canada. Custom software development, app development, and agtech solutions for farming operations. Expert software developers specializing in agricultural technology, farm management systems, and business automation. Trusted by agricultural organizations across the Canadian Prairies.",
+  description: "Leading legacy industry software development company serving Manitoba, Alberta, Saskatchewan, and across Canada. Custom software development, app development, and industry-specific solutions for agriculture, oil & gas, mining, and construction. Expert software developers specializing in legacy industry technology, management systems, and business automation. Trusted by organizations across the Canadian Prairies.",
   
   // Enhanced application metadata
   applicationName: "Bytesavy Digital Solutions",
@@ -61,28 +61,28 @@ export const metadata: Metadata = {
     "custom software development company", "app development", "app development company",
     "mobile app development", "web application development", "enterprise software development",
 
-    // Agricultural focus
-    "agricultural software development", "agribusiness software", "farm management software",
-    "agricultural technology", "agtech software", "farming software solutions",
-    "crop management software", "precision agriculture software", "agricultural ERP",
+    // Legacy industry focus
+    "legacy industry software development", "agricultural software development", "oil and gas software",
+    "mining software solutions", "construction management software", "industry-specific software",
+    "agribusiness software", "farm management software", "industrial software development",
 
     // Location-specific - Manitoba
     "software development Manitoba", "software development company Manitoba", "software development companies Manitoba",
     "app development Manitoba", "app development company Manitoba", "mobile app development Winnipeg",
     "custom software development Winnipeg", "software developers Manitoba", "Winnipeg software company",
-    "Manitoba app developers", "agricultural software Manitoba", "agtech Manitoba",
+    "Manitoba app developers", "legacy industry software Manitoba", "agricultural software Manitoba",
 
     // Location-specific - Alberta
     "software development Alberta", "software development company Alberta", "software development companies Alberta",
     "app development Alberta", "app development company Calgary", "Calgary software developers",
     "custom software development Calgary", "Edmonton software development", "Alberta app development",
-    "software developers Alberta", "agricultural software Alberta", "agtech Alberta",
+    "software developers Alberta", "oil and gas software Alberta", "agricultural software Alberta",
 
     // Location-specific - Saskatchewan
     "software development Saskatchewan", "software development company Saskatchewan", "software development companies Saskatchewan",
     "app development Saskatchewan", "Saskatoon software development", "Regina software developers",
-    "custom software development Saskatchewan", "Saskatchewan app developers", "agricultural software Saskatchewan",
-    "agtech Saskatchewan", "farm software Saskatchewan",
+    "custom software development Saskatchewan", "Saskatchewan app developers", "mining software Saskatchewan",
+    "agricultural software Saskatchewan", "legacy industry software Saskatchewan",
 
     // Location-specific - Canada
     "software development Canada", "Canadian software development", "software development companies Canada",
@@ -120,9 +120,9 @@ export const metadata: Metadata = {
   // Enhanced Open Graph for social sharing
   openGraph: {
     type: "website",
-    siteName: "Bytesavy - Agricultural Software Development Company",
+    siteName: "Bytesavy - Legacy Industry Software Development Company",
     title: "Bytesavy - Custom Software Development | Manitoba, Alberta, Saskatchewan",
-    description: "Leading agricultural software development company serving Manitoba, Alberta, Saskatchewan, and across Canada. Custom software development, app development, and agtech solutions for farming operations.",
+    description: "Leading legacy industry software development company serving Manitoba, Alberta, Saskatchewan, and across Canada. Custom software development, app development, and industry-specific solutions for agriculture, oil & gas, mining, and construction.",
     url: "https://bytesavy.com",
     locale: "en_CA",
     countryName: "Canada",
@@ -133,7 +133,7 @@ export const metadata: Metadata = {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Bytesavy - Agricultural Software Development for Manitoba, Alberta, Saskatchewan",
+        alt: "Bytesavy - Legacy Industry Software Development for Manitoba, Alberta, Saskatchewan",
         type: "image/jpeg",
       },
       {

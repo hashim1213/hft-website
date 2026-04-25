@@ -141,6 +141,7 @@ export default function Header() {
                 </div>
               )}
             </div>
+
           </nav>
 
           {/* Right Side Actions */}

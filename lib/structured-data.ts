@@ -14,7 +14,7 @@ export const organizationSchema = {
     "width": 200,
     "height": 60
   },
-  "description": "Leading agricultural software development company serving Manitoba, Alberta, Saskatchewan, and across Canada. Specializing in custom software development, mobile app development, and agtech solutions for agricultural operations. Expert developers creating farm management systems, crop tracking software, and agricultural business automation.",
+  "description": "Leading legacy industry software development company serving Manitoba, Alberta, Saskatchewan, and across Canada. Specializing in custom software development, mobile app development, and technology solutions for legacy industries including agriculture, oil & gas, mining, and construction. Expert developers creating industry-specific management systems and business automation solutions.",
   "foundingDate": "2020",
   "foundingLocation": {
     "@type": "Place",
@@ -145,12 +145,12 @@ export const organizationSchema = {
     "https://instagram.com/bytesavy"
   ],
   "knowsAbout": [
+    "Legacy Industry Software Development",
     "Agricultural Software Development",
-    "Agribusiness Technology",
-    "Farm Management Software",
-    "Precision Agriculture",
-    "Crop Management Systems",
-    "Agricultural Data Analytics",
+    "Oil & Gas Technology",
+    "Mining Software Solutions",
+    "Construction Management Software",
+    "Industry-Specific Data Analytics",
     "Custom Software Development",
     "Mobile App Development",
     "Web Application Development",
@@ -172,8 +172,8 @@ export const organizationSchema = {
       "@type": "Offer",
       "itemOffered": {
         "@type": "Service",
-        "name": "Agricultural Software Development",
-        "description": "Custom software solutions for agricultural operations including farm management systems, crop tracking, and precision agriculture tools"
+        "name": "Legacy Industry Software Development",
+        "description": "Custom software solutions for legacy industries including agriculture, oil & gas, mining, and construction operations with industry-specific management systems and automation tools"
       },
       "areaServed": ["Manitoba", "Alberta", "Saskatchewan", "Canada"]
     },
@@ -182,7 +182,7 @@ export const organizationSchema = {
       "itemOffered": {
         "@type": "Service",
         "name": "Custom Software Development",
-        "description": "Tailored software solutions built with modern technologies for agricultural businesses and organizations"
+        "description": "Tailored software solutions built with modern technologies for legacy industry businesses and organizations"
       },
       "areaServed": ["Manitoba", "Alberta", "Saskatchewan", "Canada"]
     },
@@ -191,7 +191,7 @@ export const organizationSchema = {
       "itemOffered": {
         "@type": "Service",
         "name": "Mobile App Development",
-        "description": "iOS and Android mobile applications for agricultural field operations, data collection, and farm management"
+        "description": "iOS and Android mobile applications for legacy industry field operations, data collection, and business management"
       },
       "areaServed": ["Manitoba", "Alberta", "Saskatchewan", "Canada"]
     },
@@ -200,7 +200,7 @@ export const organizationSchema = {
       "itemOffered": {
         "@type": "Service",
         "name": "Web Application Development",
-        "description": "Modern web-based platforms for agricultural data management, reporting, and business operations"
+        "description": "Modern web-based platforms for legacy industry data management, reporting, and business operations"
       },
       "areaServed": ["Manitoba", "Alberta", "Saskatchewan", "Canada"]
     },
@@ -209,7 +209,7 @@ export const organizationSchema = {
       "itemOffered": {
         "@type": "Service",
         "name": "Legacy System Modernization",
-        "description": "Modernizing outdated agricultural systems with cloud-based solutions and modern interfaces"
+        "description": "Modernizing outdated legacy industry systems with cloud-based solutions and modern interfaces"
       },
       "areaServed": ["Manitoba", "Alberta", "Saskatchewan", "Canada"]
     },
@@ -218,7 +218,7 @@ export const organizationSchema = {
       "itemOffered": {
         "@type": "Service",
         "name": "AI & Automation Solutions",
-        "description": "Intelligent automation and AI-powered workflows for agricultural data processing and analysis"
+        "description": "Intelligent automation and AI-powered workflows for legacy industry data processing and analysis"
       },
       "areaServed": ["Manitoba", "Alberta", "Saskatchewan", "Canada"]
     }
@@ -271,7 +271,7 @@ export const faqSchema = {
       "name": "What services does Bytesavy offer?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Bytesavy offers comprehensive agricultural software development including custom software development, mobile app development (iOS and Android), web application development, farm management systems, precision agriculture tools, legacy system modernization, and AI-powered automation. We specialize in creating practical, scalable solutions for agricultural organizations across Manitoba, Alberta, Saskatchewan, and Canada."
+        "text": "Bytesavy offers comprehensive legacy industry software development including custom software development, mobile app development (iOS and Android), web application development, industry-specific management systems, legacy system modernization, and AI-powered automation. We specialize in creating practical, scalable solutions for legacy industry organizations across Manitoba, Alberta, Saskatchewan, and Canada, serving sectors like agriculture, oil & gas, mining, and construction."
       }
     },
     {
@@ -279,7 +279,7 @@ export const faqSchema = {
       "name": "Do you provide software development services in Manitoba, Alberta, and Saskatchewan?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes! Bytesavy proudly serves agricultural businesses and organizations across Manitoba (Winnipeg, Brandon), Alberta (Calgary, Edmonton), Saskatchewan (Saskatoon, Regina), and all of Canada. We specialize in agricultural software development and offer remote development services for clients anywhere in the Canadian Prairies. We are a Canadian company committed to delivering practical software solutions to Canadian agricultural operations."
+        "text": "Yes! Bytesavy proudly serves legacy industry businesses and organizations across Manitoba (Winnipeg, Brandon), Alberta (Calgary, Edmonton), Saskatchewan (Saskatoon, Regina), and all of Canada. We specialize in legacy industry software development and offer remote development services for clients anywhere in the Canadian Prairies. We are a Canadian company committed to delivering practical software solutions to Canadian legacy industry operations."
       }
     },
     {
@@ -287,7 +287,7 @@ export const faqSchema = {
       "name": "What is the best software development company in Manitoba?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Bytesavy is a leading software development company serving Manitoba with expertise in agricultural software development. We build custom software solutions, mobile apps, and web applications for Manitoba farms and agricultural businesses. Our team understands Manitoba's agricultural sector and creates practical software that performs reliably in real-world farming conditions."
+        "text": "Bytesavy is a leading software development company serving Manitoba with expertise in legacy industry software development. We build custom software solutions, mobile apps, and web applications for Manitoba legacy industry businesses including agriculture, oil & gas, mining, and construction. Our team understands Manitoba's industrial sectors and creates practical software that performs reliably in real-world conditions."
       }
     },
     {
@@ -295,7 +295,7 @@ export const faqSchema = {
       "name": "Where can I find app development companies in Alberta?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Bytesavy provides expert app development services across Alberta including Calgary, Edmonton, and rural communities. We specialize in mobile app development for agricultural operations, creating iOS and Android applications for farm management, field data collection, and business operations. Our Alberta clients trust us for practical, reliable software solutions."
+        "text": "Bytesavy provides expert app development services across Alberta including Calgary, Edmonton, and rural communities. We specialize in mobile app development for legacy industry operations, creating iOS and Android applications for business management, field data collection, and operational workflows. Our Alberta clients trust us for practical, reliable software solutions."
       }
     },
     {
@@ -303,7 +303,7 @@ export const faqSchema = {
       "name": "Who provides agricultural software development in Saskatchewan?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Bytesavy specializes in agricultural software development for Saskatchewan farms and agribusinesses. We serve clients in Saskatoon, Regina, and across rural Saskatchewan with custom farm management software, crop tracking systems, and agricultural business applications. Our software is built specifically for Saskatchewan's agricultural sector."
+        "text": "Bytesavy specializes in legacy industry software development for Saskatchewan businesses. We serve clients in Saskatoon, Regina, and across Saskatchewan with custom management software, data tracking systems, and industry-specific business applications. Our software is built specifically for Saskatchewan's legacy industries including agriculture, oil & gas, mining, and construction."
       }
     },
     {
@@ -311,7 +311,7 @@ export const faqSchema = {
       "name": "How much does custom software development cost in Canada?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Custom software development costs vary based on project scope, complexity, and features. Agricultural web applications typically start from $15,000 CAD, while comprehensive farm management systems can range from $50,000 to $200,000+ CAD. Mobile apps for field operations typically range from $30,000 to $100,000 CAD. Bytesavy offers flexible engagement models for Manitoba, Alberta, and Saskatchewan clients. Contact us for a free consultation and detailed quote."
+        "text": "Custom software development costs vary based on project scope, complexity, and features. Industry-specific web applications typically start from $15,000 CAD, while comprehensive management systems can range from $50,000 to $200,000+ CAD. Mobile apps for field operations typically range from $30,000 to $100,000 CAD. Bytesavy offers flexible engagement models for Manitoba, Alberta, and Saskatchewan clients. Contact us for a free consultation and detailed quote."
       }
     },
     {
@@ -319,7 +319,7 @@ export const faqSchema = {
       "name": "What makes Bytesavy different from other software development companies?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Bytesavy specializes in agricultural software development with deep understanding of farming operations in Manitoba, Alberta, and Saskatchewan. We focus on practical, reliable software that performs in real-world agricultural conditions. We build long-term partnerships with agricultural organizations, listen first before building, and create software that generates measurable impact from day one. We're trusted by leading agricultural organizations like Manitoba Crop Alliance and Alberta Grains."
+        "text": "Bytesavy specializes in legacy industry software development with deep understanding of operations in Manitoba, Alberta, and Saskatchewan. We focus on practical, reliable software that performs in real-world industry conditions. We build long-term partnerships with legacy industry organizations, listen first before building, and create software that generates measurable impact from day one. We're trusted by leading organizations across agriculture, oil & gas, mining, and construction sectors."
       }
     },
     {
