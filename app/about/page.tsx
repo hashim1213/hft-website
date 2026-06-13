@@ -252,7 +252,7 @@ export default function AboutPage() {
                   name: "Hashim Farooq",
                   role: "CEO & Founder",
                   bio: "Leading the vision to transform traditional industries through practical, modern software solutions.",
-                  image: "/Hashim.png",
+                  image: "/hashim.jpg",
                   rotation: "-3deg",
                   color: "bg-yellow-100"
                 },
