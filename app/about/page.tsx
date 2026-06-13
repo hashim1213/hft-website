@@ -1,6 +1,6 @@
 'use client'
 import { motion } from "framer-motion"
-import { Check, Code2, Brain, BarChart, Smartphone, Cloud, Shield, Users, Target, Workflow, Award, Mic, ArrowUpRight, Sparkles } from "lucide-react"
+import { Check, Code2, Brain, BarChart, Smartphone, Cloud, Shield, Users, Target, Workflow, Award, Mic } from "lucide-react"
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Image from "next/image"
@@ -105,13 +105,9 @@ export default function AboutPage() {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <span className="inline-flex items-center gap-2 rounded-full bg-accent/10 px-4 py-1.5 text-sm font-medium text-accent mb-4">
-                <Sparkles className="h-4 w-4" />
-                What We Do
-              </span>
               <h2 className="text-3xl font-bold text-primary mb-4 sm:text-4xl">Our Services</h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Delivering practical software with real-world impact — from custom builds to helping teams put AI to work.
+                Delivering practical software with real-world impact, from custom builds to helping teams put AI to work.
               </p>
             </motion.div>
 
@@ -123,24 +119,19 @@ export default function AboutPage() {
               viewport={{ once: true }}
               className="mb-8"
             >
-              <div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-accent p-8 sm:p-12 shadow-xl">
-                <div className="absolute -right-12 -top-12 h-48 w-48 rounded-full bg-white/10 blur-2xl" />
-                <div className="absolute -bottom-16 -left-8 h-56 w-56 rounded-full bg-white/5 blur-3xl" />
-                <div className="relative grid gap-8 md:grid-cols-[auto,1fr] md:items-center">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-sm ring-1 ring-white/20">
-                    <Mic className="h-10 w-10 text-white" />
+              <div className="rounded-2xl border border-gray-200 bg-white p-8 sm:p-12">
+                <div className="grid gap-8 md:grid-cols-[auto,1fr] md:items-center">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-accent/10 text-accent">
+                    <Mic className="h-8 w-8" />
                   </div>
-                  <div className="space-y-3 text-white">
-                    <span className="inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-semibold uppercase tracking-wider">
-                      New
-                    </span>
-                    <h3 className="text-2xl font-bold sm:text-3xl">AI Speaking &amp; Consulting</h3>
-                    <p className="max-w-2xl text-white/90">
-                      Practical guidance for companies on how to adopt and use AI — keynote talks, workshops, and hands-on consulting that cut through the hype and show your team where AI delivers real value.
+                  <div className="space-y-3">
+                    <h3 className="text-2xl font-bold text-primary sm:text-3xl">AI Speaking &amp; Consulting</h3>
+                    <p className="max-w-2xl text-gray-600">
+                      Practical guidance for companies on how to adopt and use AI. Keynote talks, workshops, and hands-on consulting that cut through the hype and show your team where AI delivers real value.
                     </p>
                     <div className="flex flex-wrap gap-2 pt-2">
                       {["Keynotes & Talks", "Team Workshops", "AI Strategy", "Hands-on Adoption"].map((tag) => (
-                        <span key={tag} className="rounded-full bg-white/15 px-3 py-1 text-sm text-white/90">
+                        <span key={tag} className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-700">
                           {tag}
                         </span>
                       ))}
@@ -191,14 +182,13 @@ export default function AboutPage() {
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: index * 0.08 }}
                     viewport={{ once: true }}
-                    className="group relative flex h-full flex-col rounded-2xl border border-gray-200 bg-white p-6 transition-all hover:-translate-y-1 hover:border-accent hover:shadow-xl"
+                    className="flex h-full flex-col rounded-2xl border border-gray-200 bg-white p-6 transition-colors hover:border-accent"
                   >
-                    <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent transition-colors group-hover:bg-accent group-hover:text-white">
+                    <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent">
                       <Icon className="h-6 w-6" />
                     </div>
                     <h3 className="mb-2 text-lg font-semibold text-primary">{service.title}</h3>
                     <p className="text-gray-600">{service.description}</p>
-                    <ArrowUpRight className="absolute right-6 top-6 h-5 w-5 text-gray-300 transition-all group-hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </motion.div>
                 )
               })}
