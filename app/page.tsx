@@ -377,8 +377,8 @@ export default function Website() {
           </div>
         </section>
 
-        {/* Case Study / Results Section - Dark with Image */}
-        <section className="py-24 bg-gray-900 text-white relative overflow-hidden">
+        {/* Case Study / Results Section */}
+        <section className="py-24 bg-white">
           <div className="container mx-auto px-4 md:px-6">
             <div className="max-w-6xl mx-auto">
               <motion.div
@@ -387,93 +387,67 @@ export default function Website() {
                 viewport={{ once: true }}
                 className="text-center mb-16"
               >
-                <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                <h2 className="text-3xl md:text-4xl font-bold mb-6 text-primary">
                   Delivering practical software with real-world impact
                 </h2>
-                <p className="text-lg text-gray-300 max-w-3xl mx-auto">
+                <p className="text-lg text-gray-600 max-w-3xl mx-auto">
                   Our custom solutions help legacy industry organizations modernize operations, streamline workflows, and achieve measurable results from day one.
                 </p>
               </motion.div>
 
               <div className="grid md:grid-cols-2 gap-8">
-                {/* Levy Database Product */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 border border-gray-700 hover:border-accent/50 transition-all"
-                >
-                  <div className="mb-6">
-                    <h3 className="text-2xl font-bold mb-3">Levy Database</h3>
-                    <p className="text-gray-300 leading-relaxed">
-                      A comprehensive system designed for levy collection organizations, streamlining the entire levy management process.
-                    </p>
-                  </div>
+                {[
+                  {
+                    title: "Levy Database",
+                    description: "A comprehensive system designed for levy collection organizations, streamlining the entire levy management process.",
+                    features: [
+                      "Complete customer management system",
+                      "Automated levy collection and refund processing",
+                      "Organization management for collecting entities",
+                      "Real-time reporting and compliance tracking",
+                    ],
+                    impact: "Simplified levy operations from collection to refund, enabling organizations to manage their processes efficiently and transparently.",
+                  },
+                  {
+                    title: "Research Database",
+                    description: "A powerful database platform for managing the complete research grant lifecycle, from application to milestone tracking.",
+                    features: [
+                      "Comprehensive grant management system",
+                      "Researcher and organization tracking",
+                      "Event, project, and milestone coordination",
+                      "Streamlined application and approval workflows",
+                    ],
+                    impact: "Transformed grant operations with smoother application processing, approval workflows, and ongoing grant maintenance for research organizations.",
+                  },
+                ].map((product, index) => (
+                  <motion.div
+                    key={product.title}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.15 }}
+                    className="flex flex-col rounded-2xl border border-gray-200 bg-white p-8 transition-colors hover:border-accent"
+                  >
+                    <div className="mb-6">
+                      <h3 className="text-2xl font-bold mb-3 text-primary">{product.title}</h3>
+                      <p className="text-gray-600 leading-relaxed">{product.description}</p>
+                    </div>
 
-                  <div className="space-y-3 mb-6">
-                    <div className="flex items-start gap-3">
-                      <CheckCircleIcon sx={{ fontSize: 20, color: 'hsl(var(--accent))', marginTop: '0.25rem' }} className="flex-shrink-0" />
-                      <p className="text-sm text-gray-300">Complete customer management system</p>
+                    <div className="space-y-3 mb-6">
+                      {product.features.map((feature) => (
+                        <div key={feature} className="flex items-start gap-3">
+                          <CheckCircleIcon sx={{ fontSize: 20, color: 'hsl(var(--accent))', marginTop: '0.125rem' }} className="flex-shrink-0" />
+                          <p className="text-sm text-gray-700">{feature}</p>
+                        </div>
+                      ))}
                     </div>
-                    <div className="flex items-start gap-3">
-                      <CheckCircleIcon sx={{ fontSize: 20, color: 'hsl(var(--accent))', marginTop: '0.25rem' }} className="flex-shrink-0" />
-                      <p className="text-sm text-gray-300">Automated levy collection and refund processing</p>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <CheckCircleIcon sx={{ fontSize: 20, color: 'hsl(var(--accent))', marginTop: '0.25rem' }} className="flex-shrink-0" />
-                      <p className="text-sm text-gray-300">Organization management for collecting entities</p>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <CheckCircleIcon sx={{ fontSize: 20, color: 'hsl(var(--accent))', marginTop: '0.25rem' }} className="flex-shrink-0" />
-                      <p className="text-sm text-gray-300">Real-time reporting and compliance tracking</p>
-                    </div>
-                  </div>
 
-                  <div className="pt-4 border-t border-gray-700">
-                    <p className="text-xs text-gray-400 uppercase font-semibold mb-2">Impact</p>
-                    <p className="text-sm text-gray-300">Simplified levy operations from collection to refund, enabling organizations to manage their processes efficiently and transparently.</p>
-                  </div>
-                </motion.div>
-
-                {/* Research Database Product */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.15 }}
-                  className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-8 border border-gray-700 hover:border-accent/50 transition-all"
-                >
-                  <div className="mb-6">
-                    <h3 className="text-2xl font-bold mb-3">Research Database</h3>
-                    <p className="text-gray-300 leading-relaxed">
-                      A powerful database platform for managing the complete research grant lifecycle, from application to milestone tracking.
-                    </p>
-                  </div>
-
-                  <div className="space-y-3 mb-6">
-                    <div className="flex items-start gap-3">
-                      <CheckCircleIcon sx={{ fontSize: 20, color: 'hsl(var(--accent))', marginTop: '0.25rem' }} className="flex-shrink-0" />
-                      <p className="text-sm text-gray-300">Comprehensive grant management system</p>
+                    <div className="mt-auto pt-6 border-t border-gray-200">
+                      <p className="text-xs text-accent uppercase font-semibold tracking-wider mb-2">Impact</p>
+                      <p className="text-sm text-gray-600">{product.impact}</p>
                     </div>
-                    <div className="flex items-start gap-3">
-                      <CheckCircleIcon sx={{ fontSize: 20, color: 'hsl(var(--accent))', marginTop: '0.25rem' }} className="flex-shrink-0" />
-                      <p className="text-sm text-gray-300">Researcher and organization tracking</p>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <CheckCircleIcon sx={{ fontSize: 20, color: 'hsl(var(--accent))', marginTop: '0.25rem' }} className="flex-shrink-0" />
-                      <p className="text-sm text-gray-300">Event, project, and milestone coordination</p>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <CheckCircleIcon sx={{ fontSize: 20, color: 'hsl(var(--accent))', marginTop: '0.25rem' }} className="flex-shrink-0" />
-                      <p className="text-sm text-gray-300">Streamlined application and approval workflows</p>
-                    </div>
-                  </div>
-
-                  <div className="pt-4 border-t border-gray-700">
-                    <p className="text-xs text-gray-400 uppercase font-semibold mb-2">Impact</p>
-                    <p className="text-sm text-gray-300">Transformed grant operations with smoother application processing, approval workflows, and ongoing grant maintenance for research organizations.</p>
-                  </div>
-                </motion.div>
+                  </motion.div>
+                ))}
               </div>
 
               <motion.div
