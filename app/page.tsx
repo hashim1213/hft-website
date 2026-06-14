@@ -81,7 +81,7 @@ export default function Website() {
             >
               <source src="/background.mp4" type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/30"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/50 to-primary/20"></div>
           </div>
 
           <div className="container mx-auto px-4 md:px-6 relative z-10">
@@ -94,14 +94,14 @@ export default function Website() {
               >
                 <motion.h1
                   variants={fadeInUp}
-                  className="text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.1] drop-shadow-lg"
+                  className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight leading-[1.08]"
                 >
                   The <RotatingIndustry /> software modernization partner
                 </motion.h1>
 
                 <motion.p
                   variants={fadeInUp}
-                  className="text-xl md:text-2xl text-white/90 max-w-2xl leading-relaxed drop-shadow-md"
+                  className="text-lg md:text-xl text-white/90 max-w-2xl leading-relaxed"
                 >
                   Bytesavy Technologies accelerates operational efficiency and growth with custom software solutions built for your industry.
                 </motion.p>
@@ -118,7 +118,7 @@ export default function Website() {
                   variants={fadeInUp}
                   className="pt-8"
                 >
-                  <p className="text-sm text-white/80 mb-6 drop-shadow-md">{t('hero.trusted')}</p>
+                  <p className="text-xs font-medium uppercase tracking-widest text-white/70 mb-6">{t('hero.trusted')}</p>
                   <div className="flex flex-wrap items-center gap-12">
                     <div className="opacity-80 hover:opacity-100 transition-all duration-300">
                       <Image
@@ -155,16 +155,16 @@ export default function Website() {
         </section>
 
         {/* Software Lifecycle Journey - Visual Timeline with Curve */}
-        <section className="relative py-24 bg-white overflow-hidden">
+        <section className="relative py-24 md:py-28 bg-white overflow-hidden">
           <div className="container mx-auto px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center mb-8"
+              className="text-center mb-12"
             >
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-                Software that supports your <span className="italic">entire operation</span>
+              <h2 className="text-3xl md:text-4xl font-semibold text-primary mb-4 tracking-tight">
+                Software that supports your entire operation
               </h2>
               <p className="text-lg text-gray-600">End-to-end solutions across your operational workflow</p>
             </motion.div>
@@ -300,7 +300,7 @@ export default function Website() {
         </section>
 
         {/* Services Grid - Card Based */}
-        <section className="py-24 bg-white">
+        <section className="py-24 md:py-28 bg-gray-50 border-y border-gray-200">
           <div className="container mx-auto px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -308,7 +308,8 @@ export default function Website() {
               viewport={{ once: true }}
               className="mb-16"
             >
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-4">What we do</p>
+              <h2 className="text-3xl md:text-4xl font-semibold text-primary tracking-tight">
                 {t('services.title')}
               </h2>
             </motion.div>
@@ -355,9 +356,9 @@ export default function Website() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="bg-white border border-gray-200 rounded-lg p-8 hover:shadow-md transition-shadow"
+                  className="bg-white border border-gray-200 rounded-sm p-8 transition-colors hover:border-accent"
                 >
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">{service.title}</h3>
+                  <h3 className="text-xl font-semibold text-primary mb-4 tracking-tight">{service.title}</h3>
                   <p className="text-gray-600 mb-6 leading-relaxed">{service.description}</p>
                   <div className="space-y-3">
                     {service.links.map((link, i) => (
@@ -378,7 +379,7 @@ export default function Website() {
         </section>
 
         {/* Case Study / Results Section */}
-        <section className="py-24 bg-white">
+        <section className="py-24 md:py-28 bg-white">
           <div className="container mx-auto px-4 md:px-6">
             <div className="max-w-6xl mx-auto">
               <motion.div
@@ -387,7 +388,8 @@ export default function Website() {
                 viewport={{ once: true }}
                 className="text-center mb-16"
               >
-                <h2 className="text-3xl md:text-4xl font-bold mb-6 text-primary">
+                <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-4">Our work</p>
+                <h2 className="text-3xl md:text-4xl font-semibold mb-6 text-primary tracking-tight">
                   Delivering practical software with real-world impact
                 </h2>
                 <p className="text-lg text-gray-600 max-w-3xl mx-auto">
@@ -426,10 +428,10 @@ export default function Website() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.15 }}
-                    className="flex flex-col rounded-2xl border border-gray-200 bg-white p-8 transition-colors hover:border-accent"
+                    className="flex flex-col rounded-sm border border-gray-200 bg-white p-8 transition-colors hover:border-accent"
                   >
                     <div className="mb-6">
-                      <h3 className="text-2xl font-bold mb-3 text-primary">{product.title}</h3>
+                      <h3 className="text-xl font-semibold mb-3 text-primary tracking-tight">{product.title}</h3>
                       <p className="text-gray-600 leading-relaxed">{product.description}</p>
                     </div>
 
@@ -469,7 +471,7 @@ export default function Website() {
         </section>
 
         {/* Transformation Differentiators */}
-        <section className="py-24 bg-gradient-to-br from-gray-50 to-white">
+        <section className="py-24 md:py-28 bg-gray-50 border-y border-gray-200">
           <div className="container mx-auto px-4 md:px-6">
             <div className="max-w-5xl mx-auto">
               <motion.div
@@ -478,10 +480,11 @@ export default function Website() {
                 viewport={{ once: true }}
                 className="mb-16"
               >
-                <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-4">Our approach</p>
+                <h2 className="text-3xl md:text-4xl font-semibold text-primary tracking-tight mb-4">
                   Transformation built for legacy industries
                 </h2>
-                <p className="text-xl text-gray-600">Our approach to legacy industry software development</p>
+                <p className="text-lg text-gray-600">Our approach to legacy industry software development</p>
               </motion.div>
 
               <div className="grid md:grid-cols-2 gap-8">
@@ -512,12 +515,12 @@ export default function Website() {
                     className="flex gap-4"
                   >
                     <div className="flex-shrink-0">
-                      <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-sm bg-accent/10 flex items-center justify-center">
                         <CheckCircleIcon sx={{ fontSize: 24, color: 'hsl(var(--accent))' }} />
                       </div>
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">{item.title}</h3>
+                      <h3 className="text-lg font-semibold text-primary mb-2 tracking-tight">{item.title}</h3>
                       <p className="text-gray-600 leading-relaxed">{item.description}</p>
                     </div>
                   </motion.div>
@@ -528,7 +531,7 @@ export default function Website() {
         </section>
 
         {/* Final CTA */}
-        <section className="py-24 bg-white relative overflow-hidden">
+        <section className="py-24 md:py-28 bg-primary relative overflow-hidden">
           <div className="container mx-auto px-4 md:px-6 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -536,13 +539,18 @@ export default function Website() {
               viewport={{ once: true }}
               className="text-center max-w-3xl mx-auto"
             >
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              <h2 className="text-3xl md:text-4xl font-semibold text-white mb-6 tracking-tight">
                 {t('cta.title')}
               </h2>
-              <p className="text-xl text-gray-600 mb-8">
+              <p className="text-lg text-white/80 mb-10">
                 {t('cta.subtitle')}
               </p>
-              <BookingDialog onOpenChange={() => {}} />
+              <Link href="/contact">
+                <Button size="lg" className="bg-white text-primary hover:bg-white/90">
+                  Get in touch
+                  <ArrowForwardIcon sx={{ fontSize: 18, marginLeft: '0.5rem' }} />
+                </Button>
+              </Link>
             </motion.div>
           </div>
         </section>

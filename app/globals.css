@@ -2,9 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Global font fallback */
+/* Global typeface — Inter with system fallbacks */
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 @layer base {
@@ -33,7 +35,7 @@ body {
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
+    --radius: 0.1875rem; /* 3px — low radius for an institutional, corporate feel */
   }
 
   .dark {
@@ -68,26 +70,19 @@ body {
   * {
     @apply border-border;
   }
-  
-  /* Fix for background everywhere */
+
   html {
-    background-color: #111827 !important; /* Match footer */
+    background-color: #ffffff;
     overscroll-behavior: none;
   }
 
   body {
     @apply text-foreground;
-    background-color: #111827 !important; /* Match footer */
+    background-color: #ffffff;
     overscroll-behavior: none; /* Prevent bounce/overscroll */
     -webkit-overscroll-behavior: none; /* iOS Safari specific */
   }
-  
-  /* Ensure Next.js root elements match footer */
-  #__next,
-  #__next > div {
-    background-color: #111827 !important;
-  }
-  
+
   /* Prevent mobile overscroll showing background */
   @supports (-webkit-touch-callout: none) {
     body {
@@ -97,17 +92,10 @@ body {
   }
 }
 
-/* Additional fix for any remaining backgrounds */
-@layer utilities {
-  .bg-page {
-    background-color: #111827 !important;
-  }
-}
-
 /* Fix for browser-specific overscroll */
 html, body {
   overscroll-behavior: none;
-  background: #111827; /* Match footer bg-gray-900 */
+  background: #ffffff;
   margin: 0 !important;
   padding: 0 !important;
   min-height: 100vh;
@@ -118,13 +106,6 @@ html, body {
 html {
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: none;
-}
-
-/* Force background on all root elements to match footer */
-html, body, #__next, [data-nextjs-scroll-focus-boundary] {
-  background-color: #111827 !important;
-  margin: 0 !important;
-  padding: 0 !important;
 }
 
 /* Grid pattern for backgrounds */

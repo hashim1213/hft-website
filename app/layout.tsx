@@ -1,6 +1,15 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
+import { Inter } from "next/font/google";
 import "./globals.css";
+
+// Primary UI typeface — clean humanist grotesk for a corporate, institutional feel
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
 import { Analytics } from "@vercel/analytics/react";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import PrivacyBanner from "@/components/PrivacyBanner";
@@ -386,7 +395,7 @@ export default function RootLayout({
         <meta httpEquiv="Cache-Control" content="public, max-age=31536000, immutable" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}
+        className={`${inter.variable} ${geistSans.variable} ${geistMono.variable} antialiased h-full`}
         itemScope
         itemType="https://schema.org/WebPage"
       >
