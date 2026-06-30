@@ -395,6 +395,53 @@ export default function Website() {
                 </p>
               </motion.div>
 
+              {/* BlueBook App Feature Card */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="rounded-2xl border border-gray-200 bg-white p-8 mb-8 transition-colors hover:border-accent"
+              >
+                <div className="grid md:grid-cols-2 gap-8 items-center">
+                  <div>
+                    <h3 className="text-2xl font-bold mb-3 text-primary">BlueBook App</h3>
+                    <p className="text-gray-600 leading-relaxed mb-4">
+                      A cross-platform agricultural reference app built for iOS, Android, and web, giving farmers and agronomists quick access to crop protection product information, selector charts, and guides.
+                    </p>
+                    <div className="space-y-3 mb-6">
+                      {[
+                        "iOS, Android, and web app",
+                        "Product search across crops and pests",
+                        "Offline-capable selector charts and guides",
+                        "Personalized favorites and quick reference tools",
+                      ].map((feature) => (
+                        <div key={feature} className="flex items-start gap-3">
+                          <CheckCircleIcon sx={{ fontSize: 20, color: 'hsl(var(--accent))', marginTop: '0.125rem' }} className="flex-shrink-0" />
+                          <p className="text-sm text-gray-700">{feature}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="pt-6 border-t border-gray-200">
+                      <p className="text-xs text-accent uppercase font-semibold tracking-wider mb-2">Impact</p>
+                      <p className="text-sm text-gray-600">Modernized how agricultural professionals access critical product data, replacing outdated print references with a fast, searchable digital platform available anywhere.</p>
+                    </div>
+                    <a href="https://www.bluebookapp.ca" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 mt-4 text-sm font-medium text-accent hover:underline">
+                      Visit bluebookapp.ca
+                      <ArrowForwardIcon sx={{ fontSize: 14 }} />
+                    </a>
+                  </div>
+                  <div className="relative rounded-xl overflow-hidden border border-gray-100 shadow-sm">
+                    <Image
+                      src="/bluebook-app.png"
+                      alt="BlueBook App platform showing product search, selector charts, and agricultural reference tools"
+                      width={1366}
+                      height={900}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
+              </motion.div>
+
               <div className="grid md:grid-cols-2 gap-8">
                 {[
                   {
