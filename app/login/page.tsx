@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import * as Icons from "lucide-react"
+import { WarningRegular, SpinnerIosRegular } from "@fluentui/react-icons"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Alert, AlertDescription } from "@/components/ui/alert"
@@ -123,7 +123,7 @@ export default function LoginPage() {
 
             {error && (
               <Alert variant="destructive" className="mb-6 bg-red-900/20 border border-red-800 text-red-300">
-                <Icons.AlertCircle className="h-4 w-4" />
+                <WarningRegular className="w-4 h-4" />
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
@@ -160,7 +160,7 @@ export default function LoginPage() {
               >
                 {loading ? (
                   <div className="flex items-center justify-center">
-                    <Icons.Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <SpinnerIosRegular className="mr-2 w-4 h-4 animate-spin" />
                     <span>Signing in...</span>
                   </div>
                 ) : (

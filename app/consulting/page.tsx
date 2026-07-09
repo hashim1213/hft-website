@@ -1,6 +1,7 @@
 'use client'
 import { motion } from "framer-motion"
-import * as Icons from "lucide-react"
+import { ArrowRightRegular, BrainCircuitRegular, CheckmarkCircleRegular, FlowRegular } from "@fluentui/react-icons"
+import { Settings } from "lucide-react"
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { Card, CardContent } from "@/components/ui/card"
@@ -33,7 +34,7 @@ export default function ConsultingPage() {
                 onClick={() => window.location.href = '/contact'}
               >
                 Schedule a Consultation
-                <Icons.ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRightRegular className="ml-2 h-4 w-4" />
               </Button>
             </motion.div>
           </div>
@@ -98,7 +99,7 @@ export default function ConsultingPage() {
                       {/* Arrow indicator for desktop */}
                       {index < 3 && (
                         <div className="hidden lg:block absolute top-full left-1/2 -translate-x-1/2 mt-2">
-                          <Icons.ArrowRight className="h-6 w-6 text-primary rotate-90" />
+                          <ArrowRightRegular className="h-6 w-6 text-primary rotate-90" />
                         </div>
                       )}
                     </div>
@@ -136,7 +137,7 @@ export default function ConsultingPage() {
             <div className="grid md:grid-cols-3 gap-8">
               {[
                 {
-                  icon: Icons.Brain,
+                  icon: BrainCircuitRegular,
                   title: "Technology Strategy",
                   points: [
                     "Digital Transformation Planning",
@@ -146,7 +147,7 @@ export default function ConsultingPage() {
                   ]
                 },
                 {
-                  icon: Icons.Settings,
+                  icon: Settings,
                   title: "Solution Architecture",
                   points: [
                     "System Design & Integration",
@@ -156,7 +157,7 @@ export default function ConsultingPage() {
                   ]
                 },
                 {
-                  icon: Icons.Workflow,
+                  icon: FlowRegular,
                   title: "Process Optimization",
                   points: [
                     "Business Process Analysis",
@@ -184,7 +185,7 @@ export default function ConsultingPage() {
                         <ul className="space-y-2">
                           {service.points.map((point, i) => (
                             <li key={i} className="flex items-center gap-2 text-gray-600">
-                              <Icons.CheckCircle className="h-4 w-4 text-accent flex-shrink-0" />
+                              <CheckmarkCircleRegular className="h-4 w-4 text-accent flex-shrink-0" />
                               <span>{point}</span>
                             </li>
                           ))}
@@ -218,7 +219,7 @@ export default function ConsultingPage() {
                 onClick={() => window.location.href = '/contact'}
               >
                 Get Started
-                <Icons.ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRightRegular className="ml-2 h-4 w-4" />
               </Button>
             </motion.div>
           </div>

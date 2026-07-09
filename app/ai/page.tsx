@@ -1,20 +1,12 @@
 'use client'
 
 import { motion } from "framer-motion"
-import { 
-  Brain,
+import {
   Bot,
-  ChevronRight,
   MessageSquare,
-  ArrowRight,
-  BarChart,
-  Search,
-  Code,
-  Zap,
-  Star,
-  Database,
   PieChart
 } from "lucide-react"
+import { BrainCircuitRegular, ChevronRightRegular, ArrowRightRegular, DataBarVerticalRegular, SearchRegular, CodeRegular, FlashRegular, DatabaseRegular } from "@fluentui/react-icons"
 import { useRouter } from 'next/navigation'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -50,7 +42,7 @@ export default function AIPage() {
                 onClick={() => router.push('/contact')}
               >
                 Explore AI Solutions
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRightRegular className="ml-2 w-4 h-4" />
               </Button>
             </motion.div>
           </div>
@@ -108,7 +100,7 @@ export default function AIPage() {
                   ]
                 },
                 {
-                  icon: Database,
+                  icon: DatabaseRegular,
                   title: "Machine Learning",
                   description: "Custom ML models designed for your specific business challenges.",
                   features: [
@@ -119,7 +111,7 @@ export default function AIPage() {
                   ]
                 },
                 {
-                  icon: Search,
+                  icon: SearchRegular,
                   title: "Computer Vision",
                   description: "Advanced image and video analysis capabilities.",
                   features: [
@@ -130,7 +122,7 @@ export default function AIPage() {
                   ]
                 },
                 {
-                  icon: BarChart,
+                  icon: DataBarVerticalRegular,
                   title: "Data Analytics",
                   description: "Transform raw data into actionable business insights.",
                   features: [
@@ -160,7 +152,7 @@ export default function AIPage() {
                         <ul className="space-y-2">
                           {solution.features.map((feature, i) => (
                             <li key={i} className="text-sm text-gray-600 flex items-center gap-2">
-                              <ChevronRight className="h-4 w-4 text-accent" />
+                              <ChevronRightRegular className="w-4 h-4 text-accent" />
                               {feature}
                             </li>
                           ))}
@@ -233,7 +225,7 @@ export default function AIPage() {
                       {/* Arrow indicator for desktop */}
                       {index < 3 && (
                         <div className="hidden lg:block absolute top-full left-1/2 -translate-x-1/2 mt-2">
-                          <ArrowRight className="h-6 w-6 text-primary rotate-90" />
+                          <ArrowRightRegular className="w-6 h-6 text-primary rotate-90" />
                         </div>
                       )}
                     </div>
@@ -272,7 +264,7 @@ export default function AIPage() {
                 onClick={() => router.push('/contact')}
               >
                 Schedule a Consultation
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRightRegular className="ml-2 w-4 h-4" />
               </Button>
             </motion.div>
           </div>

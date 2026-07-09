@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Trophy, Clock, Share2 } from 'lucide-react';
+import { TrophyRegular, ClockRegular, ShareRegular } from '@fluentui/react-icons';
 
 // Types
 interface Answer {
@@ -316,7 +316,7 @@ export default function CanadianQuizPage() {
             />
           </div>
           <div className="ml-4 flex items-center space-x-2">
-            <Clock className="w-5 h-5" />
+            <ClockRegular className="w-5 h-5" />
             <span>{formatTime(elapsedTime)}</span>
           </div>
         </div>
@@ -381,7 +381,7 @@ export default function CanadianQuizPage() {
 
   const ResultView = () => (
     <div className="max-w-2xl mx-auto text-center space-y-8 p-6">
-      <Trophy className="w-16 h-16 text-red-600 mx-auto" />
+      <TrophyRegular className="w-16 h-16 text-red-600 mx-auto" />
       <h2 className="text-3xl font-bold">Quiz Complete!</h2>
       <div className="space-y-4">
         <p className="text-xl">Time: {formatTime(elapsedTime)}</p>
@@ -409,7 +409,7 @@ export default function CanadianQuizPage() {
           className="w-full bg-gray-600 text-white py-3 px-6 rounded-lg hover:bg-gray-700 transition-colors"
         >
           <div className="flex items-center justify-center space-x-2">
-            <Share2 className="w-5 h-5" />
+            <ShareRegular className="w-5 h-5" />
             <span>Share Result</span>
           </div>
         </button>

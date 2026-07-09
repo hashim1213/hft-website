@@ -1,5 +1,5 @@
 import { motion } from "framer-motion"
-import { Scan, ShoppingBag, ArrowRight } from "lucide-react"
+import { ScanDashRegular, ShoppingBagRegular, ArrowRightRegular } from "@fluentui/react-icons"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Image from "next/image"
@@ -41,7 +41,7 @@ const CanMadeSection = () => {
 
           <motion.div variants={fadeInUp} className="space-y-6">
             <div className="inline-flex items-center justify-center px-4 py-1.5 text-sm font-medium text-white bg-red-600 rounded-full">
-              <Scan className="w-4 h-4 mr-2" />
+              <ScanDashRegular className="w-4 h-4 mr-2" />
               <span>Introducing CanMade</span>
             </div>
 
@@ -63,7 +63,7 @@ const CanMadeSection = () => {
                     className="group bg-red-600 hover:bg-red-700 text-white w-full sm:w-auto"
                   >
                     Learn More
-                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    <ArrowRightRegular className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </Button>
                 </Link>
                 
@@ -78,7 +78,7 @@ const CanMadeSection = () => {
                     className="group hover:bg-gray-100 text-gray-900 w-full sm:w-auto"
                   >
                     Download for iOS
-                    <ShoppingBag className="ml-2 h-4 w-4" />
+                    <ShoppingBagRegular className="ml-2 h-4 w-4" />
                   </Button>
                 </a>
               </div>

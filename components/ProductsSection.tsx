@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ExternalLink, Gift } from 'lucide-react';
+import { OpenRegular, GiftRegular } from '@fluentui/react-icons';
 
 type Product = {
   name: string;
@@ -45,7 +45,7 @@ const ProductItem = ({ name, description, icon, appStoreLink }: Product) => (
       </p>
       <div className="inline-flex items-center text-accent opacity-75 group-hover:opacity-100 transition-opacity">
         <span className="text-sm font-medium">Download Free</span>
-        <ExternalLink className="w-3 h-3 ml-1 transition-transform group-hover:translate-x-1" />
+        <OpenRegular className="w-3 h-3 ml-1 transition-transform group-hover:translate-x-1" />
       </div>
     </div>
   </motion.a>
@@ -89,7 +89,7 @@ export default function ProductsSection() {
           transition={{ duration: 0.5 }}
         >
           <div className="inline-flex items-center justify-center gap-2 text-accent font-medium mb-4">
-            <Gift className="w-5 h-5" />
+            <GiftRegular className="w-5 h-5" />
             <span>Community Apps</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 mb-4">

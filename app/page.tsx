@@ -1,8 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
-import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import { ArrowRightRegular, CheckmarkCircleRegular } from '@fluentui/react-icons'
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Header from "@/components/Header"
@@ -367,7 +366,7 @@ export default function Website() {
                         className="flex items-center text-primary hover:text-primary/80 font-medium group"
                       >
                         <span>{link.name}</span>
-                        <ArrowForwardIcon sx={{ fontSize: 16, marginLeft: '0.5rem' }} className="transition-transform group-hover:translate-x-1" />
+                        <ArrowRightRegular className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
                       </Link>
                     ))}
                   </div>
@@ -404,7 +403,7 @@ export default function Website() {
               >
                 <div className="grid md:grid-cols-2 gap-8 items-center">
                   <div>
-                    <h3 className="text-2xl font-bold mb-3 text-primary">BlueBook App</h3>
+                    <h3 className="text-2xl font-bold mb-3 text-primary">Alberta BlueBook App</h3>
                     <p className="text-gray-600 leading-relaxed mb-4">
                       A cross-platform agricultural reference app built for iOS, Android, and web, giving farmers and agronomists quick access to crop protection product information, selector charts, and guides.
                     </p>
@@ -416,7 +415,7 @@ export default function Website() {
                         "Personalized favorites and quick reference tools",
                       ].map((feature) => (
                         <div key={feature} className="flex items-start gap-3">
-                          <CheckCircleIcon sx={{ fontSize: 20, color: 'hsl(var(--accent))', marginTop: '0.125rem' }} className="flex-shrink-0" />
+                          <CheckmarkCircleRegular className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: 'hsl(var(--accent))' }} />
                           <p className="text-sm text-gray-700">{feature}</p>
                         </div>
                       ))}
@@ -427,17 +426,65 @@ export default function Website() {
                     </div>
                     <a href="https://www.bluebookapp.ca" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 mt-4 text-sm font-medium text-accent hover:underline">
                       Visit bluebookapp.ca
-                      <ArrowForwardIcon sx={{ fontSize: 14 }} />
+                      <ArrowRightRegular className="w-3.5 h-3.5" />
                     </a>
                   </div>
-                  <div className="relative rounded-xl overflow-hidden border border-gray-100 shadow-sm">
-                    <Image
-                      src="/bluebook-app.png"
-                      alt="BlueBook App platform showing product search, selector charts, and agricultural reference tools"
-                      width={1366}
-                      height={900}
-                      className="w-full h-auto"
-                    />
+                  <div className="relative w-full min-h-[400px]">
+                    {/* Desktop/Web - Browser window */}
+                    <div className="relative z-10 w-full">
+                      <div className="rounded-lg overflow-hidden shadow-2xl border border-gray-200">
+                        <div className="bg-gray-100 px-3 py-2 flex items-center gap-2 border-b border-gray-200">
+                          <div className="flex gap-1.5">
+                            <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
+                            <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+                            <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
+                          </div>
+                          <div className="flex-1 mx-2">
+                            <div className="bg-white rounded-md px-3 py-1 text-[10px] text-gray-500 border border-gray-200 truncate">
+                              bluebookapp.ca
+                            </div>
+                          </div>
+                        </div>
+                        <Image
+                          src="/bluebook-app.png"
+                          alt="BlueBook App web version"
+                          width={1366}
+                          height={900}
+                          className="w-full h-auto block"
+                        />
+                      </div>
+                    </div>
+                    {/* Tablet - overlaid bottom-right */}
+                    <div className="absolute -bottom-6 right-0 z-20 w-[55%]">
+                      <div className="rounded-xl border-2 border-gray-900 bg-gray-900 p-[3px] shadow-2xl">
+                        <div className="rounded-lg overflow-hidden">
+                          <Image
+                            src="/bluebook-tablet.png"
+                            alt="BlueBook App tablet version"
+                            width={1024}
+                            height={768}
+                            className="w-full h-auto block"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    {/* Mobile - overlaid bottom-left */}
+                    <div className="absolute -bottom-8 left-4 z-30 w-[18%]">
+                      <div className="rounded-[1.2rem] border-2 border-gray-900 bg-gray-900 p-[3px] relative shadow-2xl">
+                        <div className="absolute top-[25%] -right-[3px] w-[2px] h-5 rounded-full bg-gray-700" />
+                        <div className="absolute top-[20%] -left-[3px] w-[2px] h-3 rounded-full bg-gray-700" />
+                        <div className="absolute top-[32%] -left-[3px] w-[2px] h-5 rounded-full bg-gray-700" />
+                        <div className="rounded-[0.9rem] overflow-hidden">
+                          <Image
+                            src="/bluebook-mobile.jpg"
+                            alt="BlueBook App mobile version"
+                            width={390}
+                            height={844}
+                            className="w-full h-auto block"
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -483,7 +530,7 @@ export default function Website() {
                     <div className="space-y-3 mb-6">
                       {product.features.map((feature) => (
                         <div key={feature} className="flex items-start gap-3">
-                          <CheckCircleIcon sx={{ fontSize: 20, color: 'hsl(var(--accent))', marginTop: '0.125rem' }} className="flex-shrink-0" />
+                          <CheckmarkCircleRegular className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: 'hsl(var(--accent))' }} />
                           <p className="text-sm text-gray-700">{feature}</p>
                         </div>
                       ))}
@@ -507,7 +554,7 @@ export default function Website() {
                 <Link href="/about">
                   <Button className="bg-accent hover:bg-accent/90 text-white border-0">
                     Learn more about our approach
-                    <ArrowForwardIcon sx={{ fontSize: 16, marginLeft: '0.5rem' }} />
+                    <ArrowRightRegular className="w-4 h-4 ml-2" />
                   </Button>
                 </Link>
               </motion.div>
@@ -560,7 +607,7 @@ export default function Website() {
                   >
                     <div className="flex-shrink-0">
                       <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center">
-                        <CheckCircleIcon sx={{ fontSize: 24, color: 'hsl(var(--accent))' }} />
+                        <CheckmarkCircleRegular className="w-6 h-6" style={{ color: 'hsl(var(--accent))' }} />
                       </div>
                     </div>
                     <div>

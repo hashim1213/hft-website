@@ -14,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 
+import { HomeRegular, SearchRegular, CheckmarkCircleRegular, WarningRegular, DocumentRegular, EyeRegular, CodeRegular } from "@fluentui/react-icons"
 import * as Icons from "lucide-react"
 import { initializeApp, getApps } from "firebase/app"
 import {
@@ -378,7 +379,7 @@ export default function Dashboard() {
               onClick={() => router.push("/")}
               className="text-gray-600 hover:text-gray-900"
             >
-              <Icons.Home className="h-4 w-4 mr-2" />
+              <HomeRegular className="h-4 w-4 mr-2" />
               <span>Home</span>
             </Button>
             <Button
@@ -400,14 +401,14 @@ export default function Dashboard() {
           {/* Alerts */}
           {success && (
             <Alert className="mb-6 bg-green-50 border-green-200">
-              <Icons.CheckCircle2 className="h-4 w-4 text-green-600" />
+              <CheckmarkCircleRegular className="h-4 w-4 text-green-600" />
               <AlertDescription className="text-green-800">{success}</AlertDescription>
             </Alert>
           )}
 
           {error && (
             <Alert className="mb-6 bg-red-50 border-red-200">
-              <Icons.AlertCircle className="h-4 w-4 text-red-600" />
+              <WarningRegular className="h-4 w-4 text-red-600" />
               <AlertDescription className="text-red-800">{error}</AlertDescription>
             </Alert>
           )}
@@ -415,7 +416,7 @@ export default function Dashboard() {
           {/* Header Actions */}
           <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between mb-6">
             <div className="relative flex-1 max-w-md">
-              <Icons.Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+              <SearchRegular className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
               <Input
                 placeholder="Search posts by title, excerpt, or category..."
                 className="pl-9 bg-white border-gray-200"
@@ -456,7 +457,7 @@ export default function Dashboard() {
                   <SheetHeader className="border-b border-gray-200 p-6 space-y-0">
                     <div className="flex items-center justify-between">
                       <SheetTitle className="text-xl font-semibold text-gray-900 flex items-center gap-2">
-                        <Icons.FileText className="h-5 w-5" />
+                        <DocumentRegular className="h-5 w-5" />
                         {editingPost ? "Edit Post" : "Create New Post"}
                       </SheetTitle>
                       <Button
@@ -616,7 +617,7 @@ export default function Dashboard() {
                       <div className="space-y-4 border-t border-gray-200 pt-6">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2 text-sm font-semibold text-gray-700 uppercase tracking-wider">
-                            <Icons.Code className="h-4 w-4" />
+                            <CodeRegular className="h-4 w-4" />
                             Content (Markdown)
                           </div>
                           <span className="text-xs text-gray-500">
@@ -767,7 +768,7 @@ const code = 'example';
                           </>
                         ) : (
                           <>
-                            <Icons.Eye className="h-3 w-3 mr-1" />
+                            <EyeRegular className="h-3 w-3 mr-1" />
                             Publish
                           </>
                         )}
@@ -788,7 +789,7 @@ const code = 'example';
 
           {filteredPosts.length === 0 && (
             <div className="text-center py-12">
-              <Icons.FileText className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+              <DocumentRegular className="h-12 w-12 text-gray-300 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">No posts found</h3>
               <p className="text-gray-600">
                 {searchQuery ? "Try adjusting your search query" : "Create your first blog post to get started"}

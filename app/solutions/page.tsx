@@ -1,6 +1,16 @@
 'use client'
 import { motion } from "framer-motion"
-import * as Icons from "lucide-react"
+import { Layout, Bot, LifeBuoy } from "lucide-react"
+import {
+  CodeRegular,
+  PhoneRegular,
+  BrainCircuitRegular,
+  DataBarVerticalRegular,
+  CloudRegular,
+  ShieldRegular,
+  CheckmarkCircleRegular,
+  ArrowRightRegular,
+} from "@fluentui/react-icons"
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -13,7 +23,7 @@ export default function SolutionsPage() {
   const solutions = {
     software: [
       {
-        icon: Icons.Code,
+        icon: CodeRegular,
         title: "Custom Software Development",
         description: "Tailored software solutions designed to address your specific business challenges and opportunities.",
         features: [
@@ -24,7 +34,7 @@ export default function SolutionsPage() {
         ]
       },
       {
-        icon: Icons.Smartphone,
+        icon: PhoneRegular,
         title: "Mobile Development",
         description: "Cross-platform mobile applications that deliver seamless experiences across all devices.",
         features: [
@@ -35,7 +45,7 @@ export default function SolutionsPage() {
         ]
       },
       {
-        icon: Icons.Layout,
+        icon: Layout,
         title: "UI/UX Design",
         description: "User-centered design that combines aesthetics with functionality to create engaging digital experiences.",
         features: [
@@ -48,7 +58,7 @@ export default function SolutionsPage() {
     ],
     ai: [
       {
-        icon: Icons.Brain,
+        icon: BrainCircuitRegular,
         title: "AI Integration",
         description: "Advanced artificial intelligence solutions that automate processes and enhance decision-making.",
         features: [
@@ -59,7 +69,7 @@ export default function SolutionsPage() {
         ]
       },
       {
-        icon: Icons.Bot,
+        icon: Bot,
         title: "Chatbots & Virtual Assistants",
         description: "Intelligent conversational interfaces that improve customer service and operational efficiency.",
         features: [
@@ -70,7 +80,7 @@ export default function SolutionsPage() {
         ]
       },
       {
-        icon: Icons.BarChart,
+        icon: DataBarVerticalRegular,
         title: "Data Analytics",
         description: "Comprehensive data analysis solutions that transform raw data into actionable insights.",
         features: [
@@ -83,7 +93,7 @@ export default function SolutionsPage() {
     ],
     cloud: [
       {
-        icon: Icons.Cloud,
+        icon: CloudRegular,
         title: "Cloud Solutions",
         description: "Scalable cloud infrastructure that ensures reliability, security, and performance.",
         features: [
@@ -94,7 +104,7 @@ export default function SolutionsPage() {
         ]
       },
       {
-        icon: Icons.Shield,
+        icon: ShieldRegular,
         title: "Security",
         description: "Robust security measures that protect your digital assets and ensure compliance.",
         features: [
@@ -105,7 +115,7 @@ export default function SolutionsPage() {
         ]
       },
       {
-        icon: Icons.LifeBuoy,
+        icon: LifeBuoy,
         title: "Managed Services",
         description: "Comprehensive IT management and support to keep your systems running smoothly.",
         features: [
@@ -176,7 +186,7 @@ export default function SolutionsPage() {
                               <ul className="space-y-2">
                                 {solution.features.map((feature, i) => (
                                   <li key={i} className="flex items-center gap-2 text-sm text-gray-600">
-                                    <Icons.CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
+                                    <CheckmarkCircleRegular className="w-4 h-4 text-primary flex-shrink-0" />
                                     <span>{feature}</span>
                                   </li>
                                 ))}
@@ -214,7 +224,7 @@ export default function SolutionsPage() {
                 onClick={() => window.location.href = '/contact'}
               >
                 Schedule a Consultation
-                <Icons.ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRightRegular className="ml-2 w-4 h-4" />
               </Button>
             </motion.div>
           </div>

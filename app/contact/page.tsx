@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Loader2, ArrowRight, Check, Mail, Phone, MapPin } from "lucide-react"
+import { SpinnerIosRegular, ArrowRightRegular, CheckmarkRegular, MailRegular, CallRegular, LocationRegular } from "@fluentui/react-icons"
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import emailjs from '@emailjs/browser'
@@ -141,7 +141,7 @@ export default function ContactPage() {
 
                   {success && (
                     <Alert className="mb-6 bg-accent/10 text-accent border-accent">
-                      <Check className="h-4 w-4 text-accent mr-2" />
+                      <CheckmarkRegular className="h-4 w-4 text-accent mr-2" />
                       <AlertDescription>
                         Thank you for your message! We&apos;ll get back to you soon.
                       </AlertDescription>
@@ -226,13 +226,13 @@ export default function ContactPage() {
                     >
                       {loading ? (
                         <>
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          <SpinnerIosRegular className="mr-2 h-4 w-4 animate-spin" />
                           Sending...
                         </>
                       ) : (
                         <>
                           Send Message
-                          <ArrowRight className="ml-2 h-4 w-4" />
+                          <ArrowRightRegular className="ml-2 h-4 w-4" />
                         </>
                       )}
                     </Button>
@@ -257,7 +257,7 @@ export default function ContactPage() {
                         <div key={i} className="flex gap-4">
                           <div className="mt-0.5">
                             <div className="h-6 w-6 rounded-full bg-accent/10 flex items-center justify-center">
-                              <Check className="h-4 w-4 text-accent" />
+                              <CheckmarkRegular className="h-4 w-4 text-accent" />
                             </div>
                           </div>
                           <div>
@@ -286,15 +286,15 @@ export default function ContactPage() {
                   <CardContent>
                     <div className="space-y-4">
                       <a href="mailto:sales@bytesavy.com" className="flex items-center gap-3 hover:text-accent transition-colors">
-                        <Mail className="h-5 w-5 text-accent" />
+                        <MailRegular className="h-5 w-5 text-accent" />
                         <span>sales@bytesavy.com</span>
                       </a>
                       <a href="tel:+12045969355" className="flex items-center gap-3 hover:text-accent transition-colors">
-                        <Phone className="h-5 w-5 text-accent" />
+                        <CallRegular className="h-5 w-5 text-accent" />
                         <span>+1 (204) 596-9355</span>
                       </a>
                       <div className="flex items-center gap-3">
-                        <MapPin className="h-5 w-5 text-accent" />
+                        <LocationRegular className="h-5 w-5 text-accent" />
                         <span>Brandon, Manitoba</span>
                       </div>
                     </div>

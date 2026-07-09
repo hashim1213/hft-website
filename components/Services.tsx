@@ -1,8 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import CheckIcon from '@mui/icons-material/Check';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { CheckmarkRegular, ArrowRightRegular } from '@fluentui/react-icons';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
@@ -83,7 +82,7 @@ export default function ServicesSection() {
                   <ul className="space-y-3">
                     {service.features.map((feature, i) => (
                       <li key={i} className="flex items-start gap-2">
-                        <CheckIcon sx={{ fontSize: 16, color: 'hsl(var(--primary))', marginTop: '0.125rem' }} />
+                        <CheckmarkRegular className="w-4 h-4 mt-0.5" style={{ color: 'hsl(var(--primary))' }} />
                         <span className="text-sm text-gray-700">{feature}</span>
                       </li>
                     ))}
@@ -104,7 +103,7 @@ export default function ServicesSection() {
           <Button asChild size="lg">
             <Link href="/product">
               Explore Our Services
-              <ArrowForwardIcon sx={{ fontSize: 16, marginLeft: '0.5rem' }} />
+              <ArrowRightRegular className="w-4 h-4 ml-2" />
             </Link>
           </Button>
         </motion.div>

@@ -1,18 +1,20 @@
 'use client'
 import { motion } from "framer-motion"
-import { 
-  Code, 
-  Globe,
+import {
   Laptop,
   Monitor,
-  Brain,
-  Lock,
-  BarChart,
-  ArrowRight,
-  Search,
   Layout,
-  Rocket
+  Rocket,
 } from "lucide-react"
+import {
+  CodeRegular,
+  GlobeRegular,
+  BrainCircuitRegular,
+  LockClosedRegular,
+  DataBarVerticalRegular,
+  ArrowRightRegular,
+  SearchRegular,
+} from "@fluentui/react-icons"
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { Card, CardContent} from "@/components/ui/card"
@@ -45,7 +47,7 @@ export default function WebDevPage() {
                 onClick={() => window.location.href = '/contact'}
               >
                 Start Your Project
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRightRegular className="ml-2 w-4 h-4" />
               </Button>
             </motion.div>
           </div>
@@ -70,7 +72,7 @@ export default function WebDevPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[
                 {
-                  icon: Globe,
+                  icon: GlobeRegular,
                   title: "Custom Web Applications",
                   description: "Scalable and secure web applications built with modern technologies to meet your specific business requirements.",
                   features: ["React & Next.js", "API Integration", "Cloud Deployment"]
@@ -88,19 +90,19 @@ export default function WebDevPage() {
                   features: ["Responsive Design", "CMS Integration", "SEO Optimization"]
                 },
                 {
-                  icon: Brain,
+                  icon: BrainCircuitRegular,
                   title: "Performance Optimization",
                   description: "Optimize your web applications for speed, reliability, and user experience.",
                   features: ["Load Time Optimization", "Core Web Vitals", "Performance Monitoring"]
                 },
                 {
-                  icon: Lock,
+                  icon: LockClosedRegular,
                   title: "Security Implementation",
                   description: "Implement robust security measures to protect your web applications and user data.",
                   features: ["SSL/TLS", "Data Encryption", "Security Audits"]
                 },
                 {
-                  icon: BarChart,
+                  icon: DataBarVerticalRegular,
                   title: "Analytics & Reporting",
                   description: "Integrate analytics tools to track performance and user behavior.",
                   features: ["User Analytics", "Conversion Tracking", "Custom Reports"]
@@ -158,7 +160,7 @@ export default function WebDevPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {[
                 {
-                  icon: Search,
+                  icon: SearchRegular,
                   title: "Discovery",
                   description: "Understanding your requirements and planning the solution architecture."
                 },
@@ -168,7 +170,7 @@ export default function WebDevPage() {
                   description: "Creating intuitive user interfaces and engaging user experiences."
                 },
                 {
-                  icon: Code,
+                  icon: CodeRegular,
                   title: "Development",
                   description: "Building your solution using modern web technologies and best practices."
                 },
@@ -220,7 +222,7 @@ export default function WebDevPage() {
                 onClick={() => window.location.href = '/contact'}
               >
                 Schedule a Consultation
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRightRegular className="ml-2 w-4 h-4" />
               </Button>
             </motion.div>
           </div>

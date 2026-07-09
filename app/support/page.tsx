@@ -1,15 +1,17 @@
 'use client'
 import { motion } from "framer-motion"
-import { 
-  LifeBuoy, 
-  Clock,
+import {
+  LifeBuoy,
   MessageCircle,
-  Mail,
-  Phone,
-  ArrowRight,
-  Shield,
-  Zap
 } from "lucide-react"
+import {
+  ClockRegular,
+  MailRegular,
+  CallRegular,
+  ArrowRightRegular,
+  ShieldRegular,
+  FlashRegular,
+} from "@fluentui/react-icons"
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -43,11 +45,11 @@ export default function SupportPage() {
               <div className="flex flex-wrap gap-4 justify-center">
                 <Button size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 min-w-[200px]">
                   Contact Support
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  <ArrowRightRegular className="ml-2 w-4 h-4" />
                 </Button>
                 <Button size="lg" variant="outline" className="border-2 border-accent text-accent hover:bg-accent hover:text-white min-w-[200px]">
                   View Documentation
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  <ArrowRightRegular className="ml-2 w-4 h-4" />
                 </Button>
               </div>
             </motion.div>
@@ -60,17 +62,17 @@ export default function SupportPage() {
             <div className="grid md:grid-cols-3 gap-8">
               {[
                 {
-                  icon: Clock,
+                  icon: ClockRegular,
                   title: "24/7 Availability",
                   description: "Round-the-clock support for critical issues and system maintenance."
                 },
                 {
-                  icon: Shield,
+                  icon: ShieldRegular,
                   title: "Proactive Monitoring",
                   description: "Continuous system monitoring to prevent potential issues before they occur."
                 },
                 {
-                  icon: Zap,
+                  icon: FlashRegular,
                   title: "Rapid Response",
                   description: "Quick resolution times with defined SLAs for different priority levels."
                 }
@@ -170,13 +172,13 @@ export default function SupportPage() {
                   <CardContent className="space-y-4">
                     {[
                       {
-                        icon: Mail,
+                        icon: MailRegular,
                         title: "Email Support",
                         detail: "support@bytesavy.com",
                         description: "Urgent email support with 1-hour response time for critical issues"
                       },
                       {
-                        icon: Phone,
+                        icon: CallRegular,
                         title: "Phone Support",
                         detail: "Unavailable at this time",
                         description: "Phone support is unavailable at this time, please use our email"

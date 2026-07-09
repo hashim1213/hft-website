@@ -1,28 +1,28 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Code, Lightbulb, Users, Clock, ArrowRight } from 'lucide-react';
+import { CodeRegular, LightbulbRegular, PeopleRegular, ClockRegular, ArrowRightRegular } from '@fluentui/react-icons';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 const processSteps = [
   {
-    icon: <Lightbulb className="w-6 h-6" />,
+    icon: <LightbulbRegular className="w-6 h-6" />,
     title: "Discovery & Strategy",
     description: "We start by deeply understanding your business challenges, conducting stakeholder interviews, and analyzing your current systems to define clear success metrics."
   },
   {
-    icon: <Code className="w-6 h-6" />,
+    icon: <CodeRegular className="w-6 h-6" />,
     title: "Agile Development",
     description: "Our iterative approach delivers functional software in short cycles, allowing you to see progress early and provide feedback that shapes the final product."
   },
   {
-    icon: <Users className="w-6 h-6" />,
+    icon: <PeopleRegular className="w-6 h-6" />,
     title: "Collaborative Partnership",
     description: "You'll work directly with our developers - no account managers or middlemen - ensuring clear communication and faster decision-making."
   },
   {
-    icon: <Clock className="w-6 h-6" />,
+    icon: <ClockRegular className="w-6 h-6" />,
     title: "Long-term Support",
     description: "We don't just deliver and disappear. We provide ongoing maintenance, updates, and strategic guidance to help your software evolve with your business."
   }
@@ -132,7 +132,7 @@ export default function OurApproachSection() {
             <Button asChild variant="secondary" size="lg" className="bg-white text-primary hover:bg-secondary">
               <Link href="/contact">
                 Schedule a Consultation
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRightRegular className="ml-2 h-4 w-4" />
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-primary/90">

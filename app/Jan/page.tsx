@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Heart, Trophy, X } from 'lucide-react';
+import { HeartRegular, TrophyRegular, DismissRegular } from '@fluentui/react-icons';
 
 interface Question {
   question: string;
@@ -160,7 +160,7 @@ const Page: React.FC = () => {
 
         {showScore && !showProposal && (
           <div className="bg-white rounded-xl shadow-xl p-6 sm:p-8 text-center animate-fadeIn">
-            <Trophy className="w-12 h-12 sm:w-16 sm:h-16 text-yellow-500 mx-auto mb-4" />
+            <TrophyRegular className="w-12 h-12 sm:w-16 sm:h-16 text-yellow-500 mx-auto mb-4" />
             <div className="text-3xl sm:text-4xl font-bold text-pink-600 mb-4">
               Quiz Complete!
             </div>
@@ -178,7 +178,7 @@ const Page: React.FC = () => {
 
         {showProposal && !showFinal && (
           <div className="bg-white rounded-xl shadow-xl p-6 sm:p-8 text-center animate-fadeIn">
-            <Heart className="w-12 h-12 sm:w-16 sm:h-16 text-pink-500 mx-auto mb-4 animate-pulse" />
+            <HeartRegular className="w-12 h-12 sm:w-16 sm:h-16 text-pink-500 mx-auto mb-4 animate-pulse" />
             <div className="text-3xl sm:text-4xl font-bold text-pink-600 mb-6 sm:mb-8">
               Will you be my Valentine? 💝
             </div>
@@ -215,7 +215,7 @@ const Page: React.FC = () => {
                 onClick={() => setShowJanPopup(false)}
                 className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
               >
-                <X className="w-6 h-6" />
+                <DismissRegular className="w-6 h-6" />
               </button>
               <div className="text-xl font-bold text-pink-600 mb-4">
                 Oops! Wrong Answer! 😅

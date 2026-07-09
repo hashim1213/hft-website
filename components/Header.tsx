@@ -3,8 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from "next/link";
 import Image from "next/image";
-import MenuIcon from '@mui/icons-material/Menu';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { NavigationRegular, ChevronDownRegular } from '@fluentui/react-icons';
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { usePathname } from 'next/navigation';
@@ -113,7 +112,7 @@ export default function Header() {
                 }`}
               >
                 {t('nav.solutions')}
-                <KeyboardArrowDownIcon sx={{ fontSize: 16, marginLeft: '0.25rem', color: isHomePage ? 'white' : undefined }} className={`transition-transform duration-200 ${solutionsOpen ? 'rotate-180' : ''}`} />
+                <ChevronDownRegular className={`w-4 h-4 ml-1 transition-transform duration-200 ${solutionsOpen ? 'rotate-180' : ''}`} style={{ color: isHomePage ? 'white' : undefined }} />
               </Link>
 
               {solutionsOpen && (
@@ -159,7 +158,7 @@ export default function Header() {
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className={`lg:hidden ${isHomePage ? 'text-white hover:bg-white/10' : 'text-gray-700 hover:bg-gray-50'}`}>
-                <MenuIcon sx={{ fontSize: 24, color: isHomePage ? 'white' : undefined }} />
+                <NavigationRegular className="w-6 h-6" style={{ color: isHomePage ? 'white' : undefined }} />
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-full sm:w-96">
@@ -184,7 +183,7 @@ export default function Header() {
                     className="w-full flex items-center justify-between text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors px-4 py-3 rounded-lg"
                   >
                     <span>{t('nav.solutions')}</span>
-                    <KeyboardArrowDownIcon sx={{ fontSize: 16 }} className={`transition-transform ${solutionsOpen ? 'rotate-180' : ''}`} />
+                    <ChevronDownRegular className={`w-4 h-4 transition-transform ${solutionsOpen ? 'rotate-180' : ''}`} />
                   </button>
                   {solutionsOpen && (
                     <div className="ml-4 mt-2 flex flex-col gap-1">

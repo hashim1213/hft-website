@@ -1,6 +1,6 @@
 'use client'
 import { motion } from "framer-motion"
-import { Check, Code2, Brain, BarChart, Smartphone, Cloud, Shield, Users, Target, Workflow, Award, Mic } from "lucide-react"
+import { CheckmarkRegular, CodeRegular, BrainCircuitRegular, DataBarVerticalRegular, PhoneRegular, CloudRegular, ShieldRegular, PeopleRegular, TargetRegular, FlowRegular, TrophyRegular, MicRegular } from "@fluentui/react-icons"
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Image from "next/image"
@@ -70,7 +70,7 @@ export default function AboutPage() {
                     <div key={index} className="flex items-start gap-4">
                       <div className="mt-1">
                         <div className="h-6 w-6 rounded-full bg-accent/10 flex items-center justify-center">
-                          <Check className="h-4 w-4 text-accent" />
+                          <CheckmarkRegular className="w-4 h-4 text-accent" />
                         </div>
                       </div>
                       <div>
@@ -122,7 +122,7 @@ export default function AboutPage() {
               <div className="rounded-2xl border border-gray-200 bg-white p-8 sm:p-12">
                 <div className="grid gap-8 md:grid-cols-[auto,1fr] md:items-center">
                   <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-accent/10 text-accent">
-                    <Mic className="h-8 w-8" />
+                    <MicRegular className="w-8 h-8" />
                   </div>
                   <div className="space-y-3">
                     <h3 className="text-2xl font-bold text-primary sm:text-3xl">AI Speaking &amp; Consulting</h3>
@@ -144,32 +144,32 @@ export default function AboutPage() {
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {[
                 {
-                  icon: Code2,
+                  icon: CodeRegular,
                   title: "Custom Software Development",
                   description: "Tailored solutions built with modern technologies and best practices"
                 },
                 {
-                  icon: Brain,
+                  icon: BrainCircuitRegular,
                   title: "AI Integration",
                   description: "Implementing intelligent solutions to automate and enhance business processes"
                 },
                 {
-                  icon: BarChart,
+                  icon: DataBarVerticalRegular,
                   title: "Data Analytics",
                   description: "Converting raw data into actionable business insights"
                 },
                 {
-                  icon: Smartphone,
+                  icon: PhoneRegular,
                   title: "Mobile Development",
                   description: "Creating responsive and intuitive mobile applications"
                 },
                 {
-                  icon: Cloud,
+                  icon: CloudRegular,
                   title: "Cloud Solutions",
                   description: "Scalable and secure cloud infrastructure implementation"
                 },
                 {
-                  icon: Shield,
+                  icon: ShieldRegular,
                   title: "Cybersecurity",
                   description: "Protecting digital assets with robust security measures"
                 }
@@ -215,22 +215,22 @@ export default function AboutPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
               {[
                 {
-                  icon: Users,
+                  icon: PeopleRegular,
                   title: "Collaborative",
                   description: "Working closely with clients to understand their vision"
                 },
                 {
-                  icon: Target,
+                  icon: TargetRegular,
                   title: "Goal-Oriented",
                   description: "Focusing on delivering measurable business value"
                 },
                 {
-                  icon: Workflow,
+                  icon: FlowRegular,
                   title: "Agile Process",
                   description: "Adapting quickly to changing requirements"
                 },
                 {
-                  icon: Award,
+                  icon: TrophyRegular,
                   title: "Quality First",
                   description: "Maintaining high standards in every delivery"
                 }

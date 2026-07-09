@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from "framer-motion"
-import { Brain, BookOpen, TrendingUp, Users, Lightbulb, Target, CheckCircle, ArrowRight, Award, Clock, Zap } from "lucide-react"
+import { BrainCircuitRegular, BookOpenRegular, ArrowTrendingRegular, PeopleRegular, LightbulbRegular, TargetRegular, CheckmarkCircleRegular, ArrowRightRegular, TrophyRegular, ClockRegular, FlashRegular } from "@fluentui/react-icons"
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Image from "next/image"
@@ -68,7 +68,7 @@ export default function AcademyPage() {
                 <Link href="/contact">
                   <Button size="lg" className="bg-white text-primary hover:bg-gray-100 text-lg px-8 py-6 shadow-xl">
                     Start Learning
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    <ArrowRightRegular className="ml-2 w-5 h-5" />
                   </Button>
                 </Link>
                 <Link href="/contact">
@@ -115,19 +115,19 @@ export default function AcademyPage() {
             <div className="grid md:grid-cols-3 gap-8">
               {[
                 {
-                  icon: Lightbulb,
+                  icon: LightbulbRegular,
                   title: "AI Fundamentals",
                   description: "Understand AI buzzwords, what different models do, and how to choose the right tools for your needs.",
                   topics: ["LLMs vs traditional AI", "GPT, Claude, Gemini explained", "When to use which model"]
                 },
                 {
-                  icon: Zap,
+                  icon: FlashRegular,
                   title: "Prompt Engineering Mastery",
                   description: "Learn how to get AI to do exactly what you want with proper prompting techniques and strategies.",
                   topics: ["Writing effective prompts", "Advanced techniques", "Common mistakes to avoid"]
                 },
                 {
-                  icon: TrendingUp,
+                  icon: ArrowTrendingRegular,
                   title: "AI for Business Tasks",
                   description: "Use AI for sales, management, marketing, and everyday business operations to boost productivity.",
                   topics: ["AI for sales outreach", "Management workflows", "Content creation & automation"]
@@ -152,7 +152,7 @@ export default function AcademyPage() {
                         <ul className="space-y-3">
                           {item.topics.map((topic, i) => (
                             <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
-                              <CheckCircle className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+                              <CheckmarkCircleRegular className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
                               <span>{topic}</span>
                             </li>
                           ))}
@@ -255,14 +255,14 @@ export default function AcademyPage() {
                           <h3 className="text-2xl font-bold text-primary">{module.title}</h3>
                         </div>
                         <div className="flex items-center gap-2 text-gray-600 bg-gray-100 px-4 py-2 rounded-full">
-                          <Clock className="h-4 w-4" />
+                          <ClockRegular className="w-4 h-4" />
                           <span className="text-sm font-medium">{module.duration}</span>
                         </div>
                       </div>
                       <div className="grid md:grid-cols-2 gap-3">
                         {module.lessons.map((lesson, i) => (
                           <div key={i} className="flex items-start gap-2">
-                            <CheckCircle className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+                            <CheckmarkCircleRegular className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
                             <span className="text-sm text-gray-700">{lesson}</span>
                           </div>
                         ))}
@@ -294,22 +294,22 @@ export default function AcademyPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {[
                 {
-                  icon: Target,
+                  icon: TargetRegular,
                   title: "Business Owners",
                   description: "Use AI to automate tasks, make better decisions, and scale your business"
                 },
                 {
-                  icon: TrendingUp,
+                  icon: ArrowTrendingRegular,
                   title: "Sales & Marketing Professionals",
                   description: "Leverage AI for outreach, content creation, and customer engagement"
                 },
                 {
-                  icon: Users,
+                  icon: PeopleRegular,
                   title: "Managers & Team Leads",
                   description: "Streamline operations, reporting, and team coordination with AI"
                 },
                 {
-                  icon: Brain,
+                  icon: BrainCircuitRegular,
                   title: "Anyone Curious About AI",
                   description: "No technical background needed - learn practical AI from scratch"
                 }
@@ -355,32 +355,32 @@ export default function AcademyPage() {
             <div className="grid md:grid-cols-3 gap-8">
               {[
                 {
-                  icon: BookOpen,
+                  icon: BookOpenRegular,
                   title: "100% Practical Content",
                   description: "No theory fluff - everything you learn can be applied to real work immediately"
                 },
                 {
-                  icon: Zap,
+                  icon: FlashRegular,
                   title: "On-Demand Access",
                   description: "Learn at your own pace, whenever works for you. Lifetime access to all content"
                 },
                 {
-                  icon: Award,
+                  icon: TrophyRegular,
                   title: "Live Expert Sessions",
                   description: "Book 1-on-1 or group sessions with AI experts when you need personalized help"
                 },
                 {
-                  icon: Users,
+                  icon: PeopleRegular,
                   title: "Community Support",
                   description: "Join a network of professionals learning and implementing AI in their work"
                 },
                 {
-                  icon: Clock,
+                  icon: ClockRegular,
                   title: "No Prerequisites",
                   description: "Start from zero - no coding or technical background required"
                 },
                 {
-                  icon: TrendingUp,
+                  icon: ArrowTrendingRegular,
                   title: "Real-World Examples",
                   description: "Learn with actual use cases from sales, management, content, and more"
                 }
@@ -425,7 +425,7 @@ export default function AcademyPage() {
                 <Link href="/contact">
                   <Button size="lg" className="bg-accent hover:bg-accent/90 text-white text-lg px-8 py-6 shadow-lg">
                     Start Learning
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    <ArrowRightRegular className="ml-2 w-5 h-5" />
                   </Button>
                 </Link>
                 <Link href="/contact">
@@ -436,19 +436,19 @@ export default function AcademyPage() {
               </div>
               <div className="pt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-gray-600">
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-accent" />
+                  <CheckmarkCircleRegular className="w-5 h-5 text-accent" />
                   <span>Learn at your pace</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-accent" />
+                  <CheckmarkCircleRegular className="w-5 h-5 text-accent" />
                   <span>Lifetime access</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-accent" />
+                  <CheckmarkCircleRegular className="w-5 h-5 text-accent" />
                   <span>Live expert support</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-accent" />
+                  <CheckmarkCircleRegular className="w-5 h-5 text-accent" />
                   <span>No prerequisites</span>
                 </div>
               </div>

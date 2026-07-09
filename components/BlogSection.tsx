@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { Clock, ArrowRight, Loader2, AlertCircle, FileText } from "lucide-react"
+import { ClockRegular, ArrowRightRegular, SpinnerIosRegular, WarningRegular, DocumentRegular } from "@fluentui/react-icons"
 import { useEffect, useState, useCallback } from "react"
 import { initializeApp, getApps } from 'firebase/app'
 import { getFirestore, collection, query, orderBy, getDocs, limit } from 'firebase/firestore'
@@ -73,7 +73,7 @@ const BlogPostCard = ({ post }: { post: BlogPost }) => {
 
           <div className="flex flex-col p-6 flex-grow">
             <div className="flex items-center gap-2 text-sm text-gray-500 mb-4">
-              <Clock className="h-4 w-4 text-primary" aria-hidden="true" />
+              <ClockRegular className="h-4 w-4 text-primary" aria-hidden="true" />
               <span>{post.readTime}</span>
               <span className="mx-2" aria-hidden="true">•</span>
               <time dateTime={post.createdAt}>
@@ -96,7 +96,7 @@ const BlogPostCard = ({ post }: { post: BlogPost }) => {
             <div className="flex items-center justify-end pt-4 mt-auto">
               <span className="inline-flex items-center gap-1 text-sm font-medium text-primary opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200">
                 Read article
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRightRegular className="h-4 w-4" />
               </span>
             </div>
           </div>
@@ -108,21 +108,21 @@ const BlogPostCard = ({ post }: { post: BlogPost }) => {
 
 const LoadingState = () => (
   <div className="text-center py-12">
-    <Loader2 className="h-10 w-10 animate-spin mx-auto text-primary" aria-hidden="true" />
+    <SpinnerIosRegular className="h-10 w-10 animate-spin mx-auto text-primary" aria-hidden="true" />
     <p className="mt-4 text-gray-600" role="status">Loading articles...</p>
   </div>
 )
 
 const ErrorState = ({ message }: { message: string }) => (
   <Alert variant="destructive" className="max-w-2xl mx-auto">
-    <AlertCircle className="h-4 w-4" />
+    <WarningRegular className="h-4 w-4" />
     <AlertDescription className="py-1">{message}</AlertDescription>
   </Alert>
 )
 
 const EmptyState = () => (
   <div className="col-span-full text-center py-16 text-gray-500">
-    <FileText className="h-16 w-16 mx-auto mb-4 text-gray-300" aria-hidden="true" />
+    <DocumentRegular className="h-16 w-16 mx-auto mb-4 text-gray-300" aria-hidden="true" />
     <h3 className="text-lg font-medium text-gray-900 mb-2">No articles available</h3>
     <p className="text-gray-600">We'll be publishing new content soon. Check back later!</p>
   </div>
@@ -214,7 +214,7 @@ export default function BlogSection() {
                   className="inline-flex items-center text-primary hover:text-primary/80 font-medium transition-colors"
                 >
                   View all articles
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  <ArrowRightRegular className="ml-2 h-4 w-4" />
                 </Link>
               </div>
             )}

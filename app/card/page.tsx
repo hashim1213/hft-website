@@ -1,7 +1,8 @@
 'use client'
 
 import React from 'react';
-import { Github, Linkedin, Mail, Globe, Phone, UserPlus } from 'lucide-react';
+import { Github, Linkedin } from 'lucide-react';
+import { MailRegular, GlobeRegular, CallRegular, PersonAddRegular } from '@fluentui/react-icons';
 import Image from 'next/image';
 
 const apps = [
@@ -98,7 +99,7 @@ END:VCARD`;
               onClick={generateVCard}
               className="flex items-center justify-center gap-2 w-full py-3 bg-green-600 text-white rounded-xl active:bg-green-700 active:scale-95 transition-transform"
             >
-              <UserPlus size={20} />
+              <PersonAddRegular className="w-5 h-5" />
               <span>Add Contact</span>
             </button>
 
@@ -106,7 +107,7 @@ END:VCARD`;
               href="tel:+12049999999" 
               className="flex items-center justify-center gap-2 w-full py-3 bg-blue-600 text-white rounded-xl active:bg-blue-700 active:scale-95 transition-transform"
             >
-              <Phone size={20} />
+              <CallRegular className="w-5 h-5" />
               <span>Call Me</span>
             </a>
 
@@ -114,7 +115,7 @@ END:VCARD`;
               href="mailto:hashim@bytesavy.com" 
               className="flex items-center justify-center gap-2 w-full py-3 bg-gray-100 text-gray-700 rounded-xl active:bg-gray-200 active:scale-95 transition-transform"
             >
-              <Mail size={20} />
+              <MailRegular className="w-5 h-5" />
               <span>Email Me</span>
             </a>
 
@@ -122,7 +123,7 @@ END:VCARD`;
               {[
                 { icon: <Github size={24} />, href: "https://github.com/hashim1213" },
                 { icon: <Linkedin size={24} />, href: "https://www.linkedin.com/in/hashim-farooq-778736122/" },
-                { icon: <Globe size={24} />, href: "https://bytesavy.com" }
+                { icon: <GlobeRegular className="w-6 h-6" />, href: "https://bytesavy.com" }
               ].map((social) => (
                 <a 
                   key={social.href}

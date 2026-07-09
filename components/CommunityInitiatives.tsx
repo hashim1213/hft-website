@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Heart, Mail, ArrowRight } from 'lucide-react';
+import { HeartRegular, MailRegular, ArrowRightRegular } from '@fluentui/react-icons';
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 
@@ -36,7 +36,7 @@ export default function CommunityInitiatives() {
                 }}
                 className="inline-flex items-center gap-2 text-primary"
               >
-                <Heart className="w-5 h-5" />
+                <HeartRegular className="w-5 h-5" />
                 <span className="font-medium">Community Impact</span>
               </motion.div>
 
@@ -85,7 +85,7 @@ export default function CommunityInitiatives() {
                   'Technical implementation support'
                 ].map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
-                    <ArrowRight className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <ArrowRightRegular className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                     <span className="text-gray-700">{item}</span>
                   </li>
                 ))}
@@ -96,7 +96,7 @@ export default function CommunityInitiatives() {
                   href="mailto:community@bytesavy.com"
                   className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
                 >
-                  <Mail className="w-5 h-5" />
+                  <MailRegular className="w-5 h-5" />
                   community@bytesavy.com
                 </a>
 
@@ -104,7 +104,7 @@ export default function CommunityInitiatives() {
                   <Button asChild className="bg-primary hover:bg-primary/90 flex-1">
                     <Link href="/contact">
                       Get in Touch
-                      <ArrowRight className="ml-2 h-4 w-4" />
+                      <ArrowRightRegular className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
                 </div>

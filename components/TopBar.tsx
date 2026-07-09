@@ -1,8 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import LanguageIcon from '@mui/icons-material/Language';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { GlobeRegular, ChevronDownRegular } from '@fluentui/react-icons';
 import { useLanguage, languages } from '@/contexts/LanguageContext';
 import { useState } from 'react';
 import React from 'react';
@@ -53,14 +52,11 @@ export default function TopBar() {
                 onClick={() => setLanguageOpen(!languageOpen)}
                 className="flex items-center gap-2 cursor-pointer px-2 py-1 rounded hover:bg-gray-100 transition-colors"
               >
-                <LanguageIcon sx={{ fontSize: 16 }} className="text-gray-600" />
+                <GlobeRegular className="w-4 h-4 text-gray-600" />
                 <span className="text-gray-700 font-medium">
                   {language.toUpperCase()}
                 </span>
-                <KeyboardArrowDownIcon
-                  sx={{ fontSize: 14 }}
-                  className={`transition-transform ${languageOpen ? 'rotate-180' : ''} text-gray-600`}
-                />
+                <ChevronDownRegular className={`w-3.5 h-3.5 transition-transform ${languageOpen ? 'rotate-180' : ''} text-gray-600`} />
               </button>
 
               {/* Language Dropdown */}

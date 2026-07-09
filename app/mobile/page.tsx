@@ -1,17 +1,19 @@
 'use client'
 
 import { motion } from "framer-motion"
-import { 
-  Smartphone,
+import {
   AppWindow,
   Repeat,
-  Shield,
-  ArrowRight,
   Bell,
   Gauge,
   Store,
-  Cloud
 } from "lucide-react"
+import {
+  PhoneRegular,
+  ShieldRegular,
+  ArrowRightRegular,
+  CloudRegular,
+} from "@fluentui/react-icons"
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { Card, CardContent } from "@/components/ui/card"
@@ -52,7 +54,7 @@ export default function MobileAppsPage() {
                 onClick={() => window.location.href = '/contact'}
               >
                 Discuss Your App Project
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRightRegular className="ml-2 w-4 h-4" />
               </Button>
             </motion.div>
           </div>
@@ -77,7 +79,7 @@ export default function MobileAppsPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[
                 {
-                  icon: Smartphone,
+                  icon: PhoneRegular,
                   title: "Native App Development",
                   description: "High-performance native applications for iOS and Android platforms.",
                   features: [
@@ -97,7 +99,7 @@ export default function MobileAppsPage() {
                   ]
                 },
                 {
-                  icon: Cloud,
+                  icon: CloudRegular,
                   title: "Backend Integration",
                   description: "Robust backend services and API integration for mobile apps.",
                   features: [
@@ -117,7 +119,7 @@ export default function MobileAppsPage() {
                   ]
                 },
                 {
-                  icon: Shield,
+                  icon: ShieldRegular,
                   title: "Security & Privacy",
                   description: "Implementing robust security measures for mobile applications.",
                   features: [
@@ -239,7 +241,7 @@ export default function MobileAppsPage() {
                       {/* Arrow indicator for desktop */}
                       {index < 5 && (
                         <div className="hidden lg:block absolute top-full left-1/2 -translate-x-1/2 mt-2">
-                          <ArrowRight className="h-6 w-6 text-primary rotate-90" />
+                          <ArrowRightRegular className="w-6 h-6 text-primary rotate-90" />
                         </div>
                       )}
                     </div>
@@ -278,7 +280,7 @@ export default function MobileAppsPage() {
                 onClick={() => window.location.href = '/contact'}
               >
                 Start Your Mobile Project
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRightRegular className="ml-2 w-4 h-4" />
               </Button>
             </motion.div>
           </div>

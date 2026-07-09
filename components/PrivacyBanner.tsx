@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X } from "lucide-react";
+import { DismissRegular } from "@fluentui/react-icons";
 
 export default function PrivacyBanner() {
   const [isVisible, setIsVisible] = useState(false);
@@ -29,7 +29,7 @@ export default function PrivacyBanner() {
           className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
           aria-label="Dismiss"
         >
-          <X className="w-4 h-4" />
+          <DismissRegular className="w-4 h-4" />
         </button>
 
         <div className="flex items-start gap-3 mb-2">

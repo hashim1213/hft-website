@@ -3,7 +3,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import BookingDialog from '@/components/BookingDialog'
 import { Card, CardContent } from "@/components/ui/card"
-import { Check } from "lucide-react"
+import { CheckmarkRegular } from "@/components/ui/icons"
 
 export const metadata: Metadata = {
   title: 'Software Development Company Saskatchewan | App Development Saskatoon & Regina',
@@ -81,7 +81,7 @@ export default function SaskatchewanPage() {
                     <ul className="space-y-2">
                       {service.features.map((feature, i) => (
                         <li key={i} className="flex items-center gap-2 text-sm text-gray-700">
-                          <Check className="h-4 w-4 text-accent flex-shrink-0" />
+                          <CheckmarkRegular className="w-4 h-4 text-accent flex-shrink-0" />
                           {feature}
                         </li>
                       ))}
@@ -119,7 +119,7 @@ export default function SaskatchewanPage() {
                     }
                   ].map((item, index) => (
                     <div key={index} className="flex gap-3">
-                      <Check className="h-6 w-6 text-accent flex-shrink-0 mt-1" />
+                      <CheckmarkRegular className="w-6 h-6 text-accent flex-shrink-0 mt-1" />
                       <div>
                         <h3 className="font-semibold text-primary mb-1">{item.title}</h3>
                         <p className="text-gray-600">{item.description}</p>
@@ -141,7 +141,7 @@ export default function SaskatchewanPage() {
                     "Weyburn", "Humboldt", "Melfort", "Rural Saskatchewan"
                   ].map((city, index) => (
                     <div key={index} className="flex items-center gap-2 text-gray-700">
-                      <Check className="h-4 w-4 text-accent" />
+                      <CheckmarkRegular className="w-4 h-4 text-accent" />
                       <span>{city}</span>
                     </div>
                   ))}

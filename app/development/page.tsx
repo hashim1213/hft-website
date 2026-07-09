@@ -2,19 +2,19 @@
 import { motion } from "framer-motion"
 import { useRouter } from 'next/navigation'
 import {
-  Code,
-  Search,
-  Layers,
-  Rocket,
-  CheckSquare,
-  Shield,
-  RefreshCcw,
-  ArrowRight,
-  Server,
-  Smartphone,
-  Monitor,
-  Zap
-} from "lucide-react"
+  CodeRegular,
+  SearchRegular,
+  LayerRegular,
+  RocketRegular,
+  CheckboxCheckedRegular,
+  ShieldRegular,
+  ArrowSyncRegular,
+  ArrowRightRegular,
+  ServerRegular,
+  PhoneRegular,
+  DesktopRegular,
+  FlashRegular
+} from "@fluentui/react-icons"
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { Card, CardContent } from "@/components/ui/card"
@@ -38,37 +38,37 @@ export default function DevelopmentPage() {
 
   const processSteps = [
     {
-      icon: Search,
+      icon: SearchRegular,
       title: "Discovery & Planning",
       description: "We begin with a thorough analysis of your requirements, creating detailed specifications and project roadmaps that align with your business goals.",
       highlights: ["Requirements Analysis", "Project Roadmap", "Technology Selection"]
     },
     {
-      icon: Layers,
+      icon: LayerRegular,
       title: "Architecture Design",
       description: "Our architects design scalable and maintainable solutions using industry best practices and modern design patterns.",
       highlights: ["System Architecture", "Database Design", "API Design"]
     },
     {
-      icon: Code,
+      icon: CodeRegular,
       title: "Development",
       description: "Using modern technologies and agile methodologies, we bring your solution to life through iterative development cycles.",
       highlights: ["Agile Sprints", "Code Reviews", "Version Control"]
     },
     {
-      icon: CheckSquare,
+      icon: CheckboxCheckedRegular,
       title: "Quality Assurance",
       description: "Rigorous testing ensures your software meets the highest standards of quality, security, and reliability.",
       highlights: ["Automated Testing", "Performance Testing", "Security Audits"]
     },
     {
-      icon: Rocket,
+      icon: RocketRegular,
       title: "Deployment",
       description: "We manage smooth deployments with CI/CD pipelines and minimal disruption to your operations.",
       highlights: ["CI/CD Setup", "Cloud Deployment", "Monitoring"]
     },
     {
-      icon: RefreshCcw,
+      icon: ArrowSyncRegular,
       title: "Maintenance & Support",
       description: "Ongoing support, updates, and optimization keep your software running optimally and secure.",
       highlights: ["24/7 Monitoring", "Regular Updates", "Technical Support"]
@@ -77,25 +77,25 @@ export default function DevelopmentPage() {
 
   const technicalExpertise = [
     {
-      icon: Monitor,
+      icon: DesktopRegular,
       title: "Web Development",
       technologies: ["React", "Next.js", "Vue.js", "Node.js", "TypeScript"],
       color: "from-accent to-primary"
     },
     {
-      icon: Smartphone,
+      icon: PhoneRegular,
       title: "Mobile Development",
       technologies: ["React Native", "iOS", "Android", "Flutter"],
       color: "from-accent to-primary"
     },
     {
-      icon: Server,
+      icon: ServerRegular,
       title: "Backend Systems",
       technologies: ["Python", "Java", ".NET", "Go", "Microservices"],
       color: "from-accent to-primary"
     },
     {
-      icon: Shield,
+      icon: ShieldRegular,
       title: "Security & DevOps",
       technologies: ["CI/CD", "Docker", "Kubernetes", "AWS", "Azure"],
       color: "from-accent to-primary"
@@ -137,7 +137,7 @@ export default function DevelopmentPage() {
                   className="bg-secondary text-secondary-foreground hover:bg-secondary/90"
                 >
                   Start Your Project
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  <ArrowRightRegular className="ml-2 w-4 h-4" />
                 </Button>
               </motion.div>
             </motion.div>
@@ -287,7 +287,7 @@ export default function DevelopmentPage() {
                   onClick={() => router.push('/contact')}
                 >
                   Discuss Your Project
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  <ArrowRightRegular className="ml-2 w-4 h-4" />
                 </Button>
                 <Button
                   variant="outline"

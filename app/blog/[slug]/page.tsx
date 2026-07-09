@@ -3,7 +3,8 @@ import { useEffect, useState, use } from 'react'
 import { getFirestore, collection, query, where, getDocs, limit } from 'firebase/firestore'
 import { initializeApp, getApps } from 'firebase/app'
 import { motion } from 'framer-motion'
-import { User, Calendar, Clock, Twitter, Linkedin, Link as LinkIcon, ArrowLeft, ArrowRight } from 'lucide-react'
+import { Twitter, Linkedin } from 'lucide-react'
+import { PersonRegular, CalendarRegular, ClockRegular, LinkRegular, ArrowLeftRegular, ArrowRightRegular } from '@fluentui/react-icons'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Breadcrumb from '@/components/Breadcrumb'
@@ -241,7 +242,7 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
               <Link href="/blog" className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-8 transition-colors">
-                <ArrowLeft className="h-4 w-4 mr-2" />
+                <ArrowLeftRegular className="w-4 h-4 mr-2" />
                 Back to all articles
               </Link>
               
@@ -356,7 +357,7 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
               href="/blog"
               className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-8 transition-colors"
             >
-              <ArrowLeft className="h-4 w-4 mr-2" />
+              <ArrowLeftRegular className="w-4 h-4 mr-2" />
               Back to all articles
             </Link>
             
@@ -383,15 +384,15 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
                 
                 <div className="flex flex-wrap items-center gap-4 text-gray-600 mb-6">
                   <div className="flex items-center gap-2">
-                    <User className="h-4 w-4 text-blue-600" />
+                    <PersonRegular className="w-4 h-4 text-blue-600" />
                     <span className="font-medium">{post.author}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-blue-600" />
+                    <CalendarRegular className="w-4 h-4 text-blue-600" />
                     <time dateTime={post.createdAt}>{formattedDate}</time>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-blue-600" />
+                    <ClockRegular className="w-4 h-4 text-blue-600" />
                     <span>{post.readTime}</span>
                   </div>
                 </div>
@@ -504,7 +505,7 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
                       className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
                       aria-label="Copy link"
                     >
-                      <LinkIcon className="h-4 w-4" />
+                      <LinkRegular className="w-4 h-4" />
                       <span className="hidden sm:inline">Copy</span>
                     </button>
                   </div>
@@ -516,7 +517,7 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
                 <div className="flex justify-center">
                   <Button asChild size="lg">
                     <Link href="/blog" className="inline-flex items-center gap-2">
-                      <ArrowLeft className="h-4 w-4" />
+                      <ArrowLeftRegular className="w-4 h-4" />
                       Back to all articles
                     </Link>
                   </Button>
@@ -574,7 +575,7 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
                             <span>{relatedPost.readTime}</span>
                             <span className="flex items-center gap-1 text-blue-600 group-hover:gap-2 transition-all">
                               Read more
-                              <ArrowRight className="h-3 w-3" />
+                              <ArrowRightRegular className="w-3 h-3" />
                             </span>
                           </div>
                         </div>

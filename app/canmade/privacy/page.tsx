@@ -1,6 +1,6 @@
 'use client'
 import React from 'react';
-import { Shield, Lock, Database, BarChart, Search, Eye, Clock, AlertTriangle } from 'lucide-react';
+import { ShieldRegular, LockClosedRegular, DatabaseRegular, DataBarVerticalRegular, SearchRegular, EyeRegular, ClockRegular, WarningRegular } from '@fluentui/react-icons';
 
 const PrivacyPolicy = () => {
   return (
@@ -20,7 +20,7 @@ const PrivacyPolicy = () => {
         <div className="space-y-8">
           <section>
             <div className="flex items-center gap-2 mb-4">
-              <Shield className="w-6 h-6 text-red-600" />
+              <ShieldRegular className="w-6 h-6 text-red-600" />
               <h2 className="text-2xl font-semibold">Data Collection Overview</h2>
             </div>
             <p className="text-gray-700 mb-4">
@@ -30,7 +30,7 @@ const PrivacyPolicy = () => {
 
           <section>
             <div className="flex items-center gap-2 mb-4">
-              <BarChart className="w-6 h-6 text-red-600" />
+              <DataBarVerticalRegular className="w-6 h-6 text-red-600" />
               <h2 className="text-2xl font-semibold">Analytics Data We Collect</h2>
             </div>
             <p className="text-gray-700 mb-4">
@@ -39,7 +39,7 @@ const PrivacyPolicy = () => {
             <div className="space-y-4">
               <div className="bg-gray-50 p-4 rounded-lg">
                 <div className="flex items-center gap-2">
-                  <Search className="w-5 h-5 text-red-600" />
+                  <SearchRegular className="w-5 h-5 text-red-600" />
                   <h3 className="font-semibold">Product Searches</h3>
                 </div>
                 <ul className="ml-7 mt-2 list-disc text-gray-700">
@@ -50,7 +50,7 @@ const PrivacyPolicy = () => {
 
               <div className="bg-gray-50 p-4 rounded-lg">
                 <div className="flex items-center gap-2">
-                  <Eye className="w-5 h-5 text-red-600" />
+                  <EyeRegular className="w-5 h-5 text-red-600" />
                   <h3 className="font-semibold">Product Views</h3>
                 </div>
                 <ul className="ml-7 mt-2 list-disc text-gray-700">
@@ -62,7 +62,7 @@ const PrivacyPolicy = () => {
 
               <div className="bg-gray-50 p-4 rounded-lg">
                 <div className="flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-red-600" />
+                  <ClockRegular className="w-5 h-5 text-red-600" />
                   <h3 className="font-semibold">Scan Information</h3>
                 </div>
                 <ul className="ml-7 mt-2 list-disc text-gray-700">
@@ -74,7 +74,7 @@ const PrivacyPolicy = () => {
 
               <div className="bg-gray-50 p-4 rounded-lg">
                 <div className="flex items-center gap-2">
-                  <AlertTriangle className="w-5 h-5 text-red-600" />
+                  <WarningRegular className="w-5 h-5 text-red-600" />
                   <h3 className="font-semibold">Error Tracking</h3>
                 </div>
                 <ul className="ml-7 mt-2 list-disc text-gray-700">
@@ -87,7 +87,7 @@ const PrivacyPolicy = () => {
 
           <section>
             <div className="flex items-center gap-2 mb-4">
-              <Lock className="w-6 h-6 text-red-600" />
+              <LockClosedRegular className="w-6 h-6 text-red-600" />
               <h2 className="text-2xl font-semibold">How We Use This Data</h2>
             </div>
             <p className="text-gray-700 mb-4">
@@ -103,7 +103,7 @@ const PrivacyPolicy = () => {
 
           <section>
             <div className="flex items-center gap-2 mb-4">
-              <Database className="w-6 h-6 text-red-600" />
+              <DatabaseRegular className="w-6 h-6 text-red-600" />
               <h2 className="text-2xl font-semibold">Third-Party Services</h2>
             </div>
             <p className="text-gray-700 mb-4">

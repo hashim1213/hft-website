@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { Loader2, AlertCircle, Clock, ArrowRight, Search, Tag } from "lucide-react"
+import { SpinnerIosRegular, WarningRegular, SearchRegular } from "@fluentui/react-icons"
 import Link from "next/link"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
@@ -138,7 +138,7 @@ export default function BlogPage() {
         <Header />
         <main className="flex-1 pt-40 flex items-center justify-center">
           <div className="text-center">
-            <Loader2 className="h-10 w-10 animate-spin mx-auto text-blue-600" />
+            <SpinnerIosRegular className="w-10 h-10 animate-spin mx-auto text-blue-600" />
             <p className="mt-4 text-gray-600">Loading articles...</p>
           </div>
         </main>
@@ -153,7 +153,7 @@ export default function BlogPage() {
         <Header />
         <main className="flex-1 pt-40 flex items-center justify-center">
           <div className="text-center max-w-md mx-auto px-4">
-            <AlertCircle className="h-12 w-12 mx-auto text-red-500 mb-4" />
+            <WarningRegular className="w-12 h-12 mx-auto text-red-500 mb-4" />
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Something went wrong</h2>
             <p className="text-gray-600 mb-6">{error}</p>
             <Button onClick={() => window.location.reload()}>
@@ -193,7 +193,7 @@ export default function BlogPage() {
             {/* Search and Filter */}
             <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
               <div className="relative flex-1 max-w-2xl">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <SearchRegular className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <Input
                   placeholder="Search"
                   value={searchQuery}
@@ -377,7 +377,7 @@ export default function BlogPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
-            <Search className="h-16 w-16 mx-auto text-gray-300 mb-6" />
+            <SearchRegular className="w-16 h-16 mx-auto text-gray-300 mb-6" />
             <h3 className="text-2xl font-bold text-gray-900 mb-2">No articles found</h3>
             <p className="text-gray-600 mb-8 max-w-md mx-auto">
               {searchQuery

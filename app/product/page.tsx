@@ -1,15 +1,17 @@
 'use client'
 import { motion } from "framer-motion"
-import { 
-  Globe,
-  Smartphone,
-  Brain,
-  Users,
-  Code,
+import {
   LifeBuoy,
-  ArrowRight,
-  Check
 } from "lucide-react"
+import {
+  GlobeRegular,
+  PhoneRegular,
+  BrainCircuitRegular,
+  PeopleRegular,
+  CodeRegular,
+  ArrowRightRegular,
+  CheckmarkRegular,
+} from "@fluentui/react-icons"
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { Button } from "@/components/ui/button"
@@ -18,7 +20,7 @@ import Link from "next/link"
 export default function ServicesPage() {
   const solutions = [
     {
-      icon: Globe,
+      icon: GlobeRegular,
       title: "Web Development",
       description: "Custom web applications and platforms built with cutting-edge technologies to deliver exceptional user experiences.",
       features: [
@@ -30,7 +32,7 @@ export default function ServicesPage() {
       href: '/web'
     },
     {
-      icon: Smartphone,
+      icon: PhoneRegular,
       title: "Mobile Apps",
       description: "Native and cross-platform mobile applications that bring your ideas to life on iOS and Android devices.",
       features: [
@@ -42,7 +44,7 @@ export default function ServicesPage() {
       href: '/mobile'
     },
     {
-      icon: Brain,
+      icon: BrainCircuitRegular,
       title: "AI Integration",
       description: "Leverage the power of artificial intelligence to automate processes and gain valuable insights from your data.",
       features: [
@@ -57,7 +59,7 @@ export default function ServicesPage() {
 
   const services = [
     {
-      icon: Users,
+      icon: PeopleRegular,
       title: "Consulting",
       description: "Strategic technology consulting to help you make informed decisions and plan your digital transformation.",
       features: [
@@ -69,7 +71,7 @@ export default function ServicesPage() {
       href: '/consulting'
     },
     {
-      icon: Code,
+      icon: CodeRegular,
       title: "Development",
       description: "Full-cycle software development services from concept to deployment, ensuring quality and scalability.",
       features: [
@@ -158,7 +160,7 @@ export default function ServicesPage() {
                           <ul className="space-y-3">
                             {solution.features.map((feature, i) => (
                               <li key={i} className="text-gray-700 flex items-center gap-2">
-                                <Check className="h-4 w-4 text-primary flex-shrink-0" />
+                                <CheckmarkRegular className="w-4 h-4 text-primary flex-shrink-0" />
                                 {feature}
                               </li>
                             ))}
@@ -167,7 +169,7 @@ export default function ServicesPage() {
 
                         <div className="mt-8 text-primary font-medium flex items-center opacity-70 group-hover:opacity-100 transition-opacity">
                           Learn more
-                          <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                          <ArrowRightRegular className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                         </div>
                       </div>
                     </Link>
@@ -217,7 +219,7 @@ export default function ServicesPage() {
                           <ul className="space-y-3">
                             {service.features.map((feature, i) => (
                               <li key={i} className="text-gray-700 flex items-center gap-2">
-                                <Check className="h-4 w-4 text-primary flex-shrink-0" />
+                                <CheckmarkRegular className="w-4 h-4 text-primary flex-shrink-0" />
                                 {feature}
                               </li>
                             ))}
@@ -226,7 +228,7 @@ export default function ServicesPage() {
 
                         <div className="mt-8 text-primary font-medium flex items-center opacity-70 group-hover:opacity-100 transition-opacity">
                           Learn more
-                          <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                          <ArrowRightRegular className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
                         </div>
                       </div>
                     </Link>
@@ -259,7 +261,7 @@ export default function ServicesPage() {
                 >
                   <Link href="/contact">
                     Schedule a Consultation
-                    <ArrowRight className="ml-2 h-4 w-4" />
+                    <ArrowRightRegular className="ml-2 w-4 h-4" />
                   </Link>
                 </Button>
 

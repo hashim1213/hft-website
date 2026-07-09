@@ -4,12 +4,17 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import { FileText, Home, Briefcase, Mail, BookOpen, Info } from "lucide-react"
+import {
+  DocumentRegular,
+  HomeRegular,
+  BriefcaseRegular,
+  InfoRegular,
+} from "@fluentui/react-icons"
 
 const sitePages = [
   {
     category: "Main Pages",
-    icon: Home,
+    icon: HomeRegular,
     links: [
       { name: "Home", href: "/" },
       { name: "About", href: "/about" },
@@ -19,7 +24,7 @@ const sitePages = [
   },
   {
     category: "Solutions",
-    icon: Briefcase,
+    icon: BriefcaseRegular,
     links: [
       { name: "All Solutions", href: "/product" },
       { name: "Web Development", href: "/web" },
@@ -29,7 +34,7 @@ const sitePages = [
   },
   {
     category: "Services",
-    icon: FileText,
+    icon: DocumentRegular,
     links: [
       { name: "Consulting", href: "/consulting" },
       { name: "Development", href: "/development" },
@@ -38,7 +43,7 @@ const sitePages = [
   },
   {
     category: "Legal",
-    icon: Info,
+    icon: InfoRegular,
     links: [
       { name: "Privacy Policy", href: "/privacy" },
       { name: "Terms of Service", href: "/privacy" },

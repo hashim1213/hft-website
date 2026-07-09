@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ChevronRight, Home } from 'lucide-react';
+import { ChevronRightRegular, HomeRegular } from '@fluentui/react-icons';
 
 export interface BreadcrumbItem {
   label: string;
@@ -64,7 +64,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
                     itemProp="item"
                   >
                     {index === 0 && (
-                      <Home className="w-4 h-4" aria-hidden="true" />
+                      <HomeRegular className="w-4 h-4" aria-hidden="true" />
                     )}
                     <span itemProp="name">{item.label}</span>
                   </Link>
@@ -75,7 +75,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
                     aria-current="page"
                   >
                     {index === 0 && (
-                      <Home className="w-4 h-4" aria-hidden="true" />
+                      <HomeRegular className="w-4 h-4" aria-hidden="true" />
                     )}
                     {item.label}
                   </span>
@@ -86,7 +86,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
 
                 {/* Separator */}
                 {!isLast && (
-                  <ChevronRight
+                  <ChevronRightRegular
                     className="w-4 h-4 text-gray-400 dark:text-gray-600"
                     aria-hidden="true"
                   />

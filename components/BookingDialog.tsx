@@ -1,12 +1,7 @@
 'use client'
 
 import { useState } from "react"
-import CodeIcon from '@mui/icons-material/Code'
-import PsychologyIcon from '@mui/icons-material/Psychology'
-import BarChartIcon from '@mui/icons-material/BarChart'
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
-import CircularProgress from '@mui/material/CircularProgress'
-import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import { CodeRegular, BrainCircuitRegular, DataBarVerticalRegular, CalendarRegular, CheckmarkCircleRegular, SpinnerIosRegular } from '@fluentui/react-icons'
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -41,17 +36,17 @@ const SERVICES: Service[] = [
   {
     title: "Software Development",
     description: "Discuss your software development needs",
-    icon: CodeIcon
+    icon: CodeRegular
   },
   {
     title: "AI Integration",
     description: "Explore how AI can enhance your software",
-    icon: PsychologyIcon
+    icon: BrainCircuitRegular
   },
   {
     title: "Technical Consultation",
     description: "Get expert guidance on your tech strategy",
-    icon: BarChartIcon
+    icon: DataBarVerticalRegular
   }
 ]
 
@@ -163,7 +158,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({ onOpenChange }) => {
       <DialogTrigger asChild>
         <Button className="bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all" size="lg">
           Book Free Consultation
-          <CalendarMonthIcon sx={{ fontSize: 16, marginLeft: '0.5rem' }} />
+          <CalendarRegular className="w-4 h-4 ml-2" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px]">
@@ -306,7 +301,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({ onOpenChange }) => {
               <Button type="submit" disabled={loading}>
                 {loading ? (
                   <>
-                    <CircularProgress size={16} sx={{ marginRight: '0.5rem' }} />
+                    <SpinnerIosRegular className="w-4 h-4 mr-2 animate-spin" />
                     Booking...
                   </>
                 ) : (
@@ -321,7 +316,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({ onOpenChange }) => {
         {step === 4 && (
           <div className="space-y-6 text-center">
             <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-              <CheckCircleIcon sx={{ fontSize: 32, color: '#059669' }} />
+              <CheckmarkCircleRegular className="w-8 h-8 text-emerald-600" />
             </div>
             <div className="space-y-2">
               <h3 className="text-lg font-semibold">Booking Request Received!</h3>

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Scan, ShoppingBag, Heart, Building, Database, Mail, Menu, X, Award, ArrowRight, Clock, Globe, Trophy, Brain } from 'lucide-react';
+import { ScanDashRegular, ShoppingBagRegular, HeartRegular, BuildingRegular, DatabaseRegular, MailRegular, NavigationRegular, DismissRegular, TrophyRegular, ArrowRightRegular, ClockRegular, GlobeRegular, BrainCircuitRegular } from '@fluentui/react-icons';
 import { FeatureCard } from '@/components/featurecard';
 import { BenefitCard } from '@/components/benefitcard';
 import Image from 'next/image';
@@ -41,7 +41,7 @@ const LandingPage = () => {
 
           {/* Mobile Menu Button */}
           <button onClick={toggleMenu} className="md:hidden">
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isMenuOpen ? <DismissRegular className="w-6 h-6" /> : <NavigationRegular className="w-6 h-6" />}
           </button>
         </div>
 
@@ -76,7 +76,7 @@ const LandingPage = () => {
                   className="inline-flex items-center bg-white text-red-600 px-8 py-3 rounded-full font-semibold hover:bg-red-100 transition-colors"
                 >
                   <span>Download for iOS</span>
-                  <ArrowRight className="ml-2 w-4 h-4" />
+                  <ArrowRightRegular className="ml-2 w-4 h-4" />
                 </a>
                 <p className="text-sm font-medium text-white/90">Coming Soon to Android</p>
               </div>
@@ -117,7 +117,7 @@ const LandingPage = () => {
     <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
       <div className="bg-white rounded-xl p-8 shadow-sm">
         <div className="flex items-center space-x-4 mb-6">
-          <Brain className="w-12 h-12 text-red-600" />
+          <BrainCircuitRegular className="w-12 h-12 text-red-600" />
           <h3 className="text-2xl font-semibold">Mobile App Quiz</h3>
         </div>
         <p className="text-gray-600 mb-6">
@@ -130,13 +130,13 @@ const LandingPage = () => {
           className="inline-flex items-center bg-red-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-red-700 transition-colors"
         >
           <span>Download iOS App</span>
-          <ArrowRight className="ml-2 w-4 h-4" />
+          <ArrowRightRegular className="ml-2 w-4 h-4" />
         </a>
       </div>
       
       <div className="bg-white rounded-xl p-8 shadow-sm">
         <div className="flex items-center space-x-4 mb-6">
-          <Globe className="w-12 h-12 text-red-600" />
+          <GlobeRegular className="w-12 h-12 text-red-600" />
           <h3 className="text-2xl font-semibold">Web Quiz</h3>
         </div>
         <p className="text-gray-600 mb-6">
@@ -147,7 +147,7 @@ const LandingPage = () => {
           className="inline-flex items-center bg-red-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-red-700 transition-colors"
         >
           <span>Start Web Quiz</span>
-          <ArrowRight className="ml-2 w-4 h-4" />
+          <ArrowRightRegular className="ml-2 w-4 h-4" />
         </a>
       </div>
     </div>
@@ -159,7 +159,7 @@ const LandingPage = () => {
   <div className="max-w-7xl mx-auto px-4">
     <div className="text-center mb-12">
       <div className="flex justify-center mb-6">
-        <Trophy className="w-16 h-16 text-red-600" />
+        <TrophyRegular className="w-16 h-16 text-red-600" />
       </div>
       <h2 className="text-3xl font-bold mb-6">Quiz Leaderboard</h2>
       <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
@@ -189,32 +189,32 @@ const LandingPage = () => {
           <h2 className="text-3xl font-bold text-center mb-12">Key Features</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <FeatureCard 
-              icon={<Scan className="w-12 h-12 text-red-600" />}
+              icon={<ScanDashRegular className="w-12 h-12 text-red-600" />}
               title="Smart Barcode Scanner"
               description="Instantly scan and verify product origins with our advanced recognition technology"
             />
             <FeatureCard 
-              icon={<ShoppingBag className="w-12 h-12 text-red-600" />}
+              icon={<ShoppingBagRegular className="w-12 h-12 text-red-600" />}
               title="Detailed Product Info"
               description="Access comprehensive product details, manufacturing location, and Canadian certification"
             />
             <FeatureCard 
-              icon={<Database className="w-12 h-12 text-red-600" />}
+              icon={<DatabaseRegular className="w-12 h-12 text-red-600" />}
               title="Growing Database"
               description="Access our extensive database of Canadian products, updated daily by our community"
             />
             <FeatureCard 
-              icon={<Clock className="w-12 h-12 text-red-600" />}
+              icon={<ClockRegular className="w-12 h-12 text-red-600" />}
               title="Real-time Updates"
               description="Stay informed with the latest additions to our Canadian product database"
             />
             <FeatureCard 
-              icon={<Globe className="w-12 h-12 text-red-600" />}
+              icon={<GlobeRegular className="w-12 h-12 text-red-600" />}
               title="National Coverage"
               description="Find Canadian-made products across all provinces and territories"
             />
             <FeatureCard 
-              icon={<Award className="w-12 h-12 text-red-600" />}
+              icon={<TrophyRegular className="w-12 h-12 text-red-600" />}
               title="Open Source Information"
               description="We are currently using an opensouce API but are in the development of our own"
             />
@@ -229,12 +229,12 @@ const LandingPage = () => {
           <h2 className="text-3xl font-bold text-center mb-12">Why Choose CanMade?</h2>
           <div className="grid md:grid-cols-2 gap-8">
             <BenefitCard
-              icon={<Building className="w-12 h-12 text-red-600" />}
+              icon={<BuildingRegular className="w-12 h-12 text-red-600" />}
               title="Empower Local Economy"
               description="Every scan and purchase through CanMade directly supports Canadian businesses and strengthens our local economy"
             />
             <BenefitCard
-              icon={<Heart className="w-12 h-12 text-red-600" />}
+              icon={<HeartRegular className="w-12 h-12 text-red-600" />}
               title="Community-Driven Platform"
               description="Join thousands of Canadians contributing to and benefiting from our growing database of local products"
             />
@@ -261,7 +261,7 @@ const LandingPage = () => {
                 Get detailed insights about your product visibility and consumer engagement.
               </p>
               <div className="flex items-center space-x-2 text-red-600">
-                <Mail className="w-6 h-6" />
+                <MailRegular className="w-6 h-6" />
                 <a href="mailto:hello@bytesavy.com" className="hover:text-red-700 font-medium">
                   Contact Our Team
                 </a>
@@ -275,7 +275,7 @@ const LandingPage = () => {
                 and consumer behavior. Access our press kit and request interview opportunities.
               </p>
               <div className="flex items-center space-x-2 text-red-600">
-                <Mail className="w-6 h-6" />
+                <MailRegular className="w-6 h-6" />
                 <a href="mailto:press@bytesavy.com" className="hover:text-red-700 font-medium">
                   Press Inquiries
                 </a>
@@ -298,7 +298,7 @@ const LandingPage = () => {
               className="inline-flex items-center bg-white text-red-600 px-8 py-3 rounded-full font-semibold hover:bg-red-100 transition-colors"
             >
               <span>Download for iOS</span>
-              <ArrowRight className="ml-2 w-4 h-4" />
+              <ArrowRightRegular className="ml-2 w-4 h-4" />
             </a>
             <p className="text-sm text-white/90">Android Version Coming Soon</p>
           </div>
