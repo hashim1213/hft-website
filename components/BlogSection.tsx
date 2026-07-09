@@ -177,20 +177,12 @@ export default function BlogSection() {
   }, [loadPosts])
 
   return (
-    <section 
-      id="blog" 
-      className="py-24"
+    <section
+      id="blog"
+      className=""
       aria-labelledby="blog-heading"
     >
       <div className="container px-4 md:px-6">
-        <div className="text-center mb-12">
-          <h2 id="blog-heading" className="text-3xl font-bold text-gray-900 mb-4">
-            Latest Insights
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Stay updated with our latest thoughts on technology, development, and industry trends
-          </p>
-        </div>
 
         {loading && <LoadingState />}
         {error && <ErrorState message={error} />}

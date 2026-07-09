@@ -5,6 +5,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
+import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/dialog"
 
 export default function AboutPage() {
   return (
@@ -269,95 +270,134 @@ export default function AboutPage() {
             >
               <h2 className="text-3xl font-bold text-primary mb-4">Meet Our Team</h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Our diverse team of experts brings together years of experience in software development, AI integration, and industry-specific solutions.
+                Built by people who understand both technology and the industries we serve.
               </p>
             </motion.div>
 
-            <div className="flex flex-wrap justify-center items-start gap-8 max-w-6xl mx-auto">
+            {/* Team grid - all equal */}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* Hashim - with collapsible bio */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
+              >
+                <div className="relative w-full h-64 bg-gray-100">
+                  <Image src="/hashim.jpg" alt="Hashim Farooq" fill className="object-cover" style={{ objectPosition: "center top" }} />
+                </div>
+                <div className="p-5">
+                  <h3 className="text-lg font-bold text-gray-900 mb-1">Hashim Farooq</h3>
+                  <p className="text-sm font-medium text-accent mb-2">Founder &amp; CEO</p>
+                  <p className="text-sm text-gray-600 leading-relaxed mb-3">Serial entrepreneur building the digital future for legacy industries since grade 9.</p>
+                  <Dialog>
+                    <DialogTrigger className="text-sm font-medium text-accent hover:text-accent/80 transition-colors cursor-pointer">
+                      Read more &rarr;
+                    </DialogTrigger>
+                    <DialogContent className="max-w-2xl">
+                      <DialogTitle className="sr-only">About Hashim Farooq</DialogTitle>
+                      <div className="grid md:grid-cols-[200px_1fr] gap-6">
+                        <div className="relative h-[250px] md:h-full rounded-xl overflow-hidden">
+                          <Image src="/hashim.jpg" alt="Hashim Farooq" fill className="object-cover object-top" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-accent font-semibold uppercase tracking-wider mb-1">Founder &amp; CEO</p>
+                          <h3 className="text-2xl font-bold text-gray-900 mb-4">Hashim Farooq</h3>
+                          <div className="space-y-3 text-gray-600 leading-relaxed text-sm">
+                            <p>
+                              Hashim grew up in rural Manitoba, where he saw firsthand how traditional industries operated without modern digital tools. That perspective shaped everything he builds today. He started developing apps and digital products in grade 9, driven by a desire to solve real problems with technology.
+                            </p>
+                            <p>
+                              He studied Computer Science at Brandon University, then spent several years at Cargill, one of the world&apos;s largest agricultural companies, gaining deep insight into enterprise operations and the challenges facing legacy industries at scale.
+                            </p>
+                            <p>
+                              A serial entrepreneur, Hashim has founded two startups and in 2025 was named one of Manitoba&apos;s Most Fascinating People. Today, he leads the team at Bytesavy Technologies, helping organizations modernize their operations and build the digital future with practical, reliable software.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              </motion.div>
+
+              {/* Other team members */}
               {[
-                {
-                  name: "Hashim Farooq",
-                  role: "CEO & Founder",
-                  bio: "Leading the vision to transform traditional industries through practical, modern software solutions.",
-                  image: "/hashim.jpg",
-                  rotation: "-3deg",
-                  color: "bg-yellow-100"
-                },
                 {
                   name: "Bryce Cotton",
                   role: "Software Engineer",
                   bio: "Building scalable and efficient software solutions with expertise in modern development practices.",
                   image: "/Bryce.jpg",
-                  rotation: "2deg",
-                  color: "bg-blue-100"
+                  imageStyle: undefined
+                },
+                {
+                  name: "Contracted Specialists",
+                  role: "Engaged Based on Project Needs",
+                  bio: "Specialized engineers, designers, and domain experts brought in to match each project.",
+                  image: "/consultants.avif",
+                  imageStyle: undefined
                 },
                 {
                   name: "Speedy the Fish",
                   role: "Company Pet & Morale Officer",
                   bio: "Keeping the team inspired with his calm presence and reminding everyone to go with the flow.",
                   image: "/Speedy2.png",
-                  rotation: "-2deg",
-                  color: "bg-green-100"
+                  imageStyle: { transform: "scale(1.2)", objectPosition: "center 0%" } as React.CSSProperties
                 }
               ].map((member, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 20, rotate: 0 }}
-                  whileInView={{ opacity: 1, y: 0, rotate: member.rotation }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: (index + 1) * 0.1 }}
                   viewport={{ once: true }}
-                  className="group relative"
-                  style={{ transform: `rotate(${member.rotation})` }}
+                  className="bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
                 >
-                  {/* Polaroid Card */}
-                  <div className="bg-white p-4 shadow-2xl hover:shadow-3xl transition-all duration-300 group-hover:rotate-0 group-hover:scale-105 w-80">
-                    {/* Photo */}
-                    <div className="relative w-full h-80 bg-gray-100 overflow-hidden mb-4">
-                      <Image
-                        src={member.image}
-                        alt={member.name}
-                        fill
-                        className="object-cover"
-                        style={
-                          member.name === "Hashim Farooq"
-                            ? { objectPosition: "center top" }
-                            : member.name === "Speedy the Fish"
-                            ? { transform: "scale(1.2)", objectPosition: "center 0%" }
-                            : undefined
-                        }
-                      />
-                    </div>
-
-                    {/* Handwritten-style caption */}
-                    <div className="space-y-2 px-2">
-                      <h3 className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'cursive' }}>
-                        {member.name}
-                      </h3>
-                      <p className="text-sm font-semibold text-accent uppercase tracking-wide">
-                        {member.role}
-                      </p>
-                      <p className="text-sm text-gray-700 leading-relaxed italic">
-                        {member.bio}
-                      </p>
-                    </div>
-
-                    {/* Decorative tape */}
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-20 h-6 bg-amber-200/70 shadow-sm transform -rotate-1"></div>
-
-                    {/* Color accent corner */}
-                    <div className={`absolute bottom-4 right-4 w-8 h-8 ${member.color} rounded-full opacity-40`}></div>
+                  <div className="relative w-full h-64 bg-gray-100">
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      className="object-cover"
+                      style={member.imageStyle}
+                    />
                   </div>
-
-                  {/* Pin shadow effect */}
-                  <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-3 h-3 bg-red-400 rounded-full shadow-lg z-10"></div>
+                  <div className="p-5">
+                    <h3 className="text-lg font-bold text-gray-900 mb-1">{member.name}</h3>
+                    <p className="text-sm font-medium text-accent mb-2">{member.role}</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">{member.bio}</p>
+                  </div>
                 </motion.div>
               ))}
             </div>
+
+            {/* You, the Client - full width */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="mt-8 bg-white rounded-2xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow max-w-5xl mx-auto"
+            >
+              <div className="grid md:grid-cols-[280px_1fr] gap-0">
+                <div className="relative h-[250px] md:h-full bg-white flex items-center justify-center">
+                  <Image src="/teamwork-client.jpg" alt="You, the Client" fill className="object-contain p-8" />
+                </div>
+                <div className="p-8 md:p-10 flex flex-col justify-center">
+                  <p className="text-sm text-accent font-semibold uppercase tracking-wider mb-2">Always Part of Our Team</p>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">You, the Client</h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    Our clients are always part of our team. We believe the best software is built through true collaboration, where your expertise in your business meets our expertise in technology.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </section>
 
         {/* Call to Action */}
-        <section className="py-16 px-4 bg-primary text-white">
+        <section className="py-16 px-4 bg-gray-950 text-white">
           <div className="container mx-auto max-w-4xl text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
