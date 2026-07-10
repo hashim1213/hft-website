@@ -2,24 +2,16 @@
 
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { SpinnerIosRegular, WarningRegular, SearchRegular } from "@fluentui/react-icons"
+import { SpinnerIosRegular, WarningRegular, SearchRegular, CalendarRegular, FilterRegular } from "@fluentui/react-icons"
 import Link from "next/link"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import Breadcrumb from "@/components/Breadcrumb"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { initializeApp, getApps } from 'firebase/app'
 import { getFirestore, collection, query, orderBy, getDocs } from 'firebase/firestore'
 
-// Initialize Firebase (using your existing config)
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -48,7 +40,6 @@ interface BlogPost {
   imageUrl?: string
 }
 
-// Utility function to generate fallback slug from title if slug is missing
 const generateSlugFromTitle = (title: string): string => {
   return title
     .toLowerCase()
@@ -58,21 +49,13 @@ const generateSlugFromTitle = (title: string): string => {
     .replace(/^-+|-+$/g, '')
 }
 
-// Utility function to get relative time
-const getRelativeTime = (dateString: string): string => {
-  const now = new Date()
+const formatDate = (dateString: string): string => {
   const date = new Date(dateString)
-  const diffInMs = now.getTime() - date.getTime()
-  const diffInMinutes = Math.floor(diffInMs / (1000 * 60))
-  const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60))
-  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24))
+  return date.toISOString().split('T')[0]
+}
 
-  if (diffInMinutes < 1) return 'Just now'
-  if (diffInMinutes < 60) return `${diffInMinutes} min`
-  if (diffInHours < 24) return `${diffInHours}h`
-  if (diffInDays < 30) return `${diffInDays}d`
-
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+const getAuthorInitial = (name: string): string => {
+  return name.charAt(0).toUpperCase()
 }
 
 export default function BlogPage() {
@@ -82,6 +65,7 @@ export default function BlogPage() {
   const [error, setError] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
+  const [showFilters, setShowFilters] = useState(false)
 
   useEffect(() => {
     async function loadPosts() {
@@ -90,7 +74,7 @@ export default function BlogPage() {
           collection(db, 'posts'),
           orderBy('createdAt', 'desc')
         )
-        
+
         const querySnapshot = await getDocs(postsQuery)
         const loadedPosts = querySnapshot.docs
           .map(doc => {
@@ -98,7 +82,6 @@ export default function BlogPage() {
             return {
               id: doc.id,
               ...data,
-              // Generate slug from title if missing (backward compatibility)
               slug: data.slug || generateSlugFromTitle(data.title || doc.id),
               createdAt: data.createdAt?.toDate?.().toISOString() || new Date().toISOString()
             } as BlogPost
@@ -165,7 +148,7 @@ export default function BlogPage() {
       </div>
     )
   }
-  
+
   const featuredPost = filteredPosts[0]
   const remainingPosts = filteredPosts.slice(1)
 
@@ -173,9 +156,9 @@ export default function BlogPage() {
     <div className="min-h-screen flex flex-col bg-white">
       <Header />
       <main className="flex-1 pt-32">
-        {/* Page Title and Filters */}
-        <div className="border-b border-gray-200 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header Section */}
+        <div className="bg-gradient-to-br from-white via-blue-50/30 to-green-50/20 border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-12">
             {/* Breadcrumb */}
             <Breadcrumb
               items={[
@@ -185,216 +168,180 @@ export default function BlogPage() {
             />
 
             {/* Title */}
-            <div className="mb-8">
-              <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-2">Insights</h1>
-              <p className="text-lg text-gray-600">Latest articles, stories, and ideas</p>
-            </div>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mt-4 mb-8">
+              Bytesavy Blog
+            </h1>
 
-            {/* Search and Filter */}
-            <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
-              <div className="relative flex-1 max-w-2xl">
-                <SearchRegular className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <Input
-                  placeholder="Search"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-gray-50 pl-10 border-0 focus:bg-white focus:ring-1 focus:ring-gray-300 transition-colors"
-                />
-              </div>
-              <Select
-                value={selectedCategory}
-                onValueChange={setSelectedCategory}
+            {/* Featured Post */}
+            {featuredPost && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="grid md:grid-cols-2 gap-8 items-center"
               >
-                <SelectTrigger className="w-full sm:w-[140px] bg-gray-50 border-0 focus:ring-1 focus:ring-gray-300">
-                  <SelectValue placeholder="All Topics" />
-                </SelectTrigger>
-                <SelectContent>
-                  {categories.map(category => (
-                    <SelectItem key={category} value={category}>
-                      {category === 'all' ? 'All Topics' : category.charAt(0).toUpperCase() + category.slice(1)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {(searchQuery || selectedCategory !== 'all') && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    setSearchQuery('')
-                    setSelectedCategory('all')
-                  }}
-                  className="text-gray-600 hover:text-gray-900 text-sm underline"
-                >
-                  Clear
-                </Button>
-              )}
-            </div>
+                <div>
+                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight mb-4">
+                    {featuredPost.title}
+                  </h2>
+                  <p className="text-gray-600 leading-relaxed mb-6">
+                    {featuredPost.excerpt}
+                  </p>
+                  <Link
+                    href={`/blog/${featuredPost.slug}`}
+                    className="text-blue-600 hover:underline font-medium"
+                  >
+                    Read the post
+                  </Link>
+                </div>
+                {featuredPost.imageUrl && (
+                  <div className="relative w-full h-[280px] md:h-[320px] overflow-hidden rounded-lg">
+                    <img
+                      src={featuredPost.imageUrl}
+                      alt={featuredPost.title}
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                )}
+              </motion.div>
+            )}
           </div>
         </div>
 
-        {filteredPosts.length > 0 ? (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            {/* Featured Hero Article */}
-            {featuredPost && (
-              <motion.article
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-12 pb-12 border-b border-gray-200"
-              >
-                <Link href={featuredPost.slug ? `/blog/${featuredPost.slug}` : `/blog/${featuredPost.id}`}>
-                  <div className="grid md:grid-cols-2 gap-8 items-center">
-                    {/* Image */}
-                    {featuredPost.imageUrl && (
-                      <div className="relative w-full h-[400px] overflow-hidden rounded-sm">
-                        <img
-                          src={featuredPost.imageUrl}
-                          alt={featuredPost.title}
-                          className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
-                        />
-                      </div>
-                    )}
+        {/* Newest Posts Section */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">Newest posts</h2>
 
-                    {/* Content */}
-                    <div className={featuredPost.imageUrl ? '' : 'md:col-span-2'}>
-                      {featuredPost.category && (
-                        <span className="inline-block px-3 py-1 bg-red-500 text-white text-xs font-semibold mb-4 rounded-sm">
-                          {featuredPost.category.toUpperCase()}
-                        </span>
-                      )}
-                      <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight hover:text-gray-700 transition-colors">
-                        {featuredPost.title}
-                      </h1>
-                      <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                        {featuredPost.excerpt}
-                      </p>
-                      <div className="flex items-center gap-4 text-sm text-gray-500">
-                        <span className="font-medium text-gray-900">{featuredPost.author}</span>
-                        <span>•</span>
-                        <span>{getRelativeTime(featuredPost.createdAt)}</span>
-                        <span>•</span>
-                        <span>{featuredPost.readTime}</span>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </motion.article>
-            )}
-
-            {/* Latest Articles Grid */}
-            {remainingPosts.length > 0 && (
-              <>
-                <div className="mb-8">
-                  <h2 className="text-2xl font-bold text-gray-900">Latest</h2>
-                </div>
-
-                <motion.div
-                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-                  initial="hidden"
-                  animate="visible"
-                  variants={{
-                    visible: {
-                      transition: {
-                        staggerChildren: 0.05
-                      }
-                    }
-                  }}
-                >
-                  {remainingPosts.map((post, index) => {
-                    const postUrl = post.slug ? `/blog/${post.slug}` : `/blog/${post.id}`
-
-                    // Vary card sizes for visual interest
-                    const isLarge = index % 5 === 0
-                    const cardClass = isLarge ? "md:col-span-2 lg:col-span-2" : ""
-
-                    return (
-                      <motion.article
-                        key={post.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className={`group border-b border-gray-200 pb-6 ${cardClass}`}
-                      >
-                        <Link href={postUrl}>
-                          <div className={`flex ${isLarge ? 'flex-row gap-6' : 'flex-col gap-4'}`}>
-                            {/* Image */}
-                            {post.imageUrl && (
-                              <div className={`relative overflow-hidden rounded-sm ${isLarge ? 'w-1/2 h-[300px]' : 'w-full h-[200px]'}`}>
-                                <img
-                                  src={post.imageUrl}
-                                  alt={post.title}
-                                  className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
-                                  loading="lazy"
-                                />
-                              </div>
-                            )}
-
-                            {/* Content */}
-                            <div className={isLarge ? 'w-1/2 flex flex-col justify-center' : ''}>
-                              <div className="flex items-center gap-3 mb-3">
-                                {post.category && (
-                                  <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                                    {post.category}
-                                  </span>
-                                )}
-                                <span className="text-red-500 text-sm font-medium">
-                                  {getRelativeTime(post.createdAt)}
-                                </span>
-                              </div>
-
-                              <h2 className={`font-bold text-gray-900 group-hover:text-gray-600 transition-colors mb-3 ${isLarge ? 'text-3xl' : 'text-xl'}`}>
-                                {post.title}
-                              </h2>
-
-                              {isLarge && (
-                                <p className="text-gray-600 mb-4 line-clamp-2">
-                                  {post.excerpt}
-                                </p>
-                              )}
-
-                              <div className="flex items-center gap-3 text-sm text-gray-500">
-                                <span className="font-medium text-gray-700">{post.author}</span>
-                                {post.readTime && (
-                                  <>
-                                    <span>•</span>
-                                    <span>{post.readTime}</span>
-                                  </>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        </Link>
-                      </motion.article>
-                    )
-                  })}
-                </motion.div>
-              </>
-            )}
-          </div>
-        ) : (
-          <motion.div
-            className="py-16 text-center max-w-7xl mx-auto px-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            <SearchRegular className="w-16 h-16 mx-auto text-gray-300 mb-6" />
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">No articles found</h3>
-            <p className="text-gray-600 mb-8 max-w-md mx-auto">
-              {searchQuery
-                ? `We couldn't find any articles matching "${searchQuery}"`
-                : 'No articles available in this category'}
-            </p>
-            <Button
-              onClick={() => {
-                setSearchQuery('')
-                setSelectedCategory('all')
-              }}
-              className="bg-gray-900 hover:bg-gray-800"
+          {/* Filter and Search */}
+          <div className="flex items-center gap-4 mb-2 pb-6 border-b border-gray-200">
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className="inline-flex items-center gap-2 px-5 py-2.5 border border-gray-900 rounded-full text-sm font-medium text-gray-900 hover:bg-gray-50 transition-colors"
             >
-              View all articles
-            </Button>
-          </motion.div>
-        )}
+              <FilterRegular className="w-4 h-4" />
+              Filter
+            </button>
+            <div className="flex-1 flex items-center gap-3 border-b border-gray-300 pb-1">
+              <SearchRegular className="w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="flex-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none bg-transparent"
+              />
+            </div>
+          </div>
+
+          {/* Filter options */}
+          {showFilters && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="py-4 border-b border-gray-200 mb-6"
+            >
+              <div className="flex flex-wrap gap-2">
+                {categories.map(category => (
+                  <button
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                      selectedCategory === category
+                        ? 'bg-gray-900 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    {category === 'all' ? 'All' : category.split('-').map(word =>
+                      word.charAt(0).toUpperCase() + word.slice(1)
+                    ).join(' ')}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {/* Post count */}
+          <p className="text-sm text-gray-600 mt-6 mb-8">
+            Displaying 1-{filteredPosts.length} ({filteredPosts.length})
+          </p>
+
+          {/* Posts Grid */}
+          {remainingPosts.length > 0 ? (
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                visible: {
+                  transition: { staggerChildren: 0.05 }
+                }
+              }}
+            >
+              {remainingPosts.map((post) => {
+                const postUrl = `/blog/${post.slug}`
+
+                return (
+                  <motion.article
+                    key={post.id}
+                    initial={{ opacity: 0, y: 15 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="group pb-10 border-b border-gray-100"
+                  >
+                    {/* Date */}
+                    <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
+                      <CalendarRegular className="w-4 h-4" />
+                      <span>{formatDate(post.createdAt)}</span>
+                    </div>
+
+                    {/* Title */}
+                    <Link href={postUrl}>
+                      <h3 className="text-xl font-bold text-blue-600 hover:underline mb-3 leading-snug">
+                        {post.title}
+                      </h3>
+                    </Link>
+
+                    {/* Excerpt */}
+                    <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-4">
+                      {post.excerpt}
+                    </p>
+
+                    {/* Author */}
+                    <div className="flex items-center gap-3">
+                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+                        <span className="text-xs font-bold text-white">{getAuthorInitial(post.author)}</span>
+                      </div>
+                      <span className="text-sm text-gray-700">{post.author}</span>
+                    </div>
+                  </motion.article>
+                )
+              })}
+            </motion.div>
+          ) : filteredPosts.length === 0 ? (
+            <motion.div
+              className="py-16 text-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              <SearchRegular className="w-16 h-16 mx-auto text-gray-300 mb-6" />
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">No articles found</h3>
+              <p className="text-gray-600 mb-8 max-w-md mx-auto">
+                {searchQuery
+                  ? `We couldn't find any articles matching "${searchQuery}"`
+                  : 'No articles available in this category'}
+              </p>
+              <Button
+                onClick={() => {
+                  setSearchQuery('')
+                  setSelectedCategory('all')
+                }}
+                className="bg-gray-900 hover:bg-gray-800"
+              >
+                View all articles
+              </Button>
+            </motion.div>
+          ) : null}
+        </div>
       </main>
       <Footer />
     </div>

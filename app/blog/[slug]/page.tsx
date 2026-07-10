@@ -51,13 +51,12 @@ interface BlogPost {
 const formatDate = (dateString: string) => {
   const date = new Date(dateString)
   return new Intl.DateTimeFormat('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  }).format(date)
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  }).format(date).toUpperCase()
 }
 
-// Utility function to generate fallback slug from title if slug is missing
 const generateSlugFromTitle = (title: string): string => {
   return title
     .toLowerCase()
@@ -67,15 +66,13 @@ const generateSlugFromTitle = (title: string): string => {
     .replace(/^-+|-+$/g, '')
 }
 
-// Note: This component expects the route to be [slug] instead of [id]
-// File should be located at: app/blog/[slug]/page.tsx
 export default function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
   const [post, setPost] = useState<BlogPost | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([])
+  const [allCategories, setAllCategories] = useState<string[]>([])
 
-  // Unwrap the params promise using React.use
   const resolvedParams = use(params)
 
   useEffect(() => {
@@ -86,7 +83,6 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
 
     async function loadPost() {
       try {
-        // First, try to query by slug
         const postsQuery = query(
           collection(db, 'posts'),
           where('slug', '==', resolvedParams.slug),
@@ -100,29 +96,20 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
           const docSnap = querySnapshot.docs[0]
           const data = docSnap.data()
           const timestamp = data.createdAt?.toDate?.() || new Date()
-          setPost({
+          const loadedPost = {
             id: docSnap.id,
             ...data,
             createdAt: timestamp.toISOString()
-          } as BlogPost)
+          } as BlogPost
+          setPost(loadedPost)
+          await fetchRelatedPosts(data.category, data.tags, docSnap.id)
         } else {
-          // Fallback: try to find by checking all published posts and matching generated slug
           const allPostsQuery = query(
             collection(db, 'posts'),
             where('status', '==', 'published')
           )
 
           const allPostsSnapshot = await getDocs(allPostsQuery)
-
-          // Helper function to generate slug from title
-          const generateSlugFromTitle = (title: string): string => {
-            return title
-              .toLowerCase()
-              .trim()
-              .replace(/[^\w\s-]/g, '')
-              .replace(/[\s_-]+/g, '-')
-              .replace(/^-+|-+$/g, '')
-          }
 
           let foundPost = null
           for (const docSnap of allPostsSnapshot.docs) {
@@ -144,7 +131,6 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
               createdAt: timestamp.toISOString()
             } as BlogPost)
 
-            // Fetch related posts
             await fetchRelatedPosts(data.category, data.tags, foundPost.id)
           } else {
             setError('Blog post not found')
@@ -158,7 +144,6 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
       }
     }
 
-    // Fetch related posts based on category and tags
     async function fetchRelatedPosts(category: string, tags: string[], currentPostId: string) {
       try {
         const postsQuery = query(
@@ -168,22 +153,18 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
 
         const querySnapshot = await getDocs(postsQuery)
 
-        // Score and filter related posts
+        const categories = new Set<string>()
         const scoredPosts = querySnapshot.docs
           .filter(doc => doc.id !== currentPostId)
           .map(doc => {
             const data = doc.data()
+            if (data.category) categories.add(data.category)
             let score = 0
-
-            // Same category = 2 points
             if (data.category === category) score += 2
-
-            // Matching tags = 1 point each
             if (tags && data.tags) {
               const matchingTags = data.tags.filter((tag: string) => tags.includes(tag))
               score += matchingTags.length
             }
-
             return {
               score,
               post: {
@@ -194,15 +175,15 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
               } as BlogPost
             }
           })
-          .filter(item => item.score > 0) // Only posts with at least some relevance
-          .sort((a, b) => b.score - a.score) // Sort by relevance
-          .slice(0, 3) // Take top 3
+          .filter(item => item.score > 0)
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 3)
           .map(item => item.post)
 
+        setAllCategories(Array.from(categories))
         setRelatedPosts(scoredPosts)
       } catch (err) {
         console.error('Error fetching related posts:', err)
-        // Don't set error - related posts are optional
       }
     }
 
@@ -214,18 +195,24 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
       <div className="min-h-screen flex flex-col bg-white">
         <Header />
         <main className="flex-1 pt-40 pb-20">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto space-y-6">
-              <Skeleton className="h-12 w-3/4" />
-              <div className="flex items-center gap-4">
-                <Skeleton className="h-6 w-32" />
-                <Skeleton className="h-6 w-32" />
-                <Skeleton className="h-6 w-32" />
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-12">
+              <div className="space-y-6">
+                <Skeleton className="h-6 w-40" />
+                <Skeleton className="h-12 w-full" />
+                <Skeleton className="h-12 w-3/4" />
+                <Skeleton className="h-5 w-96" />
+                <Skeleton className="h-px w-full" />
+                <Skeleton className="h-64" />
+                <Skeleton className="h-24" />
+                <Skeleton className="h-24" />
               </div>
-              <Skeleton className="h-64" />
-              <Skeleton className="h-24" />
-              <Skeleton className="h-24" />
-              <Skeleton className="h-24" />
+              <div className="space-y-6">
+                <Skeleton className="h-8 w-32" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-3/4" />
+              </div>
             </div>
           </div>
         </main>
@@ -239,26 +226,24 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
       <div className="min-h-screen flex flex-col bg-white">
         <Header />
         <main className="flex-1 pt-40 pb-20">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto">
-              <Link href="/blog" className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-8 transition-colors">
-                <ArrowLeftRegular className="w-4 h-4 mr-2" />
-                Back to all articles
-              </Link>
-              
-              <Alert variant="destructive">
-                <AlertDescription className="text-center py-2">
-                  {error || 'Blog post not found'}
-                </AlertDescription>
-              </Alert>
-              
-              <div className="text-center mt-8">
-                <Button asChild>
-                  <Link href="/blog">
-                    View all articles
-                  </Link>
-                </Button>
-              </div>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <Link href="/blog" className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-8 transition-colors">
+              <ArrowLeftRegular className="w-4 h-4 mr-2" />
+              Back to all articles
+            </Link>
+
+            <Alert variant="destructive">
+              <AlertDescription className="text-center py-2">
+                {error || 'Blog post not found'}
+              </AlertDescription>
+            </Alert>
+
+            <div className="text-center mt-8">
+              <Button asChild>
+                <Link href="/blog">
+                  View all articles
+                </Link>
+              </Button>
             </div>
           </div>
         </main>
@@ -270,7 +255,6 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
   const formattedDate = formatDate(post.createdAt)
   const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
 
-  // Generate structured data for the blog post
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -313,8 +297,6 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
         <meta name="description" content={post.excerpt} />
         <meta name="keywords" content={post.tags?.join(', ')} />
         <meta name="author" content={post.author} />
-
-        {/* Open Graph */}
         <meta property="og:type" content="article" />
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={post.excerpt} />
@@ -325,14 +307,10 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
         {post.tags?.map(tag => (
           <meta key={tag} property="article:tag" content={tag} />
         ))}
-
-        {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={post.title} />
         <meta name="twitter:description" content={post.excerpt} />
         {post.imageUrl && <meta name="twitter:image" content={post.imageUrl} />}
-
-        {/* Structured Data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -341,252 +319,312 @@ export default function BlogPost({ params }: { params: Promise<{ slug: string }>
         />
       </Head>
       <Header />
-      <main className="flex-1 pt-40 pb-20">
-        <article className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            {/* Breadcrumb Navigation */}
-            <Breadcrumb
-              items={[
-                { label: 'Home', href: '/' },
-                { label: 'Blog', href: '/blog' },
-                { label: post.title, href: `/blog/${post.slug || post.id}` }
-              ]}
-            />
+      <main className="flex-1 pt-32 pb-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-12 lg:gap-16">
+              {/* Main Content */}
+              <article className="min-w-0">
+                {/* Category */}
+                {post.category && (
+                  <Link
+                    href={`/blog?category=${post.category}`}
+                    className="inline-block text-blue-600 font-semibold text-sm mb-4 hover:underline"
+                  >
+                    {post.category.split('-').map(word =>
+                      word.charAt(0).toUpperCase() + word.slice(1)
+                    ).join(' ')}
+                  </Link>
+                )}
 
-            <Link
-              href="/blog"
-              className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-8 transition-colors"
-            >
-              <ArrowLeftRegular className="w-4 h-4 mr-2" />
-              Back to all articles
-            </Link>
-            
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              {/* Hero Image (if available) */}
-              {post.imageUrl && (
-                <div className="relative w-full h-64 md:h-80 mb-8 rounded-xl overflow-hidden">
-                  <img
-                    src={post.imageUrl}
-                    alt={post.title}
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-              )}
-
-              <header className="mb-12">
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                {/* Title */}
+                <h1 className="text-3xl md:text-4xl lg:text-[2.5rem] font-bold text-gray-900 leading-tight mb-4">
                   {post.title}
                 </h1>
-                
-                <div className="flex flex-wrap items-center gap-4 text-gray-600 mb-6">
-                  <div className="flex items-center gap-2">
-                    <PersonRegular className="w-4 h-4 text-blue-600" />
-                    <span className="font-medium">{post.author}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CalendarRegular className="w-4 h-4 text-blue-600" />
-                    <time dateTime={post.createdAt}>{formattedDate}</time>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <ClockRegular className="w-4 h-4 text-blue-600" />
-                    <span>{post.readTime}</span>
-                  </div>
+
+                {/* Meta line */}
+                <div className="flex flex-wrap items-center gap-1 text-sm text-gray-600 mb-6">
+                  <span>by</span>
+                  <span className="font-medium text-gray-900">{post.author}</span>
+                  <span className="mx-1">|</span>
+                  <span>on {formattedDate}</span>
+                  {post.category && (
+                    <>
+                      <span className="mx-1">|</span>
+                      <span>in</span>
+                      <Link href={`/blog?category=${post.category}`} className="text-blue-600 hover:underline">
+                        {post.category.split('-').map(word =>
+                          word.charAt(0).toUpperCase() + word.slice(1)
+                        ).join(' ')}
+                      </Link>
+                    </>
+                  )}
+                  <span className="mx-1">|</span>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(currentUrl)
+                      alert('Link copied to clipboard!')
+                    }}
+                    className="inline-flex items-center gap-1 text-blue-600 hover:underline"
+                  >
+                    <LinkRegular className="w-3.5 h-3.5" />
+                    Permalink
+                  </button>
+                  <span className="mx-1">|</span>
+                  <button
+                    onClick={() => window.open(
+                      `https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(currentUrl)}`,
+                      '_blank'
+                    )}
+                    className="inline-flex items-center gap-1 text-blue-600 hover:underline"
+                  >
+                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    Share
+                  </button>
                 </div>
 
-                {/* Tags */}
-                {post.tags && post.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {post.tags.map(tag => (
-                      <span
-                        key={tag}
-                        className="inline-flex px-3 py-1 text-sm text-blue-600 bg-blue-50 rounded-full"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+                <hr className="border-gray-200 mb-8" />
+
+                {/* Hero Image */}
+                {post.imageUrl && (
+                  <div className="mb-8">
+                    <img
+                      src={post.imageUrl}
+                      alt={post.title}
+                      className="w-full h-auto rounded-sm"
+                    />
                   </div>
                 )}
-              </header>
 
-              {/* Excerpt */}
-              {post.excerpt && (
-                <div className="mb-8 p-6 bg-gray-50 rounded-xl border-l-4 border-blue-600">
-                  <p className="text-lg text-gray-700 italic leading-relaxed">
-                    {post.excerpt}
-                  </p>
-                </div>
-              )}
-
-              {/* Content */}
-              <div className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-blockquote:border-blue-200 prose-blockquote:bg-blue-50 prose-blockquote:text-gray-700 prose-ul:list-disc prose-ol:list-decimal prose-li:text-gray-700 prose-code:text-blue-600 prose-code:bg-gray-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-img:rounded-lg">
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  rehypePlugins={[rehypeRaw]}
-                  components={{
-                    h1: ({node, ...props}) => <h2 className="text-3xl font-bold text-gray-900 mt-10 mb-6" {...props} />,
-                    h2: ({node, ...props}) => <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4" {...props} />,
-                    h3: ({node, ...props}) => <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3" {...props} />,
-                    h4: ({node, ...props}) => <h4 className="text-lg font-semibold text-gray-900 mt-4 mb-2" {...props} />,
-                    p: ({node, ...props}) => <p className="mb-6 text-gray-700 leading-relaxed text-lg" {...props} />,
-                    ul: ({node, ...props}) => <ul className="mb-6 ml-6 list-disc space-y-2" {...props} />,
-                    ol: ({node, ...props}) => <ol className="mb-6 ml-6 list-decimal space-y-2" {...props} />,
-                    li: ({node, ...props}) => <li className="text-gray-700 leading-relaxed" {...props} />,
-                    blockquote: ({node, ...props}) => (
-                      <blockquote className="border-l-4 border-blue-200 bg-blue-50 pl-6 py-4 my-6 italic text-gray-700" {...props} />
-                    ),
-                    code: ({node, inline, ...props}: any) =>
-                      inline ? (
-                        <code className="text-blue-600 bg-gray-100 px-2 py-0.5 rounded text-sm font-mono" {...props} />
-                      ) : (
-                        <code className="block bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm font-mono" {...props} />
+                {/* Article Content */}
+                <div className="prose prose-lg max-w-none
+                  prose-headings:text-gray-900 prose-headings:font-bold
+                  prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4
+                  prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
+                  prose-p:text-gray-800 prose-p:leading-[1.8] prose-p:mb-6
+                  prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
+                  prose-strong:text-gray-900
+                  prose-blockquote:border-l-4 prose-blockquote:border-blue-600 prose-blockquote:bg-blue-50 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:not-italic
+                  prose-ul:list-disc prose-ul:ml-6 prose-ul:space-y-2
+                  prose-ol:list-decimal prose-ol:ml-6 prose-ol:space-y-2
+                  prose-li:text-gray-800
+                  prose-code:text-blue-700 prose-code:bg-gray-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
+                  prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-pre:rounded-lg
+                  prose-img:rounded-sm prose-img:w-full prose-img:my-8
+                ">
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    rehypePlugins={[rehypeRaw]}
+                    components={{
+                      h1: ({node, ...props}) => <h2 className="text-2xl font-bold text-gray-900 mt-10 mb-4" {...props} />,
+                      h2: ({node, ...props}) => <h2 className="text-2xl font-bold text-gray-900 mt-10 mb-4" {...props} />,
+                      h3: ({node, ...props}) => <h3 className="text-xl font-bold text-gray-900 mt-8 mb-3" {...props} />,
+                      h4: ({node, ...props}) => <h4 className="text-lg font-semibold text-gray-900 mt-6 mb-2" {...props} />,
+                      p: ({node, ...props}) => <p className="mb-6 text-gray-800 leading-[1.8] text-[1.0625rem]" {...props} />,
+                      ul: ({node, ...props}) => <ul className="mb-6 ml-6 list-disc space-y-2" {...props} />,
+                      ol: ({node, ...props}) => <ol className="mb-6 ml-6 list-decimal space-y-2" {...props} />,
+                      li: ({node, ...props}) => <li className="text-gray-800 leading-relaxed" {...props} />,
+                      blockquote: ({node, ...props}) => (
+                        <blockquote className="border-l-4 border-blue-600 bg-blue-50 pl-6 py-4 my-6 text-gray-800" {...props} />
                       ),
-                    pre: ({node, ...props}) => <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto mb-6" {...props} />,
-                    a: ({node, ...props}) => (
-                      <a className="text-blue-600 hover:text-blue-700 hover:underline font-medium" target="_blank" rel="noopener noreferrer" {...props} />
-                    ),
-                    img: ({node, ...props}) => (
-                      <img className="rounded-lg my-6 w-full" {...props} alt={props.alt || 'Blog image'} />
-                    ),
-                    strong: ({node, ...props}) => <strong className="font-bold text-gray-900" {...props} />,
-                    em: ({node, ...props}) => <em className="italic" {...props} />,
-                  }}
-                >
-                  {post.content}
-                </ReactMarkdown>
-              </div>
+                      code: ({node, inline, ...props}: any) =>
+                        inline ? (
+                          <code className="text-blue-700 bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono" {...props} />
+                        ) : (
+                          <code className="block bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm font-mono" {...props} />
+                        ),
+                      pre: ({node, ...props}) => <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto mb-6" {...props} />,
+                      a: ({node, ...props}) => (
+                        <a className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer" {...props} />
+                      ),
+                      img: ({node, ...props}) => (
+                        <figure className="my-8">
+                          <img className="rounded-sm w-full h-auto" {...props} alt={props.alt || 'Blog image'} />
+                          {props.alt && props.alt !== 'Blog image' && (
+                            <figcaption className="text-sm text-gray-500 mt-2 text-center italic">{props.alt}</figcaption>
+                          )}
+                        </figure>
+                      ),
+                      strong: ({node, ...props}) => <strong className="font-bold text-gray-900" {...props} />,
+                      em: ({node, ...props}) => <em className="italic" {...props} />,
+                      hr: ({node, ...props}) => <hr className="border-gray-200 my-10" {...props} />,
+                      table: ({node, ...props}) => (
+                        <div className="overflow-x-auto my-6">
+                          <table className="min-w-full border border-gray-200 text-sm" {...props} />
+                        </div>
+                      ),
+                      th: ({node, ...props}) => <th className="border border-gray-200 bg-gray-50 px-4 py-2 text-left font-semibold text-gray-900" {...props} />,
+                      td: ({node, ...props}) => <td className="border border-gray-200 px-4 py-2 text-gray-700" {...props} />,
+                    }}
+                  >
+                    {post.content}
+                  </ReactMarkdown>
+                </div>
 
-              {/* Share Section */}
-              <div className="mt-16 pt-8 border-t border-gray-200">
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                  <div>
-                    <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                      Share this article
-                    </h2>
-                    <p className="text-gray-600">
-                      Help others discover this content
-                    </p>
+                {/* Tags at bottom */}
+                {post.tags && post.tags.length > 0 && (
+                  <div className="mt-10 pt-6 border-t border-gray-200">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-sm font-medium text-gray-600">Tags:</span>
+                      {post.tags.map(tag => (
+                        <span
+                          key={tag}
+                          className="inline-flex px-3 py-1 text-sm text-blue-600 bg-blue-50 rounded-sm hover:bg-blue-100 transition-colors"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                  
-                  <div className="flex gap-3">
-                    <button 
+                )}
+
+                {/* Share bar */}
+                <div className="mt-8 pt-6 border-t border-gray-200">
+                  <div className="flex items-center gap-4">
+                    <span className="text-sm font-medium text-gray-600">Share:</span>
+                    <button
                       onClick={() => window.open(
                         `https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(currentUrl)}`,
                         '_blank'
                       )}
-                      className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                      className="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
                       aria-label="Share on Twitter"
                     >
-                      <Twitter className="h-4 w-4" />
-                      <span className="hidden sm:inline">Twitter</span>
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                      Twitter
                     </button>
-                    
-                    <button 
+
+                    <button
                       onClick={() => window.open(
                         `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(currentUrl)}&title=${encodeURIComponent(post.title)}`,
                         '_blank'
                       )}
-                      className="flex items-center gap-2 px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition-colors"
+                      className="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
                       aria-label="Share on LinkedIn"
                     >
                       <Linkedin className="h-4 w-4" />
-                      <span className="hidden sm:inline">LinkedIn</span>
+                      LinkedIn
                     </button>
-                    
-                    <button 
+
+                    <button
                       onClick={() => {
                         navigator.clipboard.writeText(currentUrl)
-                        // You can add a toast notification here
                         alert('Link copied to clipboard!')
                       }}
-                      className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                      className="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
                       aria-label="Copy link"
                     >
                       <LinkRegular className="w-4 h-4" />
-                      <span className="hidden sm:inline">Copy</span>
+                      Copy Link
                     </button>
                   </div>
                 </div>
-              </div>
+              </article>
 
-              {/* Navigation */}
-              <div className="mt-16 pt-8 border-t border-gray-200">
-                <div className="flex justify-center">
-                  <Button asChild size="lg">
-                    <Link href="/blog" className="inline-flex items-center gap-2">
-                      <ArrowLeftRegular className="w-4 h-4" />
-                      Back to all articles
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </article>
+              {/* Sidebar */}
+              <aside className="hidden lg:block">
+                <div className="sticky top-32 space-y-8">
+                  {/* Resources */}
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900 mb-4">Resources</h3>
+                    <ul className="space-y-2">
+                      <li>
+                        <Link href="/blog" className="text-blue-600 hover:underline text-sm">
+                          All Articles
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/#featured-work" className="text-blue-600 hover:underline text-sm">
+                          Our Work
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/about" className="text-blue-600 hover:underline text-sm">
+                          About Us
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
 
-        {/* Related Articles */}
-        {relatedPosts.length > 0 && (
-          <section className="py-16 bg-gray-50 border-t border-gray-100">
-            <div className="container mx-auto px-4">
-              <div className="max-w-6xl mx-auto">
-                <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center">
-                  Continue Reading
-                </h2>
+                  <hr className="border-gray-200" />
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {relatedPosts.map((relatedPost) => (
-                    <Link
-                      key={relatedPost.id}
-                      href={`/blog/${relatedPost.slug}`}
-                      className="group"
-                    >
-                      <motion.div
-                        className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 h-full flex flex-col"
-                        whileHover={{ y: -4 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        {relatedPost.imageUrl && (
-                          <div className="aspect-video overflow-hidden">
-                            <img
-                              src={relatedPost.imageUrl}
-                              alt={relatedPost.title}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                            />
-                          </div>
-                        )}
-                        <div className="p-5 flex flex-col flex-1">
-                          {relatedPost.category && (
-                            <span className="inline-flex w-fit px-3 py-1 text-xs font-medium text-blue-600 bg-blue-50 rounded-full mb-3">
-                              {relatedPost.category.split('-').map(word =>
+                  {/* Blog Topics */}
+                  {allCategories.length > 0 && (
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-900 mb-4">Blog Topics</h3>
+                      <ul className="space-y-2">
+                        {allCategories.map(cat => (
+                          <li key={cat}>
+                            <Link
+                              href={`/blog?category=${cat}`}
+                              className="text-blue-600 hover:underline text-sm"
+                            >
+                              {cat.split('-').map(word =>
                                 word.charAt(0).toUpperCase() + word.slice(1)
                               ).join(' ')}
-                            </span>
-                          )}
-                          <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
-                            {relatedPost.title}
-                          </h3>
-                          <p className="text-sm text-gray-600 line-clamp-2 mb-4 flex-1">
-                            {relatedPost.excerpt}
-                          </p>
-                          <div className="flex items-center justify-between text-sm text-gray-500">
-                            <span>{relatedPost.readTime}</span>
-                            <span className="flex items-center gap-1 text-blue-600 group-hover:gap-2 transition-all">
-                              Read more
-                              <ArrowRightRegular className="w-3 h-3" />
-                            </span>
-                          </div>
-                        </div>
-                      </motion.div>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Related Posts */}
+                  {relatedPosts.length > 0 && (
+                    <>
+                      <hr className="border-gray-200" />
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900 mb-4">Related Articles</h3>
+                        <ul className="space-y-4">
+                          {relatedPosts.map(related => (
+                            <li key={related.id}>
+                              <Link
+                                href={`/blog/${related.slug}`}
+                                className="group block"
+                              >
+                                <p className="text-sm text-blue-600 group-hover:underline font-medium leading-snug">
+                                  {related.title}
+                                </p>
+                                <p className="text-xs text-gray-500 mt-1">
+                                  {related.readTime}
+                                </p>
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </>
+                  )}
+
+                  {/* Contact CTA */}
+                  <hr className="border-gray-200" />
+                  <div className="bg-gray-50 rounded-lg p-5 border border-gray-100">
+                    <p className="text-sm font-semibold text-gray-900 mb-2">Need help with a project?</p>
+                    <p className="text-xs text-gray-600 mb-3">Let&apos;s discuss how we can help modernize your operations.</p>
+                    <Link href="/#contact" className="text-sm text-blue-600 hover:underline font-medium">
+                      Get in touch &rarr;
                     </Link>
-                  ))}
+                  </div>
                 </div>
-              </div>
+              </aside>
             </div>
-          </section>
-        )}
+
+            {/* Back link */}
+            <div className="mt-12 pt-8 border-t border-gray-200">
+              <Link
+                href="/blog"
+                className="inline-flex items-center gap-2 text-sm text-blue-600 hover:underline"
+              >
+                <ArrowLeftRegular className="w-4 h-4" />
+                Back to all articles
+              </Link>
+            </div>
+          </motion.div>
+        </div>
       </main>
       <Footer />
     </div>
