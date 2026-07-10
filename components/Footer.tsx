@@ -148,8 +148,7 @@ export default function Footer() {
             <span className="text-sm text-gray-400">
               {t('footer.copyright')}
             </span>
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-gray-500">{t('footer.made_in')}</span>
+            <div className="flex items-center gap-3">
               <div className="relative h-4 w-6">
                 <Image
                   src="/canada-flag.jpeg"
@@ -158,7 +157,22 @@ export default function Footer() {
                   className="object-contain rounded"
                 />
               </div>
-              <span className="text-xs text-gray-500 font-medium">Canada</span>
+              <div className="relative h-4 w-6">
+                <Image
+                  src="/us-flag.png"
+                  alt="United States"
+                  fill
+                  className="object-contain rounded"
+                />
+              </div>
+              <div className="relative h-4 w-6">
+                <Image
+                  src="/eu-flag.png"
+                  alt="European Union"
+                  fill
+                  className="object-contain rounded"
+                />
+              </div>
             </div>
             <div className="flex items-center gap-6">
               {FOOTER_LINKS.legal.map((link) => (

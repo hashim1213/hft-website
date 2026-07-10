@@ -32,31 +32,37 @@ const MediaSection = () => {
       title: "Brandon developer's app helps consumers buy Canadian",
       url: "https://www.ctvnews.ca/winnipeg/article/manitoba-man-creates-app-to-help-you-shop-for-canadian-products/",
       logo: "ct.png"
+    },
+    {
+      source: "The Western Producer",
+      title: "CattleOS fills a record-keeping tech gap for beef cattle producers",
+      url: "https://www.producer.com/livestock/cattleos-fills-a-record-keeping-tech-gap-for-beef-cattle-producers/",
+      logo: "western-producer-logo.jpg"
     }
   ];
 
   return (
-    <section className="w-full py-8 bg-white border-t border-gray-100">
+    <section className="w-full py-12 bg-white border-t border-gray-100 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p className="text-lg font-semibold text-gray-600 mb-6 text-center">Featured In</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-8 items-center justify-items-center">
-          {mediaItems.map((item, index) => (
-            <a
-              key={index}
-              href={item.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300 transform hover:scale-105 w-full flex justify-center"
-              title={item.title}
-            >
-              <img
-                src={item.logo}
-                alt={`${item.source} logo`}
-                className="h-10 md:h-11 lg:h-12 w-auto object-contain max-w-full"
-              />
-            </a>
-          ))}
-        </div>
+        <p className="text-lg font-semibold text-gray-600 mb-8 text-center">Featured In</p>
+      </div>
+      <div className="animate-marquee">
+        {[...mediaItems, ...mediaItems].map((item, index) => (
+          <a
+            key={index}
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-shrink-0 mx-12 grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300 transform hover:scale-105"
+            title={item.title}
+          >
+            <img
+              src={item.logo}
+              alt={`${item.source} logo`}
+              style={{ height: '50px', width: 'auto' }}
+            />
+          </a>
+        ))}
       </div>
     </section>
   );
