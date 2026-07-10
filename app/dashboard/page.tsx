@@ -425,27 +425,20 @@ export default function Dashboard() {
               />
             </div>
 
+            <div className="flex items-center gap-3">
+              <Button
+                size="default"
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+                onClick={() => router.push('/dashboard/blog/create')}
+              >
+                <Icons.PlusCircle className="h-4 w-4 mr-2" />
+                <span>New Post</span>
+              </Button>
+            </div>
+
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
-                <Button
-                  size="default"
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
-                  onClick={() => {
-                    setEditingPost(null)
-                    setFormData({
-                      title: "",
-                      excerpt: "",
-                      content: "",
-                      category: "",
-                      imageUrl: "",
-                      tags: "",
-                      author: "Bytesavy Team"
-                    })
-                  }}
-                >
-                  <Icons.PlusCircle className="h-4 w-4 mr-2" />
-                  <span>New Post</span>
-                </Button>
+                <span className="hidden" />
               </SheetTrigger>
 
               <SheetContent
