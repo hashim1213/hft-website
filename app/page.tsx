@@ -179,7 +179,7 @@ export default function Website() {
                   className="flex flex-wrap items-center justify-center gap-4 pt-4"
                 >
                   <BookingDialog onOpenChange={() => {}} />
-                  <Link href="/about">
+                  <Link href="#featured-work">
                     <Button variant="outline" className="bg-white/80 backdrop-blur-sm border-white/50 hover:bg-white text-gray-900 gap-2">
                       View Our Work
                       <ArrowRightRegular className="w-4 h-4" />
@@ -380,7 +380,7 @@ export default function Website() {
         </section>
 
         {/* Portfolio Section - Dark */}
-        <section className="py-24 bg-gray-950 rounded-t-[3rem]">
+        <section id="featured-work" className="py-24 bg-gray-950">
           <div className="container mx-auto px-4 md:px-6">
             <div className="max-w-6xl mx-auto">
               <motion.div
@@ -389,9 +389,7 @@ export default function Website() {
                 viewport={{ once: true }}
                 className="mb-12"
               >
-                <h2 className="text-4xl md:text-5xl font-bold text-white">
-                  Featured Work
-                </h2>
+                <p className="text-sm text-gray-500 mb-8">/Featured Work</p>
               </motion.div>
 
               <div className="grid md:grid-cols-2 gap-6">
@@ -464,23 +462,44 @@ export default function Website() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.1 }}
-                  className="bg-gray-900 rounded-2xl p-8 border border-gray-800 hover:border-gray-700 transition-colors"
+                  className="bg-gray-900 rounded-2xl p-6 border border-gray-800 hover:border-gray-700 transition-colors md:col-span-2"
                 >
-                  <h3 className="text-2xl font-bold text-white mb-3">Levy Database</h3>
-                  <p className="text-gray-400 leading-relaxed mb-5">
-                    A comprehensive system designed for levy collection organizations, streamlining the entire levy management process.
-                  </p>
-                  <div className="space-y-3 mb-6">
-                    {["Complete customer management system", "Automated levy collection and refund processing", "Organization management for collecting entities", "On-prem deployment with local SMTP setup for emails", "Real-time reporting and compliance tracking"].map((feature) => (
-                      <div key={feature} className="flex items-start gap-2">
-                        <CheckmarkCircleRegular className="w-5 h-5 flex-shrink-0 mt-0.5 text-accent" />
-                        <p className="text-sm text-gray-300">{feature}</p>
+                  <div className="grid md:grid-cols-2 gap-8 items-center">
+                    <div className="relative">
+                      <div className="rounded-lg overflow-hidden shadow-2xl border border-gray-700">
+                        <div className="bg-gray-800 px-3 py-2 flex items-center gap-2 border-b border-gray-700">
+                          <div className="flex gap-1.5">
+                            <div className="w-2 h-2 rounded-full bg-red-400/60" />
+                            <div className="w-2 h-2 rounded-full bg-yellow-400/60" />
+                            <div className="w-2 h-2 rounded-full bg-green-400/60" />
+                          </div>
+                          <div className="flex-1 mx-2">
+                            <div className="bg-gray-700 rounded-md px-3 py-0.5 text-[10px] text-gray-400 truncate">
+                              http://127.0.0.1:5001/
+                            </div>
+                          </div>
+                        </div>
+                        <Image src="/levy-app.png" alt="Levy Database reports interface" width={1366} height={900} className="w-full h-auto block" />
                       </div>
-                    ))}
-                  </div>
-                  <div className="pt-5 border-t border-gray-800">
-                    <p className="text-xs text-accent uppercase font-semibold tracking-wider mb-2">Impact</p>
-                    <p className="text-sm text-gray-400">Simplified levy operations from collection to refund, enabling organizations to manage their processes efficiently and transparently.</p>
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-white mb-3">Levy Database</h3>
+                      <p className="text-gray-400 leading-relaxed mb-4">
+                        A comprehensive system designed for levy collection organizations, streamlining the entire levy management process.
+                      </p>
+                      <div className="space-y-2 mb-6">
+                        {["Complete customer management system", "Automated levy collection and refund processing", "Organization management for collecting entities", "On-prem deployment with local SMTP setup for emails", "Real-time reporting and compliance tracking"].map((feature) => (
+                          <div key={feature} className="flex items-start gap-2">
+                            <CheckmarkCircleRegular className="w-4 h-4 flex-shrink-0 mt-0.5 text-accent" />
+                            <p className="text-sm text-gray-300">{feature}</p>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="pt-5 border-t border-gray-800">
+                        <p className="text-xs text-accent uppercase font-semibold tracking-wider mb-2">Impact</p>
+                        <p className="text-sm text-gray-400">Simplified levy operations from collection to refund, enabling organizations to manage their processes efficiently and transparently.</p>
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
 
@@ -490,23 +509,44 @@ export default function Website() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.2 }}
-                  className="bg-gray-900 rounded-2xl p-8 border border-gray-800 hover:border-gray-700 transition-colors"
+                  className="bg-gray-900 rounded-2xl p-6 border border-gray-800 hover:border-gray-700 transition-colors md:col-span-2"
                 >
-                  <h3 className="text-2xl font-bold text-white mb-3">Agriculture Research DB</h3>
-                  <p className="text-gray-400 leading-relaxed mb-5">
-                    A powerful database platform for managing the complete research grant lifecycle, from application to milestone tracking.
-                  </p>
-                  <div className="space-y-3 mb-6">
-                    {["Comprehensive grant management system", "Researcher and organization tracking", "Event, project, and milestone coordination", "On-prem deployment with local SMTP setup for emails", "Streamlined application and approval workflows"].map((feature) => (
-                      <div key={feature} className="flex items-start gap-2">
-                        <CheckmarkCircleRegular className="w-5 h-5 flex-shrink-0 mt-0.5 text-accent" />
-                        <p className="text-sm text-gray-300">{feature}</p>
+                  <div className="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                      <h3 className="text-2xl font-bold text-white mb-3">Agriculture Research DB</h3>
+                      <p className="text-gray-400 leading-relaxed mb-4">
+                        A powerful database platform for managing the complete research grant lifecycle, from application to milestone tracking.
+                      </p>
+                      <div className="space-y-2 mb-6">
+                        {["Comprehensive grant management system", "Researcher and organization tracking", "Event, project, and milestone coordination", "On-prem deployment with local SMTP setup for emails", "Streamlined application and approval workflows"].map((feature) => (
+                          <div key={feature} className="flex items-start gap-2">
+                            <CheckmarkCircleRegular className="w-4 h-4 flex-shrink-0 mt-0.5 text-accent" />
+                            <p className="text-sm text-gray-300">{feature}</p>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                  <div className="pt-5 border-t border-gray-800">
-                    <p className="text-xs text-accent uppercase font-semibold tracking-wider mb-2">Impact</p>
-                    <p className="text-sm text-gray-400">Transformed grant operations with smoother application processing, approval workflows, and ongoing grant maintenance for research organizations.</p>
+                      <div className="pt-5 border-t border-gray-800">
+                        <p className="text-xs text-accent uppercase font-semibold tracking-wider mb-2">Impact</p>
+                        <p className="text-sm text-gray-400">Transformed grant operations with smoother application processing, approval workflows, and ongoing grant maintenance for research organizations.</p>
+                      </div>
+                    </div>
+                    <div className="relative">
+                      <div className="rounded-lg overflow-hidden shadow-2xl border border-gray-700">
+                        <div className="bg-gray-800 px-3 py-2 flex items-center gap-2 border-b border-gray-700">
+                          <div className="flex gap-1.5">
+                            <div className="w-2 h-2 rounded-full bg-red-400/60" />
+                            <div className="w-2 h-2 rounded-full bg-yellow-400/60" />
+                            <div className="w-2 h-2 rounded-full bg-green-400/60" />
+                          </div>
+                          <div className="flex-1 mx-2">
+                            <div className="bg-gray-700 rounded-md px-3 py-0.5 text-[10px] text-gray-400 truncate">
+                              http://127.0.0.1:3000/
+                            </div>
+                          </div>
+                        </div>
+                        <Image src="/researchdb.png" alt="Agriculture Research DB dashboard" width={1366} height={900} className="w-full h-auto block" />
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
 
