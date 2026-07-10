@@ -43,16 +43,6 @@ export default function Footer() {
 
   return (
     <footer className="bg-gray-900 text-gray-300 border-t border-gray-800 relative overflow-hidden">
-      {/* Background Icon */}
-      <div className="absolute -bottom-20 -right-20 w-[500px] h-[500px] opacity-10 pointer-events-none">
-        <Image
-          src="/icon2.png"
-          alt=""
-          fill
-          className="object-contain brightness-0 invert"
-        />
-      </div>
-
       <div className="container mx-auto px-4 md:px-6 py-12 md:py-16 relative z-10">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 mb-12">
