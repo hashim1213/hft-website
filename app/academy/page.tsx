@@ -1,462 +1,115 @@
 'use client'
 
-import { motion } from "framer-motion"
-import { BrainCircuitRegular, BookOpenRegular, ArrowTrendingRegular, PeopleRegular, LightbulbRegular, TargetRegular, CheckmarkCircleRegular, ArrowRightRegular, TrophyRegular, ClockRegular, FlashRegular } from "@fluentui/react-icons"
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
+import { useState, type FormEvent } from "react"
 import Image from "next/image"
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import emailjs from "@emailjs/browser"
+import { ArrowRight, BookOpen, BriefcaseBusiness, Check, ChevronRight, Clock3, GraduationCap, Laptop, Lightbulb, LoaderCircle, MessageSquare, ShieldCheck, Sparkles, Users } from "lucide-react"
+import Header from "@/components/Header"
+import Footer from "@/components/Footer"
 
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 }}
-}
+const modules = [
+  { number: "01", title: "AI foundations for modern work", summary: "Build a practical mental model of AI without the jargon.", lessons: ["How generative AI and large language models work", "What ChatGPT, Claude, and Gemini do differently", "Capabilities, limitations, privacy, and responsible use"] },
+  { number: "02", title: "Prompting that produces results", summary: "Turn vague requests into repeatable, high-quality outputs.", lessons: ["A reliable framework for writing effective prompts", "Context, examples, constraints, and iteration", "Reusable prompt systems for your role and team"] },
+  { number: "03", title: "Research, writing, and analysis", summary: "Work through information faster without sacrificing judgment.", lessons: ["Research and source-aware synthesis", "Drafting, editing, summarizing, and repurposing", "Analyzing documents, spreadsheets, and feedback"] },
+  { number: "04", title: "AI for business workflows", summary: "Apply AI to useful work across your organization.", lessons: ["Sales, marketing, operations, and management use cases", "Meeting preparation, reporting, and decision support", "Finding safe automation opportunities"] },
+  { number: "05", title: "Build with AI", summary: "Move from AI user to creator—even without a technical background.", lessons: ["Prototyping tools and internal applications", "Vibe coding fundamentals and no-code workflows", "Testing, improving, and safely sharing what you build"] },
+  { number: "06", title: "Your AI implementation plan", summary: "Leave with a focused roadmap for real adoption.", lessons: ["Prioritizing use cases by value, effort, and risk", "Creating team guidelines and governance", "A personal 30-day AI action plan"] },
+]
 
-const staggerChildren = {
-  visible: {
-    transition: {
-      staggerChildren: 0.15
-    }
-  }
-}
+const outcomes = [
+  { icon: MessageSquare, title: "Communicate with AI", text: "Prompt with clarity and consistently improve the quality of AI output." },
+  { icon: BriefcaseBusiness, title: "Transform daily work", text: "Apply AI to research, communication, analysis, and operational tasks." },
+  { icon: ShieldCheck, title: "Use AI responsibly", text: "Recognize risk, protect sensitive information, and verify important work." },
+  { icon: Lightbulb, title: "Find valuable use cases", text: "Separate useful opportunities from hype and prioritize what matters." },
+  { icon: Laptop, title: "Build working tools", text: "Create prototypes and simple applications with AI-assisted platforms." },
+  { icon: GraduationCap, title: "Lead adoption", text: "Help your team develop good habits and a practical implementation plan." },
+]
+
+const audiences = ["Business owners and entrepreneurs", "Managers and team leads", "Sales and marketing professionals", "Operations and administrative teams", "Professionals preparing for AI-enabled work", "Curious beginners with no technical background"]
+
+const faqs = [
+  { question: "Do I need technical or coding experience?", answer: "No. The program starts with the fundamentals and is designed for working professionals. Coding is introduced only as an optional, approachable way to build useful prototypes with AI." },
+  { question: "How is the Academy delivered?", answer: "The core program is self-paced and online. Optional live workshops and private team sessions are available for learners who want guided practice and feedback." },
+  { question: "How much time should I plan for?", answer: "Most learners can complete the core curriculum in six weeks with two to three hours per week. Because access is flexible, you can move faster or take more time as needed." },
+  { question: "Will this focus on one AI tool?", answer: "No. You will learn transferable methods while comparing leading tools such as ChatGPT, Claude, and Gemini. The goal is durable judgment, not dependence on one platform." },
+  { question: "Can an organization enroll a full team?", answer: "Yes. Team cohorts can include a private kickoff, role-specific examples, live workshops, and an AI adoption roadmap shaped around your organization." },
+  { question: "Is Bytesavy Academy an accredited university?", answer: "No. Bytesavy Academy is a practical professional learning program, not an accredited post-secondary institution. Its focus is immediately applicable workplace skill development." },
+]
 
 export default function AcademyPage() {
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [phone, setPhone] = useState("")
+  const [organization, setOrganization] = useState("")
+  const [interest, setInterest] = useState("individual")
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [error, setError] = useState("")
+
+  const enroll = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setLoading(true)
+    setSuccess(false)
+    setError("")
+    try {
+      const result = await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "",
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_CONTACT_ID || process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "",
+        { from_name: name, email, phone, company: organization || "Not provided", project_type: `AI Academy — ${interest}`, message: `${name} would like to join the Bytesavy AI Academy as an ${interest} learner. Phone: ${phone}. Organization: ${organization || "Not provided"}.`, to_name: "Admin" },
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ""
+      )
+      if (result.status !== 200) throw new Error("Unable to submit")
+      setSuccess(true)
+      setName("")
+      setEmail("")
+      setPhone("")
+      setOrganization("")
+    } catch (submissionError) {
+      console.error("Academy enrollment error:", submissionError)
+      setError("We couldn’t submit your request. Please email hello@bytesavy.com and we’ll help you enroll.")
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen bg-[#f7f5ef] text-[#131b17]">
       <Header />
-
-      <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative pt-48 pb-24 px-4 overflow-hidden">
-          {/* Background Image */}
-          <div className="absolute inset-0 w-full h-full">
-            <Image
-              src="/ag_img.webp"
-              alt="Agricultural Technology"
-              fill
-              className="object-cover"
-              priority
-            />
-            {/* Dark overlay for text readability */}
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-accent/85 to-primary/90"></div>
-          </div>
-
-          <div className="container mx-auto max-w-6xl relative z-10">
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={staggerChildren}
-              className="text-center space-y-6"
-            >
-              <motion.h1
-                variants={fadeInUp}
-                className="text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-tight"
-              >
-                Bytesavy Academy
-              </motion.h1>
-
-              <motion.p
-                variants={fadeInUp}
-                className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed"
-              >
-                Master practical AI skills. Learn prompting, tools, and real-world applications with on-demand courses and optional live sessions.
-              </motion.p>
-
-              <motion.div variants={fadeInUp} className="flex flex-wrap gap-4 justify-center pt-4">
-                <Link href="/contact">
-                  <Button size="lg" className="bg-white text-primary hover:bg-gray-100 text-lg px-8 py-6 shadow-xl">
-                    Start Learning
-                    <ArrowRightRegular className="ml-2 w-5 h-5" />
-                  </Button>
-                </Link>
-                <Link href="/contact">
-                  <Button size="lg" className="bg-white/20 backdrop-blur-sm text-white border-2 border-white hover:bg-white/30 text-lg px-8 py-6">
-                    Book Live Session
-                  </Button>
-                </Link>
-              </motion.div>
-
-              {/* Stats */}
-              <motion.div variants={fadeInUp} className="pt-12 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-                {[
-                  { value: "On-Demand", label: "Learning" },
-                  { value: "100%", label: "Practical" },
-                  { value: "Live", label: "Sessions Available" },
-                  { value: "Lifetime", label: "Access" }
-                ].map((stat, index) => (
-                  <div key={index} className="text-center">
-                    <div className="text-4xl font-bold text-white">{stat.value}</div>
-                    <div className="text-white/80 text-sm mt-1">{stat.label}</div>
-                  </div>
-                ))}
-              </motion.div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* What You'll Learn */}
-        <section className="py-24 px-4 bg-white">
-          <div className="container mx-auto max-w-6xl">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">What You'll Learn</h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Practical AI skills you can use immediately in your business and daily work
-              </p>
-            </motion.div>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                {
-                  icon: LightbulbRegular,
-                  title: "AI Fundamentals",
-                  description: "Understand AI buzzwords, what different models do, and how to choose the right tools for your needs.",
-                  topics: ["LLMs vs traditional AI", "GPT, Claude, Gemini explained", "When to use which model"]
-                },
-                {
-                  icon: FlashRegular,
-                  title: "Prompt Engineering Mastery",
-                  description: "Learn how to get AI to do exactly what you want with proper prompting techniques and strategies.",
-                  topics: ["Writing effective prompts", "Advanced techniques", "Common mistakes to avoid"]
-                },
-                {
-                  icon: ArrowTrendingRegular,
-                  title: "AI for Business Tasks",
-                  description: "Use AI for sales, management, marketing, and everyday business operations to boost productivity.",
-                  topics: ["AI for sales outreach", "Management workflows", "Content creation & automation"]
-                }
-              ].map((item, index) => {
-                const Icon = item.icon
-                return (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                  >
-                    <Card className="border-2 border-accent/20 shadow-lg hover:shadow-xl hover:border-accent transition-all h-full">
-                      <CardContent className="p-8">
-                        <div className="h-14 w-14 rounded-xl bg-gradient-to-br from-accent to-primary flex items-center justify-center mb-6">
-                          <Icon className="h-7 w-7 text-white" />
-                        </div>
-                        <h3 className="text-2xl font-bold text-primary mb-4">{item.title}</h3>
-                        <p className="text-gray-600 mb-6 leading-relaxed">{item.description}</p>
-                        <ul className="space-y-3">
-                          {item.topics.map((topic, i) => (
-                            <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
-                              <CheckmarkCircleRegular className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
-                              <span>{topic}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                )
-              })}
+      <main id="main-content">
+        <section className="relative min-h-[86svh] overflow-hidden bg-[#10281f] px-5 pb-16 pt-36 text-white md:px-10 md:pb-20 md:pt-44">
+          <Image src="/hero2.jpg" alt="Professionals working with modern technology" fill priority sizes="100vw" className="object-cover object-center opacity-35" />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,31,23,.98)_0%,rgba(10,31,23,.86)_48%,rgba(10,31,23,.28)_100%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(10,31,23,.7),transparent_50%)]" />
+          <div className="relative mx-auto flex min-h-[calc(86svh-13rem)] max-w-[1440px] flex-col justify-between">
+            <div className="max-w-4xl">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[.16em] backdrop-blur-md"><GraduationCap className="h-4 w-4" /> Bytesavy AI Academy</div>
+              <h1 className="mt-7 text-[clamp(3.8rem,8vw,8rem)] font-semibold leading-[.88] tracking-[-.07em]">Learn AI.<br /><span className="text-[#c9f27d]">Lead what’s next.</span></h1>
+              <p className="mt-8 max-w-2xl text-lg leading-relaxed text-white/70 md:text-xl">A practical professional program for people across every industry who want to use AI confidently, improve real work, and build an advantage that lasts.</p>
+              <div className="mt-9 flex flex-wrap gap-3"><a href="#enroll" className="premium-button group bg-[#c9f27d] text-[#10281f]">Request enrollment <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></a><a href="#curriculum" className="premium-button border border-white/25 bg-white/5 text-white backdrop-blur-md hover:bg-white hover:text-[#10281f]">Explore the curriculum</a></div>
             </div>
+            <div className="mt-14 grid border-y border-white/15 sm:grid-cols-2 lg:grid-cols-4">{[{ value: "6", label: "Applied modules" }, { value: "Self-paced", label: "Flexible online study" }, { value: "Beginner", label: "No prerequisites" }, { value: "Live", label: "Expert sessions available" }].map(item => <div key={item.label} className="border-white/15 py-5 sm:odd:border-r lg:border-r lg:px-6 lg:first:pl-0 lg:last:border-r-0"><p className="text-2xl font-semibold text-[#c9f27d]">{item.value}</p><p className="mt-1 text-xs uppercase tracking-[.13em] text-white/45">{item.label}</p></div>)}</div>
           </div>
         </section>
 
-        {/* Curriculum Overview */}
-        <section className="py-24 px-4 bg-gray-50">
-          <div className="container mx-auto max-w-6xl">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">Course Library</h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Access all courses on-demand and learn at your own pace
-              </p>
-            </motion.div>
+        <nav aria-label="Academy page navigation" className="sticky top-[4.5rem] z-30 hidden border-b border-black/10 bg-[#f7f5ef]/90 px-10 backdrop-blur-xl lg:block"><div className="mx-auto flex h-14 max-w-[1440px] items-center gap-8 text-sm font-medium text-black/55"><a href="#overview" className="hover:text-black">Program</a><a href="#curriculum" className="hover:text-black">Curriculum</a><a href="#experience" className="hover:text-black">Learning experience</a><a href="#instructor" className="hover:text-black">Instructor</a><a href="#faq" className="hover:text-black">FAQ</a><a href="#enroll" className="ml-auto inline-flex items-center gap-2 font-semibold text-[#234d3d]">Admissions <ArrowRight className="h-4 w-4" /></a></div></nav>
 
-            <div className="space-y-6">
-              {[
-                {
-                  module: "Course 1",
-                  title: "AI Buzzwords Decoded",
-                  duration: "Self-paced",
-                  lessons: [
-                    "What are LLMs, GPT, and Transformers?",
-                    "Understanding tokens, context windows, and parameters",
-                    "RAG, Fine-tuning, and Embeddings explained",
-                    "Demystifying AI jargon for business professionals"
-                  ]
-                },
-                {
-                  module: "Course 2",
-                  title: "Mastering AI Prompts",
-                  duration: "Self-paced",
-                  lessons: [
-                    "How to write effective prompts that get results",
-                    "Advanced prompting techniques and frameworks",
-                    "Chain-of-thought and few-shot prompting",
-                    "Prompt templates for common business tasks"
-                  ]
-                },
-                {
-                  module: "Course 3",
-                  title: "AI Tools & Model Selection",
-                  duration: "Self-paced",
-                  lessons: [
-                    "ChatGPT vs Claude vs Gemini - Which to use when",
-                    "Specialized AI tools for different tasks",
-                    "How to evaluate AI tools for your needs",
-                    "Cost vs capability trade-offs"
-                  ]
-                },
-                {
-                  module: "Course 4",
-                  title: "AI for Sales & Management",
-                  duration: "Self-paced",
-                  lessons: [
-                    "Using AI for sales outreach and follow-ups",
-                    "AI-powered CRM and pipeline management",
-                    "Automating reports and management tasks",
-                    "AI for hiring, onboarding, and team coordination"
-                  ]
-                },
-                {
-                  module: "Course 5",
-                  title: "Vibe Coding - Build Apps with AI",
-                  duration: "Self-paced",
-                  lessons: [
-                    "Using AI to write code (even if you can't code)",
-                    "Building simple apps with AI assistance",
-                    "Debugging and improving AI-generated code",
-                    "No-code tools vs AI-assisted coding"
-                  ]
-                }
-              ].map((module, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  <Card className="border border-gray-200 shadow-md hover:shadow-lg transition-all">
-                    <CardContent className="p-8">
-                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-                        <div>
-                          <div className="text-sm font-semibold text-accent mb-2">{module.module}</div>
-                          <h3 className="text-2xl font-bold text-primary">{module.title}</h3>
-                        </div>
-                        <div className="flex items-center gap-2 text-gray-600 bg-gray-100 px-4 py-2 rounded-full">
-                          <ClockRegular className="w-4 h-4" />
-                          <span className="text-sm font-medium">{module.duration}</span>
-                        </div>
-                      </div>
-                      <div className="grid md:grid-cols-2 gap-3">
-                        {module.lessons.map((lesson, i) => (
-                          <div key={i} className="flex items-start gap-2">
-                            <CheckmarkCircleRegular className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
-                            <span className="text-sm text-gray-700">{lesson}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
+        <section id="overview" className="px-5 py-24 md:px-10 md:py-36"><div className="mx-auto grid max-w-[1400px] gap-14 lg:grid-cols-[.75fr_1.25fr]"><div><p className="text-xs font-semibold uppercase tracking-[.18em] text-[#35634f]">Program overview</p><h2 className="mt-5 text-5xl font-semibold leading-[.96] tracking-[-.055em] md:text-7xl">Education built for the <span className="text-black/25">AI era.</span></h2></div><div className="lg:pt-12"><p className="text-2xl font-medium leading-snug tracking-[-.025em] md:text-3xl">AI literacy is quickly becoming as essential as digital literacy. But knowing the tools is not enough.</p><p className="mt-7 max-w-3xl text-lg leading-relaxed text-black/55">Bytesavy AI Academy develops the judgment, methods, and hands-on confidence to apply AI meaningfully. You will learn by doing—with workplace scenarios, guided exercises, reusable resources, and a final implementation plan connected to your goals.</p><div className="mt-10 grid gap-4 sm:grid-cols-3">{[{ icon: Clock3, title: "Flexible", text: "Study around your work and responsibilities." }, { icon: BookOpen, title: "Structured", text: "Follow a clear path from foundations to application." }, { icon: Users, title: "Supported", text: "Add live guidance when you want expert feedback." }].map(item => <div key={item.title} className="border-t border-black/15 pt-5"><item.icon className="h-5 w-5 text-[#35634f]" /><h3 className="mt-6 font-semibold">{item.title}</h3><p className="mt-2 text-sm leading-relaxed text-black/50">{item.text}</p></div>)}</div></div></div></section>
 
-        {/* Who Should Enroll */}
-        <section className="py-24 px-4 bg-white">
-          <div className="container mx-auto max-w-6xl">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold text-primary mb-4">Who Is This For?</h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Anyone looking to leverage AI to work smarter and faster
-              </p>
-            </motion.div>
+        <section className="bg-white px-5 py-24 md:px-10 md:py-36"><div className="mx-auto max-w-[1400px]"><p className="text-xs font-semibold uppercase tracking-[.18em] text-[#35634f]">Graduate capabilities</p><div className="mt-5 flex flex-col gap-5 md:flex-row md:items-end md:justify-between"><h2 className="max-w-3xl text-5xl font-semibold leading-[.96] tracking-[-.055em] md:text-7xl">What you’ll be able to do.</h2><p className="max-w-md text-black/50">Leave with applied skills—not just a collection of videos you watched.</p></div><div className="mt-14 grid gap-px overflow-hidden rounded-[2rem] border border-black/10 bg-black/10 md:grid-cols-2 lg:grid-cols-3">{outcomes.map((outcome, index) => <article key={outcome.title} className="min-h-64 bg-white p-8"><div className="flex items-start justify-between"><outcome.icon className="h-6 w-6 text-[#35634f]" strokeWidth={1.6} /><span className="text-xs text-black/25">0{index + 1}</span></div><h3 className="mt-16 text-2xl font-semibold tracking-[-.035em]">{outcome.title}</h3><p className="mt-3 leading-relaxed text-black/50">{outcome.text}</p></article>)}</div></div></section>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {[
-                {
-                  icon: TargetRegular,
-                  title: "Business Owners",
-                  description: "Use AI to automate tasks, make better decisions, and scale your business"
-                },
-                {
-                  icon: ArrowTrendingRegular,
-                  title: "Sales & Marketing Professionals",
-                  description: "Leverage AI for outreach, content creation, and customer engagement"
-                },
-                {
-                  icon: PeopleRegular,
-                  title: "Managers & Team Leads",
-                  description: "Streamline operations, reporting, and team coordination with AI"
-                },
-                {
-                  icon: BrainCircuitRegular,
-                  title: "Anyone Curious About AI",
-                  description: "No technical background needed - learn practical AI from scratch"
-                }
-              ].map((item, index) => {
-                const Icon = item.icon
-                return (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className="text-center"
-                  >
-                    <div className="h-16 w-16 rounded-full bg-gradient-to-br from-accent/10 to-primary/10 flex items-center justify-center mx-auto mb-4">
-                      <Icon className="h-8 w-8 text-accent" />
-                    </div>
-                    <h3 className="text-xl font-bold text-primary mb-2">{item.title}</h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
-                  </motion.div>
-                )
-              })}
-            </div>
-          </div>
-        </section>
+        <section id="curriculum" className="bg-[#10281f] px-5 py-24 text-white md:px-10 md:py-36"><div className="mx-auto max-w-[1400px]"><div className="grid gap-10 lg:grid-cols-[.7fr_1.3fr]"><div className="lg:sticky lg:top-40 lg:self-start"><p className="text-xs font-semibold uppercase tracking-[.18em] text-[#c9f27d]">Academic curriculum</p><h2 className="mt-5 text-5xl font-semibold leading-[.96] tracking-[-.055em] md:text-7xl">From curious to <span className="text-white/25">capable.</span></h2><p className="mt-7 max-w-md leading-relaxed text-white/50">Six applied modules move from core understanding to confident implementation. Each includes lessons, examples, practical exercises, and resources.</p></div><div className="divide-y divide-white/15 border-y border-white/15">{modules.map(module => <details key={module.number} className="group py-7"><summary className="flex cursor-pointer list-none items-start gap-5"><span className="pt-1 text-xs font-semibold text-[#c9f27d]">{module.number}</span><div className="flex-1"><h3 className="text-2xl font-semibold tracking-[-.035em] md:text-3xl">{module.title}</h3><p className="mt-2 text-white/45">{module.summary}</p></div><span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/20 transition group-open:rotate-90 group-open:bg-white group-open:text-[#10281f]"><ChevronRight className="h-4 w-4" /></span></summary><ul className="ml-10 mt-6 space-y-3 border-l border-white/15 pl-6 text-sm text-white/60">{module.lessons.map(lesson => <li key={lesson} className="flex gap-3"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[#c9f27d]" />{lesson}</li>)}</ul></details>)}</div></div></div></section>
 
-        {/* Benefits */}
-        <section className="py-24 px-4 bg-gradient-to-br from-primary to-accent text-white">
-          <div className="container mx-auto max-w-6xl">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold mb-4">Why Bytesavy Academy?</h2>
-              <p className="text-xl text-white/90 max-w-2xl mx-auto">
-                Learn practical AI skills that you can use immediately
-              </p>
-            </motion.div>
+        <section id="experience" className="bg-[#e9eadf] px-5 py-24 md:px-10 md:py-36"><div className="mx-auto grid max-w-[1400px] gap-14 lg:grid-cols-2 lg:items-center"><div className="relative aspect-[4/3] overflow-hidden rounded-[2rem]"><Image src="/process-meeting.png" alt="Professionals collaborating in a learning session" fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover object-center" /><div className="absolute inset-x-5 bottom-5 rounded-2xl bg-white/90 p-5 backdrop-blur-lg"><p className="text-xs font-semibold uppercase tracking-[.16em] text-[#35634f]">Learning philosophy</p><p className="mt-2 text-lg font-semibold">Learn it. Practice it. Apply it to your work.</p></div></div><div><p className="text-xs font-semibold uppercase tracking-[.18em] text-[#35634f]">The learning experience</p><h2 className="mt-5 text-5xl font-semibold leading-[.96] tracking-[-.055em] md:text-7xl">Serious learning. <span className="text-black/25">Designed for real life.</span></h2><div className="mt-10 divide-y divide-black/10 border-y border-black/10">{[{ title: "Concise expert lessons", text: "Clear instruction that respects your time and avoids unnecessary theory." }, { title: "Guided practice", text: "Exercises and workplace scenarios turn concepts into usable skills." }, { title: "Templates and toolkits", text: "Keep prompt frameworks, evaluation checklists, and implementation resources." }, { title: "Optional live learning", text: "Join workshops or book private sessions for feedback on your use cases." }].map((item, index) => <div key={item.title} className="grid grid-cols-[2.5rem_1fr] py-6"><span className="text-xs text-black/30">0{index + 1}</span><div><h3 className="font-semibold">{item.title}</h3><p className="mt-2 text-sm leading-relaxed text-black/50">{item.text}</p></div></div>)}</div></div></div></section>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              {[
-                {
-                  icon: BookOpenRegular,
-                  title: "100% Practical Content",
-                  description: "No theory fluff - everything you learn can be applied to real work immediately"
-                },
-                {
-                  icon: FlashRegular,
-                  title: "On-Demand Access",
-                  description: "Learn at your own pace, whenever works for you. Lifetime access to all content"
-                },
-                {
-                  icon: TrophyRegular,
-                  title: "Live Expert Sessions",
-                  description: "Book 1-on-1 or group sessions with AI experts when you need personalized help"
-                },
-                {
-                  icon: PeopleRegular,
-                  title: "Community Support",
-                  description: "Join a network of professionals learning and implementing AI in their work"
-                },
-                {
-                  icon: ClockRegular,
-                  title: "No Prerequisites",
-                  description: "Start from zero - no coding or technical background required"
-                },
-                {
-                  icon: ArrowTrendingRegular,
-                  title: "Real-World Examples",
-                  description: "Learn with actual use cases from sales, management, content, and more"
-                }
-              ].map((benefit, index) => {
-                const Icon = benefit.icon
-                return (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/20 transition-all"
-                  >
-                    <Icon className="h-10 w-10 text-white mb-4" />
-                    <h3 className="text-xl font-bold mb-3">{benefit.title}</h3>
-                    <p className="text-white/80 text-sm leading-relaxed">{benefit.description}</p>
-                  </motion.div>
-                )
-              })}
-            </div>
-          </div>
-        </section>
+        <section className="bg-white px-5 py-24 md:px-10 md:py-32"><div className="mx-auto max-w-[1400px]"><div className="grid gap-12 lg:grid-cols-[.7fr_1.3fr]"><div><p className="text-xs font-semibold uppercase tracking-[.18em] text-[#35634f]">Who should apply</p><h2 className="mt-5 text-5xl font-semibold leading-[.96] tracking-[-.055em] md:text-7xl">Built for people doing the work.</h2></div><div className="grid gap-3 sm:grid-cols-2">{audiences.map(audience => <div key={audience} className="flex min-h-24 items-center gap-4 rounded-2xl bg-[#f7f5ef] p-5"><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#10281f] text-white"><Check className="h-4 w-4" /></span><p className="font-medium">{audience}</p></div>)}</div></div></div></section>
 
-        {/* CTA Section */}
-        <section className="py-24 px-4 bg-white">
-          <div className="container mx-auto max-w-4xl">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="text-center space-y-8 bg-gradient-to-br from-gray-50 to-white border-2 border-accent/20 rounded-2xl p-12"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold text-primary">
-                Ready to Master Practical AI?
-              </h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Start learning today with on-demand courses. Book live sessions when you need personalized guidance. No long-term commitments required.
-              </p>
-              <div className="flex flex-wrap gap-4 justify-center pt-4">
-                <Link href="/contact">
-                  <Button size="lg" className="bg-accent hover:bg-accent/90 text-white text-lg px-8 py-6 shadow-lg">
-                    Start Learning
-                    <ArrowRightRegular className="ml-2 w-5 h-5" />
-                  </Button>
-                </Link>
-                <Link href="/contact">
-                  <Button size="lg" variant="outline" className="border-2 border-primary text-primary hover:bg-primary/5 text-lg px-8 py-6">
-                    Book a Live Session
-                  </Button>
-                </Link>
-              </div>
-              <div className="pt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-gray-600">
-                <div className="flex items-center gap-2">
-                  <CheckmarkCircleRegular className="w-5 h-5 text-accent" />
-                  <span>Learn at your pace</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckmarkCircleRegular className="w-5 h-5 text-accent" />
-                  <span>Lifetime access</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckmarkCircleRegular className="w-5 h-5 text-accent" />
-                  <span>Live expert support</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckmarkCircleRegular className="w-5 h-5 text-accent" />
-                  <span>No prerequisites</span>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
+        <section id="instructor" className="bg-[#f7f5ef] px-5 py-24 md:px-10 md:py-32"><div className="mx-auto grid max-w-[1200px] overflow-hidden rounded-[2rem] bg-white lg:grid-cols-[.7fr_1.3fr]"><div className="relative min-h-[420px]"><Image src="/hashim.jpg" alt="Hashim Farooq, lead instructor" fill sizes="(max-width: 1024px) 100vw, 40vw" className="object-cover object-top" /></div><div className="flex flex-col justify-center p-8 md:p-14"><p className="text-xs font-semibold uppercase tracking-[.18em] text-[#35634f]">Lead instructor</p><h2 className="mt-4 text-4xl font-semibold tracking-[-.05em] md:text-6xl">Hashim Farooq</h2><p className="mt-2 font-medium text-black/45">Founder, product builder, and practical AI educator</p><p className="mt-7 max-w-2xl text-lg leading-relaxed text-black/55">Hashim has spent years building software and digital products for real organizations. His teaching focuses on making emerging technology understandable, useful, and grounded in the decisions professionals face every day.</p><blockquote className="mt-8 border-l-2 border-[#35634f] pl-5 text-xl font-medium leading-relaxed tracking-[-.02em]">“The goal isn’t to know every AI tool. It’s to develop the judgment to use the right one well.”</blockquote></div></div></section>
+
+        <section id="faq" className="bg-white px-5 py-24 md:px-10 md:py-32"><div className="mx-auto grid max-w-[1200px] gap-12 lg:grid-cols-[.7fr_1.3fr]"><div><p className="text-xs font-semibold uppercase tracking-[.18em] text-[#35634f]">Admissions FAQ</p><h2 className="mt-5 text-5xl font-semibold leading-[.96] tracking-[-.055em] md:text-7xl">Questions before you begin?</h2></div><div className="divide-y divide-black/10 border-y border-black/10">{faqs.map(item => <details key={item.question} className="group py-6"><summary className="flex cursor-pointer list-none items-center justify-between gap-5 text-lg font-semibold"><span>{item.question}</span><span className="text-2xl font-light transition group-open:rotate-45">+</span></summary><p className="max-w-2xl pt-4 leading-relaxed text-black/50">{item.answer}</p></details>)}</div></div></section>
+
+        <section id="enroll" className="relative overflow-hidden bg-[#10281f] px-5 py-24 text-white md:px-10 md:py-36"><div className="absolute right-0 top-0 h-[600px] w-[700px] bg-[radial-gradient(circle,rgba(201,242,125,.16),transparent_65%)]" /><div className="relative mx-auto grid max-w-[1200px] gap-14 lg:grid-cols-[.85fr_1.15fr] lg:items-center"><div><p className="text-xs font-semibold uppercase tracking-[.18em] text-[#c9f27d]">Admissions</p><h2 className="mt-5 text-5xl font-semibold leading-[.94] tracking-[-.06em] md:text-7xl">Your AI education starts here.</h2><p className="mt-7 max-w-lg text-lg leading-relaxed text-white/55">Request enrollment information and be the first to receive program dates, access details, and options for individuals or teams.</p><div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm text-white/55">{["No prerequisites", "Flexible learning", "Practical curriculum"].map(item => <span key={item} className="flex items-center gap-2"><Check className="h-4 w-4 text-[#c9f27d]" />{item}</span>)}</div></div><form onSubmit={enroll} className="rounded-[2rem] bg-white p-6 text-[#131b17] shadow-2xl md:p-10"><div className="flex items-center gap-4 border-b border-black/10 pb-6"><span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#e9f4d1] text-[#234d3d]"><Sparkles className="h-5 w-5" /></span><div><p className="text-xs font-semibold uppercase tracking-[.14em] text-black/35">Join the Academy</p><h3 className="mt-1 text-2xl font-semibold tracking-[-.03em]">Tell us where to reach you</h3></div></div>{success && <div aria-live="polite" className="mt-6 flex gap-3 rounded-xl bg-[#e9f4d1] p-4 text-sm text-[#234d3d]"><Check className="h-4 w-4 shrink-0" />Thank you. We’ll send the next enrollment details to your inbox.</div>}{error && <div role="alert" className="mt-6 rounded-xl bg-red-50 p-4 text-sm text-red-700">{error}</div>}<div className="mt-7 space-y-5"><label htmlFor="academy-name" className="block text-sm font-semibold">Full name <span className="text-red-600">*</span><input id="academy-name" value={name} onChange={event => setName(event.target.value)} required autoComplete="name" placeholder="Your full name" className="mt-2 h-14 w-full rounded-xl border border-black/10 bg-[#fbfbf8] px-4 text-base font-normal outline-none transition placeholder:text-black/30 focus:border-[#35634f] focus:bg-white focus:ring-2 focus:ring-[#35634f]/10" /></label><label htmlFor="academy-email" className="block text-sm font-semibold">Email address <span className="text-red-600">*</span><input id="academy-email" value={email} onChange={event => setEmail(event.target.value)} required type="email" autoComplete="email" inputMode="email" placeholder="you@company.com" className="mt-2 h-14 w-full rounded-xl border border-black/10 bg-[#fbfbf8] px-4 text-base font-normal outline-none transition placeholder:text-black/30 focus:border-[#35634f] focus:bg-white focus:ring-2 focus:ring-[#35634f]/10" /></label><label htmlFor="academy-phone" className="block text-sm font-semibold">Phone number <span className="text-red-600">*</span><input id="academy-phone" value={phone} onChange={event => setPhone(event.target.value)} required type="tel" autoComplete="tel" inputMode="tel" placeholder="+1 (204) 555-0123" className="mt-2 h-14 w-full rounded-xl border border-black/10 bg-[#fbfbf8] px-4 text-base font-normal outline-none transition placeholder:text-black/30 focus:border-[#35634f] focus:bg-white focus:ring-2 focus:ring-[#35634f]/10" /></label><label htmlFor="academy-organization" className="block text-sm font-semibold">Organization <span className="font-normal text-black/35">Optional</span><input id="academy-organization" value={organization} onChange={event => setOrganization(event.target.value)} autoComplete="organization" placeholder="Company or organization" className="mt-2 h-14 w-full rounded-xl border border-black/10 bg-[#fbfbf8] px-4 text-base font-normal outline-none transition placeholder:text-black/30 focus:border-[#35634f] focus:bg-white focus:ring-2 focus:ring-[#35634f]/10" /></label><label htmlFor="academy-interest" className="block text-sm font-semibold">Enrollment option <span className="text-red-600">*</span><select id="academy-interest" value={interest} onChange={event => setInterest(event.target.value)} className="mt-2 h-14 w-full rounded-xl border border-black/10 bg-[#fbfbf8] px-4 text-base font-normal outline-none transition focus:border-[#35634f] focus:bg-white focus:ring-2 focus:ring-[#35634f]/10"><option value="individual">I want to enroll individually</option><option value="team">I’m enrolling a team</option><option value="workshop">I’m interested in a live workshop</option></select></label></div><button type="submit" disabled={loading} className="premium-button mt-7 w-full bg-[#10281f] text-white disabled:cursor-not-allowed disabled:opacity-50">{loading ? <><LoaderCircle className="h-4 w-4 animate-spin" />Submitting</> : <>Send enrollment request <ArrowRight className="h-4 w-4" /></>}</button><div className="mt-4 flex items-center justify-center gap-2 text-center text-xs text-black/40"><ShieldCheck className="h-3.5 w-3.5" />Your information is only used to contact you about the Academy.</div></form></div></section>
       </main>
-
       <Footer />
     </div>
   )
