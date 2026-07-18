@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bytesavy website
 
-## Getting Started
+A premium Next.js frontend with WordPress running locally as a headless CMS. WordPress manages editorial content through its familiar admin, while Next.js renders the customer-facing experience.
 
-First, run the development server:
+## Local development
+
+### 1. Start WordPress
+
+Docker Desktop must be running.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+docker compose up -d
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:8080](http://localhost:8080), complete the WordPress installer, and create posts under **Posts**. The frontend reads published posts from the WordPress REST API. When WordPress is unavailable, the homepage uses built-in fallback insights.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2. Configure the frontend
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The default API URL already points to local WordPress. To customize it, add this to `.env.local`:
 
-## Learn More
+```bash
+WORDPRESS_API_URL=http://localhost:8080/wp-json/wp/v2
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
 
-To learn more about Next.js, take a look at the following resources:
+See `.env.example` for the existing contact and authentication variables.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 3. Start Next.js
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm install
+npm run dev
+```
 
-## Deploy on Vercel
+Open [http://localhost:3000](http://localhost:3000).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Production
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Set `WORDPRESS_API_URL` to the production WordPress REST base URL and `NEXT_PUBLIC_SITE_URL` to the public website URL, then run:
+
+```bash
+npm run build
+npm start
+```
+
+WordPress responses are cached for 60 seconds in `lib/wordpress.ts`.

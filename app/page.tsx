@@ -1,781 +1,181 @@
-"use client"
-
-import { motion } from "framer-motion"
-import { ArrowRightRegular, CheckmarkCircleRegular } from '@fluentui/react-icons'
-import { Button } from "@/components/ui/button"
+import Image from "next/image"
 import Link from "next/link"
+import { ArrowRight, Bot, Cloud, Code2, Monitor, Smartphone, Sparkles } from "lucide-react"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
-import BookingDialog from "@/components/BookingDialog"
-import BlogSection from "@/components/BlogSection"
-import Image from "next/image"
-import MediaSection from '@/components/MediaSection'
-import Script from 'next/script'
-import { organizationSchema, localBusinessSchema, faqSchema, howToSchema } from "@/lib/structured-data"
-import { useState, ChangeEvent, FormEvent } from "react"
-import emailjs from '@emailjs/browser'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { useLanguage } from "@/contexts/LanguageContext"
-import RotatingIndustry from "@/components/RotatingIndustry"
-import SEOFaq from "@/components/SEOFaq"
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
+import { getRecentBlogPosts } from "@/lib/blog"
+import { plainText } from "@/lib/wordpress"
 
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 }}
-}
+const industries = ["Agriculture", "Energy", "Resources", "Construction", "Manufacturing"]
 
-const staggerChildren = {
-  visible: {
-    transition: {
-      staggerChildren: 0.15
-    }
-  }
-}
+const capabilities = [
+  { icon: Sparkles, title: "Product design", text: "Experiences that make sophisticated systems feel natural from the very first interaction.", href: "/product" },
+  { icon: Code2, title: "Software engineering", text: "Fast, resilient products designed for critical operations and engineered for years of growth.", href: "/development" },
+  { icon: Bot, title: "Applied AI", text: "Intelligence woven into real workflows to remove friction, reveal insight, and accelerate decisions.", href: "/ai" },
+  { icon: Smartphone, title: "Mobile app development", text: "Field-ready iOS and Android products built for speed, reliability, and effortless adoption.", href: "/mobile" },
+]
 
-const jsonLdGraph = {
-  "@context": "https://schema.org",
-  "@graph": [
-    organizationSchema,
-    localBusinessSchema,
-    faqSchema,
-    howToSchema,
-    {
-      "@type": "WebSite",
-      "@id": "https://bytesavy.com/#website",
-      "url": "https://bytesavy.com",
-      "name": "Bytesavy Technologies - Legacy Industry Software Development Partner",
-      "description": "We accelerate operational efficiency and growth for legacy industry organizations with custom software solutions built for real-world conditions.",
-      "publisher": {
-        "@id": "https://bytesavy.com/#organization"
-      },
-      "inLanguage": "en-CA"
-    }
-  ]
-};
+const platforms = [
+  { icon: Monitor, title: "Web", href: "/web" },
+  { icon: Smartphone, title: "Mobile", href: "/mobile" },
+  { icon: Cloud, title: "Cloud", href: "/development" },
+  { icon: Bot, title: "AI", href: "/ai" },
+]
 
-export default function Website() {
-  const { t } = useLanguage();
-  const [contactLoading, setContactLoading] = useState(false);
-  const [contactSuccess, setContactSuccess] = useState(false);
-  const [contactError, setContactError] = useState('');
-  const [contactForm, setContactForm] = useState({ name: '', company: '', email: '', projectType: '', message: '' });
+const projects = [
+  { number: "02", title: "Levy Platform", client: "Agricultural operations", type: "Enterprise software", statement: "Complex producer and payment workflows made remarkably clear.", image: "/levy-app.png", surface: "project-surface-green" },
+  { number: "03", title: "Research Database", client: "Agricultural research", type: "Data experience", statement: "Years of valuable research, accessible in seconds.", image: "/researchdb.png", surface: "project-surface-violet" },
+]
 
-  const handleContactChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setContactForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+const mediaMentions = [
+  { name: "Winnipeg Sun", logo: "/ws.png", url: "https://winnipegsun.com/news/provincial/manitoban-creates-app-that-detects-products-made-in-canada" },
+  { name: "Winnipeg Free Press", logo: "/fp.png.webp", url: "https://www.winnipegfreepress.com/business/2025/02/14/touchscreen-on-pulse-of-buy-canadian-surge" },
+  { name: "Brandon Sun", logo: "/bs.png", url: "https://www.brandonsun.com/local/2025/02/15/brandonite-develops-app-to-help-shoppers-buy-canadian" },
+  { name: "CBC Radio", logo: "/CBC_logo.svg", url: "https://www.cbc.ca/listen/live-radio/1-101-radio-noon-manitoba/clip/16129218-new-app-canmade-developed-brandon" },
+  { name: "CTV News", logo: "/ct.png", url: "https://www.ctvnews.ca/winnipeg/article/manitoba-man-creates-app-to-help-you-shop-for-canadian-products/" },
+  { name: "The Western Producer", logo: "/western-producer-logo.jpg", url: "https://www.producer.com/livestock/cattleos-fills-a-record-keeping-tech-gap-for-beef-cattle-producers/" },
+]
 
-  const handleContactSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setContactLoading(true);
-    setContactError('');
-    setContactSuccess(false);
-    try {
-      const result = await emailjs.send(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '',
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_CONTACT_ID || '',
-        { from_name: contactForm.name, email: contactForm.email, company: contactForm.company || 'Not provided', project_type: contactForm.projectType, message: contactForm.message, to_name: 'Admin' },
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ''
-      );
-      if (result.status === 200) {
-        setContactSuccess(true);
-        setContactForm({ name: '', company: '', email: '', projectType: '', message: '' });
-      } else { throw new Error('Failed'); }
-    } catch { setContactError('Failed to send message. Please try again.'); }
-    finally { setContactLoading(false); }
-  };
+const fallbackInsights = [
+  { slug: "building-software-that-gets-used", title: "How to build software your team will actually use", excerpt: "Why adoption is the clearest measure of a successful digital product.", date: "2026-05-14" },
+  { slug: "ai-beyond-the-hype", title: "AI beyond the hype: where automation creates value", excerpt: "A practical framework for finding valuable, low-risk opportunities inside your operation.", date: "2026-04-22" },
+  { slug: "modernizing-without-disruption", title: "Modernizing critical systems without disrupting work", excerpt: "A staged approach to replacing legacy technology while protecting continuity.", date: "2026-03-18" },
+]
 
-  const services = [
-    {
-      title: "Custom Software Development",
-      description: "Purpose-built applications that modernize your operations, reduce manual work and drive measurable results.",
-      links: [
-        { name: "Web Development", href: "/web" },
-        { name: "Mobile Applications", href: "/mobile" },
-        { name: "System Integration", href: "/solutions" }
-      ]
-    },
-    {
-      title: "Process Automation",
-      description: "Intelligent automation and AI-powered workflows that eliminate repetitive tasks and improve accuracy across your operations.",
-      links: [
-        { name: "Workflow Automation", href: "/ai" },
-        { name: "Data Processing", href: "/ai" }
-      ]
-    },
-    {
-      title: "Legacy System Modernization",
-      description: "Transform outdated systems into modern, cloud-based solutions that scale with your business and integrate seamlessly.",
-      links: [
-        { name: "System Modernization", href: "/consulting" },
-        { name: "Cloud Migration", href: "/development" }
-      ]
-    },
-    {
-      title: "Support & Maintenance",
-      description: "Expert ongoing support and proactive maintenance to ensure your software performs reliably when you need it most.",
-      links: [
-        { name: "Technical Support", href: "/support" },
-        { name: "System Monitoring", href: "/support" }
-      ]
-    }
-  ];
-
-  const processSteps = [
-    { title: "Meeting", description: "We explore your business for automation and growth opportunities." },
-    { title: "Prototype", description: "We turn ideas into blueprints and designs for validation." },
-    { title: "Development", description: "Engineers build modern solutions for speed and security." },
-    { title: "Launch", description: "We ensure a flawless go-live experience after stress testing." },
-    { title: "Maintenance", description: "We provide ongoing optimization to keep your tech ahead." },
-  ];
-
+export default async function Home() {
+  const posts = await getRecentBlogPosts(3)
+  const insights = posts.length ? posts.map(post => ({
+    slug: post.slug,
+    title: plainText(post.title.rendered),
+    excerpt: plainText(post.excerpt.rendered),
+    date: post.date,
+  })) : fallbackInsights
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
-      <Script
-        id="json-ld-graph"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdGraph) }}
-        strategy="beforeInteractive"
-      />
-
+    <div className="min-h-screen bg-white text-[#0a0a0a]">
       <Header />
-
-      <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative pt-40 pb-28 md:pt-48 md:pb-36 overflow-hidden rounded-2xl mx-1 mt-1">
-          <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover">
+      <main id="main-content">
+        <section className="relative flex min-h-[100svh] items-end overflow-hidden bg-black px-5 pb-14 pt-32 text-white md:px-10 md:pb-20">
+          <video autoPlay muted loop playsInline preload="metadata" poster="/hero-bg.png" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover opacity-70">
             <source src="/background.mp4" type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-black/30" />
-
-          <div className="container mx-auto px-4 md:px-6 relative z-10">
-            <div className="max-w-4xl mx-auto text-center">
-              <motion.div
-                initial="hidden"
-                animate="visible"
-                variants={staggerChildren}
-                className="space-y-6"
-              >
-                <motion.h1
-                  variants={fadeInUp}
-                  className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.1] drop-shadow-lg"
-                >
-                  The <RotatingIndustry /> software{" "}
-                  <br className="hidden md:block" />
-                  modernization partner
-                </motion.h1>
-
-                <motion.p
-                  variants={fadeInUp}
-                  className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed drop-shadow-md"
-                >
-                  From sleek web applications to autonomous AI workflows. We bridge the gap between complex engineering and seamless user experience.
-                </motion.p>
-
-                <motion.div
-                  variants={fadeInUp}
-                  className="flex flex-wrap items-center justify-center gap-4 pt-4"
-                >
-                  <BookingDialog onOpenChange={() => {}} />
-                  <Link href="#featured-work">
-                    <Button variant="outline" className="bg-white/80 backdrop-blur-sm border-white/50 hover:bg-white text-gray-900 gap-2">
-                      View Our Work
-                      <ArrowRightRegular className="w-4 h-4" />
-                    </Button>
-                  </Link>
-                </motion.div>
-              </motion.div>
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,.2)_0%,rgba(0,0,0,.15)_35%,rgba(0,0,0,.9)_100%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(106,146,255,.2),transparent_35%)]" />
+          <div className="relative mx-auto w-full max-w-[1500px]">
+            <div className="max-w-6xl">
+              <p className="mb-6 text-sm font-medium tracking-[-0.01em] text-white/60 md:text-base">Design and engineering for the world&apos;s essential industries</p>
+              <h1 className="text-[clamp(4rem,9.6vw,9.5rem)] font-semibold leading-[0.86] tracking-[-0.075em]">Complexity,<br /><span className="hero-shine">beautifully resolved.</span></h1>
             </div>
-          </div>
-        </section>
-
-        {/* Logo Ticker */}
-        <section className="py-8 bg-white overflow-hidden">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="flex items-center justify-center gap-12 flex-wrap">
-              <div className="opacity-60 hover:opacity-100 transition-all duration-300">
-                <Image src="/MCA_logo.png" alt="Manitoba Crop Alliance" width={140} height={50} className="h-10 w-auto object-contain grayscale hover:grayscale-0 transition-all" />
-              </div>
-              <div className="opacity-60 hover:opacity-100 transition-all duration-300">
-                <Image src="/ab_grains.png" alt="Alberta Grains" width={140} height={50} className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all" />
-              </div>
-              <div className="opacity-60 hover:opacity-100 transition-all duration-300">
-                <Image src="/serf_logo.png" alt="South East Research Farm" width={140} height={50} className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all" />
-              </div>
-              <div className="opacity-60 hover:opacity-100 transition-all duration-300">
-                <Image src="/cattleos_logo.png" alt="CattleOS" width={140} height={50} className="h-10 w-auto object-contain grayscale hover:grayscale-0 transition-all" />
-              </div>
-              <div className="opacity-60 hover:opacity-100 transition-all duration-300">
-                <Image src="/logo_red.avif" alt="Partner" width={140} height={50} className="h-10 w-auto object-contain grayscale hover:grayscale-0 transition-all" />
-              </div>
-              <div className="opacity-60 hover:opacity-100 transition-all duration-300">
-                <Image src="/timesule_logo.png" alt="TimeSule" width={140} height={50} className="h-10 w-auto object-contain grayscale hover:grayscale-0 transition-all" />
-              </div>
-              <div className="opacity-60 hover:opacity-100 transition-all duration-300">
-                <Image src="/ruralroots_logo.webp" alt="Rural Roots Canada" width={140} height={50} className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all" />
-              </div>
-              <div className="opacity-60 hover:opacity-100 transition-all duration-300">
-                <Image src="/seniors_logo.png" alt="Seniors for Seniors" width={50} height={50} className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all" />
+            <div className="mt-10 flex flex-col gap-8 border-t border-white/20 pt-7 md:flex-row md:items-end md:justify-between">
+              <p className="max-w-2xl text-lg leading-relaxed text-white/65 md:text-xl">We design software with the clarity people love and the engineering depth critical operations demand.</p>
+              <div className="flex flex-wrap gap-3">
+                <Link href="/contact" className="premium-button group bg-white text-black">Start a project <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></Link>
+                <Link href="#work" className="premium-button border border-white/30 text-white backdrop-blur-md hover:bg-white hover:text-black">See our work</Link>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Services Section */}
-        <section className="py-24 bg-white">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="max-w-6xl mx-auto">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="mb-14"
-              >
-                <h2 className="text-4xl md:text-5xl lg:text-[3.25rem] font-bold text-gray-900 italic leading-tight">
-                  The seamless blend of technology, data and industry expertise
-                </h2>
-              </motion.div>
+        <section className="bg-white px-5 py-8 md:px-10">
+          <div className="mx-auto flex max-w-[1500px] flex-col gap-7 lg:flex-row lg:items-center lg:justify-between">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-black/35">Trusted in the field and the boardroom</p>
+            <div className="flex flex-wrap items-center gap-x-10 gap-y-6 opacity-45 grayscale md:gap-x-14">
+              <Image src="/MCA_logo.png" alt="Manitoba Crop Alliance" width={115} height={42} className="h-8 w-auto object-contain" />
+              <Image src="/ab_grains.png" alt="Alberta Grains" width={110} height={42} className="h-9 w-auto object-contain" />
+              <Image src="/serf_logo.png" alt="South East Research Farm" width={100} height={42} className="h-9 w-auto object-contain" />
+              <Image src="/cattleos_logo.png" alt="CattleOS" width={100} height={42} className="h-8 w-auto object-contain" />
+              <Image src="/timesule_logo.png" alt="TimeSule" width={100} height={42} className="h-8 w-auto object-contain" />
+            </div>
+          </div>
+        </section>
 
-              <div className="grid md:grid-cols-2 gap-6">
-                {services.map((service, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    className="p-8 rounded-lg border border-gray-200 hover:shadow-md transition-shadow"
-                  >
-                    <h3 className="text-xl font-bold text-gray-900 mb-3">{service.title}</h3>
-                    <p className="text-gray-600 leading-relaxed mb-6">{service.description}</p>
-                    <div className="space-y-3">
-                      {service.links.map((link, i) => (
-                        <Link
-                          key={i}
-                          href={link.href}
-                          className="flex items-center text-primary hover:text-accent font-medium text-sm group"
-                        >
-                          <span>{link.name}</span>
-                          <ArrowRightRegular className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
-                        </Link>
-                      ))}
-                    </div>
-                  </motion.div>
-                ))}
+        <section id="services" className="overflow-hidden bg-[#f5f5f7] px-5 py-28 md:px-10 md:py-48">
+          <div className="mx-auto max-w-[1400px] text-center">
+            <p className="premium-kicker">Our standard is simple</p>
+            <h2 className="mx-auto mt-5 max-w-6xl text-[clamp(3.2rem,7.5vw,7.6rem)] font-semibold leading-[0.94] tracking-[-0.065em]">Powerful enough for your operation. <span className="text-black/25">Simple enough for everyone.</span></h2>
+            <p className="mx-auto mt-10 max-w-2xl text-lg leading-relaxed text-black/50 md:text-xl">The finest software hides extraordinary complexity behind an experience that feels inevitable.</p>
+            <div className="mt-10 flex flex-wrap justify-center gap-x-5 gap-y-3 text-sm text-black/40">
+              {industries.map(industry => <span key={industry}>{industry}</span>)}
+            </div>
+          </div>
+
+          <div className="mx-auto mt-20 grid max-w-[1400px] gap-5 md:grid-cols-2 lg:grid-cols-4">
+            {capabilities.map(({ icon: Icon, title, text, href }) => (
+              <Link key={title} href={href} className="premium-card group flex min-h-[360px] flex-col text-left">
+                <div className="flex items-center justify-between">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-black text-white"><Icon className="h-5 w-5" strokeWidth={1.5} /></div>
+                  <ArrowRight className="h-5 w-5 text-black/25 transition duration-300 group-hover:translate-x-1 group-hover:text-black" />
+                </div>
+                <div className="mt-auto pt-20"><h3 className="text-3xl font-semibold leading-none tracking-[-0.045em]">{title}</h3><p className="mt-4 text-base leading-relaxed text-black/50">{text}</p></div>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section id="work" className="overflow-hidden bg-[#f3f3f1] px-5 py-20 md:px-10 md:py-28">
+          <div className="mx-auto max-w-[1500px]">
+            <div className="flex flex-col gap-7 border-b border-black/10 pb-10 lg:flex-row lg:items-end lg:justify-between">
+              <div><p className="premium-kicker">Selected work</p><h2 className="mt-4 text-[clamp(3.2rem,6vw,6.5rem)] font-semibold leading-[0.92] tracking-[-0.065em]">Software people<br /><span className="text-black/25">want to use.</span></h2></div>
+              <div className="max-w-md"><p className="text-base leading-relaxed text-black/50">Every detail considered. Every interaction intentional. Every system ready for the real world.</p><div className="mt-5 flex flex-wrap gap-2">{platforms.map(({ icon: Icon, title, href }) => <Link key={title} href={href} className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/60 px-3 py-1.5 text-xs text-black/55 transition hover:border-black/30 hover:text-black"><Icon className="h-3.5 w-3.5" />{title}</Link>)}</div></div>
+            </div>
+
+            <article className="grid gap-10 py-14 lg:grid-cols-[.72fr_1.28fr] lg:items-center lg:gap-16 lg:py-20">
+              <div className="max-w-xl">
+                <p className="text-xs font-semibold uppercase tracking-[.17em] text-black/35">01 / Alberta Grains</p>
+                <h3 className="mt-5 text-5xl font-semibold leading-[.96] tracking-[-.055em] md:text-7xl">Alberta<br />Blue Book</h3>
+                <p className="mt-6 text-lg font-medium leading-relaxed text-black/75">The trusted field guide, reimagined as one digital agronomy ecosystem.</p>
+                <p className="mt-5 leading-relaxed text-black/50">We transformed a cornerstone agricultural resource into a fast, searchable product for producers and agronomists—available on the web and in the field.</p>
+                <ul className="mt-7 flex flex-wrap gap-2 text-xs font-medium text-black/55"><li className="rounded-full border border-black/10 bg-white px-3 py-2">Product design</li><li className="rounded-full border border-black/10 bg-white px-3 py-2">Web platform</li><li className="rounded-full border border-black/10 bg-white px-3 py-2">Mobile app</li></ul>
+                <Link href="/contact" className="group mt-8 inline-flex items-center gap-2 border-b border-black pb-1 text-sm font-semibold">Build something this useful <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></Link>
+              </div>
+
+              <div className="bluebook-showcase">
+                <div className="bluebook-orb" />
+                <div className="bluebook-laptop">
+                  <div className="bluebook-screen"><Image src="/bluebook-tablet.png" alt="Alberta Blue Book web platform" fill sizes="(max-width: 1024px) 90vw, 58vw" className="object-cover object-top" /></div>
+                  <div className="bluebook-base" />
+                </div>
+                <div className="bluebook-phone"><div className="bluebook-phone-speaker" /><div className="relative h-full w-full overflow-hidden rounded-[1.45rem]"><Image src="/screen2.jpg" alt="Alberta Blue Book mobile application" fill sizes="220px" className="object-cover object-top" /></div></div>
+              </div>
+            </article>
+
+            <div className="grid gap-5 border-t border-black/10 pt-10 md:grid-cols-2">
+              {projects.map(project => <article key={project.title} className="group grid overflow-hidden rounded-[1.75rem] border border-black/[.06] bg-white sm:grid-cols-[1fr_.9fr]">
+                <div className="flex flex-col p-7 md:p-9"><p className="text-[10px] font-semibold uppercase tracking-[.16em] text-black/30">{project.number} / {project.type}</p><h3 className="mt-5 text-3xl font-semibold tracking-[-.045em]">{project.title}</h3><p className="mt-3 leading-relaxed text-black/45">{project.statement}</p><p className="mt-auto pt-8 text-sm font-medium text-black/40">{project.client}</p></div>
+                <div className={`relative flex min-h-64 items-center overflow-hidden p-5 ${project.surface}`}><div className="project-glow" /><div className="relative z-10 aspect-[1.95/1] w-full overflow-hidden rounded-xl bg-white shadow-[0_18px_35px_rgba(0,0,0,.18)]"><Image src={project.image} alt={`${project.title} interface`} fill sizes="(max-width: 640px) 100vw, 25vw" className="object-contain transition duration-700 group-hover:scale-[1.025]" /></div></div>
+              </article>)}
+            </div>
+          </div>
+        </section>
+
+        <section id="approach" className="bg-white px-5 py-28 md:px-10 md:py-48">
+          <div className="mx-auto max-w-[1400px]">
+            <div className="grid gap-14 lg:grid-cols-[1.1fr_.9fr] lg:items-start">
+              <div className="lg:sticky lg:top-32"><p className="premium-kicker">How we work</p><h2 className="mt-5 max-w-3xl text-5xl font-semibold leading-[.96] tracking-[-0.06em] md:text-7xl">One focused team.<br /><span className="text-black/25">Zero lost translation.</span></h2><p className="mt-8 max-w-xl text-lg leading-relaxed text-black/50">You work directly with the people imagining, designing, and engineering your product. Ideas move faster. Decisions get sharper. Quality stays uncompromised.</p></div>
+              <div className="divide-y divide-black/10 border-y border-black/10">
+                {["Understand the operation", "Design the experience", "Engineer the system", "Evolve the product"].map((step, index) => <div key={step} className="group flex min-h-36 items-center gap-6 py-8"><span className="text-sm text-black/30">0{index + 1}</span><h3 className="text-2xl font-semibold tracking-[-0.035em] md:text-3xl">{step}</h3><ArrowRight className="ml-auto h-5 w-5 text-black/20 transition group-hover:translate-x-1 group-hover:text-black" /></div>)}
               </div>
             </div>
           </div>
         </section>
 
-        {/* Stats + Mission Section */}
-        <section className="py-24 bg-white">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="max-w-6xl mx-auto">
-              <div className="grid md:grid-cols-2 gap-16 items-center">
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  className="bg-gray-50 rounded-2xl p-10 border border-gray-100"
-                >
-                  <div className="text-center mb-8">
-                    <span className="text-7xl md:text-8xl font-bold text-gray-900">10+</span>
-                    <p className="text-sm text-accent font-semibold uppercase tracking-wider mt-2">Projects Delivered</p>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-8 pt-6 border-t border-gray-200">
-                    <div className="text-center">
-                      <p className="text-3xl font-bold text-gray-900">100%</p>
-                      <p className="text-sm text-gray-500 mt-1">On-Time Delivery</p>
-                    </div>
-                    <div className="text-center">
-                      <p className="text-3xl font-bold text-gray-900">3+</p>
-                      <p className="text-sm text-gray-500 mt-1">Years in Business</p>
-                    </div>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                >
-                  <div className="flex items-center gap-1 mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
-                    <span className="ml-2 text-sm text-gray-500 font-medium">5/5 Client Rating</span>
-                  </div>
-                  <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                    We don&apos;t just build software. We forge the digital future of your business.
-                  </h2>
-                  <p className="text-gray-600 leading-relaxed mb-6">
-                    Our team of designers, developers, and thinkers driven by one purpose: to craft reliable software that solves real problems.
-                  </p>
-                  <BookingDialog onOpenChange={() => {}} />
-                </motion.div>
-              </div>
-            </div>
+        <section id="insights" className="bg-[#f5f5f7] px-5 py-28 md:px-10 md:py-40">
+          <div className="mx-auto max-w-[1400px]">
+            <div className="flex items-end justify-between"><div><p className="premium-kicker">Ideas from Bytesavy</p><h2 className="mt-4 text-5xl font-semibold tracking-[-0.055em] md:text-7xl">Think deeper.</h2></div><Link href="/blog" className="hidden items-center gap-2 font-semibold md:flex">All insights <ArrowRight className="h-4 w-4" /></Link></div>
+            <div className="mt-14 grid gap-5 md:grid-cols-3">{insights.map((post, index) => <Link href={`/blog/${post.slug}`} key={post.slug} className={`insight-card group ${index === 0 ? "md:col-span-2" : ""}`}><p className="text-xs font-semibold uppercase tracking-[0.16em] text-black/35">Insight / {new Date(post.date).getFullYear()}</p><h3 className={`${index === 0 ? "md:text-5xl" : "md:text-3xl"} mt-16 text-3xl font-semibold leading-[1.04] tracking-[-0.045em]`}>{post.title}</h3><p className="mt-5 line-clamp-3 max-w-xl leading-relaxed text-black/45">{post.excerpt}</p><span className="mt-auto flex h-11 w-11 items-center justify-center self-end rounded-full bg-black text-white transition group-hover:scale-110"><ArrowRight className="h-4 w-4" /></span></Link>)}</div>
+            <Link href="/blog" className="mt-8 inline-flex items-center gap-2 font-semibold md:hidden">All insights <ArrowRight className="h-4 w-4" /></Link>
           </div>
         </section>
 
-        {/* Process Section */}
-        <section className="py-24 bg-white ">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="max-w-6xl mx-auto">
-              <p className="text-sm text-gray-500 mb-8">/Our Process</p>
-              <div className="grid md:grid-cols-2 gap-16 items-start">
-                {/* Left - Image */}
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  className="rounded-2xl overflow-hidden"
-                >
-                  <Image
-                    src="/process-meeting.png"
-                    alt="Client consultation meeting"
-                    width={800}
-                    height={1000}
-                    className="w-full h-auto object-cover rounded-2xl"
-                  />
-                </motion.div>
-
-                {/* Right - Title + Steps with connecting line */}
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                >
-                  <h2 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-12">
-                    From initial spark to scalable reality.
-                  </h2>
-
-                  <div className="relative">
-                    {/* Connecting line */}
-                    <div className="absolute left-4 top-4 bottom-4 w-px bg-gradient-to-b from-accent via-primary to-accent opacity-30" />
-
-                    <div className="space-y-8">
-                      {processSteps.map((step, index) => (
-                        <div key={index} className="flex gap-5 relative">
-                          <div className="flex-shrink-0 w-8 h-8 rounded-full border-2 border-accent bg-white flex items-center justify-center z-10">
-                            <span className="text-xs font-bold text-gray-900">{index + 1}</span>
-                          </div>
-                          <div className="pt-1">
-                            <h3 className="text-lg font-bold text-gray-900 mb-1">{step.title}</h3>
-                            <p className="text-gray-600 text-sm">{step.description}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              </div>
-            </div>
-          </div>
+        <section className="bg-white px-5 py-16 md:px-10 md:py-24">
+          <div className="mx-auto max-w-[1400px]"><p className="mb-12 text-center text-xs font-semibold uppercase tracking-[0.18em] text-black/30">Featured in</p><div className="grid grid-cols-2 gap-y-12 md:grid-cols-3 lg:grid-cols-6">{mediaMentions.map(item => <a key={item.name} href={item.url} target="_blank" rel="noreferrer" className="group flex h-12 items-center justify-center"><span className="relative block h-9 w-28 opacity-35 grayscale transition group-hover:opacity-80"><Image src={item.logo} alt={item.name} fill sizes="112px" className="object-contain" /></span></a>)}</div></div>
         </section>
 
-        {/* Portfolio Section - Dark */}
-        <section id="featured-work" className="py-24 bg-gray-950">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="max-w-6xl mx-auto">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="mb-12"
-              >
-                <p className="text-sm text-gray-500 mb-8">/Featured Work</p>
-              </motion.div>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                {/* BlueBook App - Featured */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  className="bg-gray-900 rounded-2xl p-6 border border-gray-800 hover:border-gray-700 transition-colors md:col-span-2"
-                >
-                  <div className="grid md:grid-cols-2 gap-8 items-center">
-                    <div>
-                      <h3 className="text-2xl font-bold text-white mb-3">Alberta BlueBook App</h3>
-                      <p className="text-gray-400 leading-relaxed mb-4">
-                        A cross-platform agricultural reference app built for iOS, Android, and web, giving farmers and agronomists quick access to crop protection product information, selector charts, and guides.
-                      </p>
-                      <div className="space-y-2 mb-6">
-                        {["iOS, Android, and web app", "Product search across crops and pests", "Offline-capable selector charts and guides", "Personalized favorites and quick reference tools"].map((feature) => (
-                          <div key={feature} className="flex items-start gap-2">
-                            <CheckmarkCircleRegular className="w-4 h-4 flex-shrink-0 mt-0.5 text-accent" />
-                            <p className="text-sm text-gray-300">{feature}</p>
-                          </div>
-                        ))}
-                      </div>
-                      <a href="https://www.bluebookapp.ca" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-medium text-accent hover:underline">
-                        Visit bluebookapp.ca
-                        <ArrowRightRegular className="w-3.5 h-3.5" />
-                      </a>
-                    </div>
-                    {/* Device mockups */}
-                    <div className="relative min-h-[300px]">
-                      <div className="relative z-10 w-full">
-                        <div className="rounded-lg overflow-hidden shadow-2xl border border-gray-700">
-                          <div className="bg-gray-800 px-3 py-2 flex items-center gap-2 border-b border-gray-700">
-                            <div className="flex gap-1.5">
-                              <div className="w-2 h-2 rounded-full bg-red-400/60" />
-                              <div className="w-2 h-2 rounded-full bg-yellow-400/60" />
-                              <div className="w-2 h-2 rounded-full bg-green-400/60" />
-                            </div>
-                            <div className="flex-1 mx-2">
-                              <div className="bg-gray-700 rounded-md px-3 py-0.5 text-[10px] text-gray-400 truncate">
-                                bluebookapp.ca
-                              </div>
-                            </div>
-                          </div>
-                          <Image src="/bluebook-app.png" alt="BlueBook App web" width={1366} height={900} className="w-full h-auto block" />
-                        </div>
-                      </div>
-                      <div className="absolute -bottom-4 right-0 z-20 w-[50%]">
-                        <div className="rounded-xl border-2 border-gray-700 bg-gray-800 p-[3px] shadow-2xl">
-                          <div className="rounded-lg overflow-hidden">
-                            <Image src="/bluebook-tablet.png" alt="BlueBook App tablet" width={1024} height={768} className="w-full h-auto block" />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="absolute -bottom-6 left-2 z-30 w-[18%]">
-                        <div className="rounded-[1rem] border-2 border-gray-700 bg-gray-800 p-[2px] shadow-2xl">
-                          <div className="rounded-[0.8rem] overflow-hidden">
-                            <Image src="/bluebook-mobile.jpg" alt="BlueBook App mobile" width={390} height={844} className="w-full h-auto block" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-
-                {/* Levy Database */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.1 }}
-                  className="bg-gray-900 rounded-2xl p-6 border border-gray-800 hover:border-gray-700 transition-colors md:col-span-2"
-                >
-                  <div className="grid md:grid-cols-2 gap-8 items-center">
-                    <div className="relative">
-                      <div className="rounded-lg overflow-hidden shadow-2xl border border-gray-700">
-                        <div className="bg-gray-800 px-3 py-2 flex items-center gap-2 border-b border-gray-700">
-                          <div className="flex gap-1.5">
-                            <div className="w-2 h-2 rounded-full bg-red-400/60" />
-                            <div className="w-2 h-2 rounded-full bg-yellow-400/60" />
-                            <div className="w-2 h-2 rounded-full bg-green-400/60" />
-                          </div>
-                          <div className="flex-1 mx-2">
-                            <div className="bg-gray-700 rounded-md px-3 py-0.5 text-[10px] text-gray-400 truncate">
-                              http://127.0.0.1:5001/
-                            </div>
-                          </div>
-                        </div>
-                        <Image src="/levy-app.png" alt="Levy Database reports interface" width={1366} height={900} className="w-full h-auto block" />
-                      </div>
-                    </div>
-                    <div>
-                      <h3 className="text-2xl font-bold text-white mb-3">Levy Database</h3>
-                      <p className="text-gray-400 leading-relaxed mb-4">
-                        A comprehensive system designed for levy collection organizations, streamlining the entire levy management process.
-                      </p>
-                      <div className="space-y-2 mb-6">
-                        {["Complete customer management system", "Automated levy collection and refund processing", "Organization management for collecting entities", "On-prem deployment with local SMTP setup for emails", "Real-time reporting and compliance tracking"].map((feature) => (
-                          <div key={feature} className="flex items-start gap-2">
-                            <CheckmarkCircleRegular className="w-4 h-4 flex-shrink-0 mt-0.5 text-accent" />
-                            <p className="text-sm text-gray-300">{feature}</p>
-                          </div>
-                        ))}
-                      </div>
-                      <div className="pt-5 border-t border-gray-800">
-                        <p className="text-xs text-accent uppercase font-semibold tracking-wider mb-2">Impact</p>
-                        <p className="text-sm text-gray-400">Simplified levy operations from collection to refund, enabling organizations to manage their processes efficiently and transparently.</p>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-
-                {/* Research Database */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 }}
-                  className="bg-gray-900 rounded-2xl p-6 border border-gray-800 hover:border-gray-700 transition-colors md:col-span-2"
-                >
-                  <div className="grid md:grid-cols-2 gap-8 items-center">
-                    <div>
-                      <h3 className="text-2xl font-bold text-white mb-3">Agriculture Research DB</h3>
-                      <p className="text-gray-400 leading-relaxed mb-4">
-                        A powerful database platform for managing the complete research grant lifecycle, from application to milestone tracking.
-                      </p>
-                      <div className="space-y-2 mb-6">
-                        {["Comprehensive grant management system", "Researcher and organization tracking", "Event, project, and milestone coordination", "On-prem deployment with local SMTP setup for emails", "Streamlined application and approval workflows"].map((feature) => (
-                          <div key={feature} className="flex items-start gap-2">
-                            <CheckmarkCircleRegular className="w-4 h-4 flex-shrink-0 mt-0.5 text-accent" />
-                            <p className="text-sm text-gray-300">{feature}</p>
-                          </div>
-                        ))}
-                      </div>
-                      <div className="pt-5 border-t border-gray-800">
-                        <p className="text-xs text-accent uppercase font-semibold tracking-wider mb-2">Impact</p>
-                        <p className="text-sm text-gray-400">Transformed grant operations with smoother application processing, approval workflows, and ongoing grant maintenance for research organizations.</p>
-                      </div>
-                    </div>
-                    <div className="relative">
-                      <div className="rounded-lg overflow-hidden shadow-2xl border border-gray-700">
-                        <div className="bg-gray-800 px-3 py-2 flex items-center gap-2 border-b border-gray-700">
-                          <div className="flex gap-1.5">
-                            <div className="w-2 h-2 rounded-full bg-red-400/60" />
-                            <div className="w-2 h-2 rounded-full bg-yellow-400/60" />
-                            <div className="w-2 h-2 rounded-full bg-green-400/60" />
-                          </div>
-                          <div className="flex-1 mx-2">
-                            <div className="bg-gray-700 rounded-md px-3 py-0.5 text-[10px] text-gray-400 truncate">
-                              http://127.0.0.1:3000/
-                            </div>
-                          </div>
-                        </div>
-                        <Image src="/researchdb.png" alt="Agriculture Research DB dashboard" width={1366} height={900} className="w-full h-auto block" />
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-
-              </div>
-            </div>
-          </div>
+        <section className="relative overflow-hidden bg-black px-5 py-32 text-center text-white md:px-10 md:py-52">
+          <div className="cta-orb absolute left-1/2 top-1/2 h-[600px] w-[900px] -translate-x-1/2 -translate-y-1/2" />
+          <div className="relative mx-auto max-w-6xl"><p className="premium-kicker text-white/45">Your next advantage</p><h2 className="mt-6 text-[clamp(4rem,9vw,9rem)] font-semibold leading-[.88] tracking-[-0.075em]">Make it<br /><span className="hero-shine">unforgettable.</span></h2><p className="mx-auto mt-9 max-w-xl text-lg text-white/50">Bring us the complexity. We will create the clarity.</p><Link href="/contact" className="premium-button group mt-10 bg-white text-black">Start a conversation <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></Link></div>
         </section>
-
-
-        {/* Differentiators Section */}
-        <section className="py-24 bg-gray-950 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(112,161,95,0.08)_0%,_transparent_50%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(14,76,117,0.08)_0%,_transparent_50%)]" />
-          <div className="container mx-auto px-4 md:px-6 relative z-10">
-            <div className="max-w-5xl mx-auto text-center">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-              >
-                <h2 className="text-4xl md:text-5xl font-bold text-white mb-20">
-                  Where others stop, We Continue.
-                </h2>
-              </motion.div>
-
-              <div className="w-full text-left border border-gray-800 rounded-xl overflow-hidden">
-                {[
-                  {
-                    title: "Industry expertise",
-                    description: "We understand the unique challenges of legacy industry operations and build software that works in real-world conditions."
-                  },
-                  {
-                    title: "Built to last",
-                    description: "No shortcuts. We create robust, maintainable software that performs reliably for years, not months."
-                  },
-                  {
-                    title: "Practical and outcome-focused",
-                    description: "Every feature serves a purpose. We focus on delivering tangible results that improve your bottom line."
-                  },
-                  {
-                    title: "Seamless integration",
-                    description: "Our solutions work with your existing systems and processes, minimizing disruption during implementation."
-                  }
-                ].map((item, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    className={`grid md:grid-cols-[240px_1fr] gap-4 md:gap-8 px-8 py-6 ${index !== 3 ? "border-b border-gray-800" : ""}`}
-                  >
-                    <h3 className="text-lg font-bold text-white">{item.title}</h3>
-                    <p className="text-gray-400 leading-relaxed">{item.description}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* FAQ Section */}
-        <section className="py-24 bg-white">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="max-w-4xl mx-auto">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="mb-12"
-              >
-                <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
-                  Common Questions
-                </h2>
-              </motion.div>
-              <Accordion type="single" collapsible className="grid md:grid-cols-2 gap-x-8">
-                {[
-                  { q: "How long for a custom software project?", a: "Timelines vary by scope. Most projects launch within 8-16 weeks from kickoff to deployment." },
-                  { q: "How do we structure our pricing?", a: "We offer fixed-price project quotes and ongoing retainer options depending on your needs." },
-                  { q: "Will you access the development team?", a: "Yes, you work directly with our engineering team throughout the project with regular check-ins." },
-                  { q: "Can you integrate AI into our legacy systems?", a: "Absolutely. We specialize in modernizing legacy systems with AI capabilities without disrupting operations." },
-                  { q: "Do you offer MVP or phased development?", a: "Yes, we recommend phased approaches to validate early and scale with confidence." },
-                  { q: "What technologies do you specialize in?", a: "Next.js, React, React Native, Python, Node.js, PostgreSQL, Firebase, AWS, and modern AI frameworks." },
-                ].map((faq, i) => (
-                  <AccordionItem key={i} value={`faq-${i}`} className="border-b border-gray-200">
-                    <AccordionTrigger className="text-left text-sm font-semibold text-gray-900 hover:no-underline py-5">
-                      {faq.q}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-gray-600 text-sm">
-                      {faq.a}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </div>
-          </div>
-          <SEOFaq />
-        </section>
-
-        {/* Blog Section */}
-        <section className="py-24 bg-white ">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="max-w-6xl mx-auto">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="mb-12"
-              >
-                <p className="text-sm text-gray-500 mb-3">/Insights Blog</p>
-                <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
-                  Strategic insights on AI, Tech,<br />and Growth.
-                </h2>
-              </motion.div>
-              <BlogSection />
-            </div>
-          </div>
-        </section>
-
-        {/* Large Text Marquee */}
-        <section className="py-8 bg-white overflow-hidden">
-          <div className="whitespace-nowrap animate-marquee">
-            <span className="text-6xl md:text-8xl font-bold text-gray-100 mx-8">
-              Solutions built for real-world impact
-            </span>
-            <span className="text-6xl md:text-8xl font-bold text-gray-100 mx-8">
-              Solutions built for real-world impact
-            </span>
-          </div>
-        </section>
-
-        {/* Contact / CTA Section */}
-        <section className="py-24 bg-white">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="max-w-6xl mx-auto">
-              <div className="grid md:grid-cols-2 gap-16 items-start">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                >
-                  <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                    Let&apos;s Talk
-                  </h2>
-                  <p className="text-lg text-gray-600 mb-8">
-                    {t('cta.subtitle')}
-                  </p>
-                  <div className="space-y-4 mb-8">
-                    <div className="flex items-center gap-3">
-                      <CheckmarkCircleRegular className="w-5 h-5 text-accent" />
-                      <span className="text-gray-700">Production-Ready: We deliver stable, secure code.</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <CheckmarkCircleRegular className="w-5 h-5 text-accent" />
-                      <span className="text-gray-700">Scalable Architecture: Built to grow with your business.</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <CheckmarkCircleRegular className="w-5 h-5 text-accent" />
-                      <span className="text-gray-700">Direct Founder Access: Work directly with our technical leads.</span>
-                    </div>
-                  </div>
-                  <BookingDialog onOpenChange={() => {}} />
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.1 }}
-                  className="bg-gray-50 rounded-2xl p-8 border border-gray-100"
-                >
-                  {contactError && (
-                    <Alert variant="destructive" className="mb-4">
-                      <AlertDescription>{contactError}</AlertDescription>
-                    </Alert>
-                  )}
-                  {contactSuccess && (
-                    <Alert className="mb-4 bg-accent/10 text-accent border-accent">
-                      <AlertDescription>Thank you! We&apos;ll get back to you soon.</AlertDescription>
-                    </Alert>
-                  )}
-                  <form onSubmit={handleContactSubmit} className="space-y-4">
-                    <div className="grid sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="text-sm font-medium text-gray-700 block mb-1">Name</label>
-                        <input name="name" value={contactForm.name} onChange={handleContactChange} className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" placeholder="Your Name" required />
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium text-gray-700 block mb-1">Company</label>
-                        <input name="company" value={contactForm.company} onChange={handleContactChange} className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" placeholder="Company Name" />
-                      </div>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium text-gray-700 block mb-1">Email</label>
-                      <input name="email" value={contactForm.email} onChange={handleContactChange} className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" placeholder="you@company.com" type="email" required />
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium text-gray-700 block mb-1">Project Type</label>
-                      <Select value={contactForm.projectType} onValueChange={(v) => setContactForm(prev => ({ ...prev, projectType: v }))}>
-                        <SelectTrigger className="border-gray-200 focus:ring-accent">
-                          <SelectValue placeholder="Select project type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="web">Web Application</SelectItem>
-                          <SelectItem value="mobile">Mobile App</SelectItem>
-                          <SelectItem value="ai">AI Integration</SelectItem>
-                          <SelectItem value="analytics">Data Analytics</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium text-gray-700 block mb-1">Message</label>
-                      <textarea name="message" value={contactForm.message} onChange={handleContactChange} className="flex min-h-[100px] w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" placeholder="Tell us about your project" required />
-                    </div>
-                    <Button type="submit" className="w-full bg-accent hover:bg-accent/90 text-white" disabled={contactLoading}>
-                      {contactLoading ? "Sending..." : "Send Message"}
-                    </Button>
-                  </form>
-                </motion.div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Media Section */}
-        <MediaSection />
       </main>
-
       <Footer />
     </div>
   )
