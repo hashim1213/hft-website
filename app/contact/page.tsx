@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, type ChangeEvent, type FormEvent } from "react"
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react"
 import emailjs from "@emailjs/browser"
 import { ArrowRight, Check, LoaderCircle, Mail, MapPin, Phone } from "lucide-react"
 import Header from "@/components/Header"
@@ -29,6 +29,14 @@ export default function ContactPage() {
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState("")
   const [formData, setFormData] = useState<FormData>(initialFormData)
+  const offerSelected = formData.projectType === "fall-website-offer"
+
+  useEffect(() => {
+    const interest = new URLSearchParams(window.location.search).get("interest")
+    if (interest === "fall-website-offer") {
+      setFormData(previous => ({ ...previous, projectType: "fall-website-offer" }))
+    }
+  }, [])
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = event.target
@@ -44,7 +52,7 @@ export default function ContactPage() {
     try {
       const result = await emailjs.send(
         process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "",
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_CONTACT_ID || "",
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "",
         {
           from_name: formData.name,
           email: formData.email,
@@ -97,8 +105,12 @@ export default function ContactPage() {
               </div>
             </aside>
 
-            <div className="order-1 rounded-[2rem] border border-black/[.06] bg-white p-6 shadow-[0_24px_80px_rgba(0,0,0,.05)] md:p-9 lg:order-2 lg:p-10">
-              <div className="mb-9"><p className="premium-kicker">Project inquiry</p><h2 className="mt-3 text-3xl font-semibold tracking-[-.045em] md:text-4xl">Tell us a little about your project.</h2></div>
+            <div id="inquiry" className="order-1 scroll-mt-28 rounded-[2rem] border border-black/[.06] bg-white p-6 shadow-[0_24px_80px_rgba(0,0,0,.05)] md:p-9 lg:order-2 lg:p-10">
+              <div className="mb-9">
+                <p className="premium-kicker">{offerSelected ? "Website offer application" : "Project inquiry"}</p>
+                <h2 className="mt-3 text-3xl font-semibold tracking-[-.045em] md:text-4xl">{offerSelected ? "Tell us about your business." : "Tell us a little about your project."}</h2>
+                {offerSelected && <p className="mt-3 max-w-xl text-sm leading-relaxed text-black/50">We will use this to confirm eligibility, recommend the right website scope, and prepare for a short, no-obligation fit call.</p>}
+              </div>
 
               <div aria-live="polite">
                 {error && <div role="alert" className="mb-7 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">{error}</div>}
@@ -111,9 +123,9 @@ export default function ContactPage() {
                   <div><label htmlFor="company" className="mb-2 block text-sm font-semibold">Company <span className="font-normal text-black/35">Optional</span></label><input id="company" name="company" value={formData.company} onChange={handleInputChange} className={inputClass} placeholder="Organization name" autoComplete="organization" /></div>
                 </div>
                 <div><label htmlFor="email" className="mb-2 block text-sm font-semibold">Work email <span className="text-black/35">*</span></label><input id="email" name="email" value={formData.email} onChange={handleInputChange} className={inputClass} placeholder="you@company.com" type="email" autoComplete="email" required /></div>
-                <div><label htmlFor="projectType" className="mb-2 block text-sm font-semibold">How can we help? <span className="text-black/35">*</span></label><select id="projectType" name="projectType" value={formData.projectType} onChange={handleInputChange} className={`${inputClass} appearance-none`} required><option value="" disabled>Select a capability</option><option value="product-design">Product design</option><option value="web">Web application</option><option value="mobile">Mobile app</option><option value="software-engineering">Software engineering</option><option value="ai">Applied AI</option><option value="consulting">Technology consulting</option><option value="other">Something else</option></select></div>
-                <div><label htmlFor="message" className="mb-2 block text-sm font-semibold">What are you hoping to accomplish? <span className="text-black/35">*</span></label><textarea id="message" name="message" value={formData.message} onChange={handleInputChange} className={`${inputClass} min-h-40 resize-y`} placeholder="Share the challenge, context, timeline, or anything else that would help us understand the opportunity." required /></div>
-                <div className="flex flex-col gap-4 border-t border-black/10 pt-6 sm:flex-row sm:items-center sm:justify-between"><p className="max-w-xs text-xs leading-relaxed text-black/40">By submitting this form, you agree that we may contact you about your inquiry.</p><button type="submit" disabled={loading} className="premium-button group bg-black text-white disabled:cursor-not-allowed disabled:opacity-50">{loading ? <><LoaderCircle className="h-4 w-4 animate-spin" />Sending</> : <>Send inquiry <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></>}</button></div>
+                <div><label htmlFor="projectType" className="mb-2 block text-sm font-semibold">How can we help? <span className="text-black/35">*</span></label><select id="projectType" name="projectType" value={formData.projectType} onChange={handleInputChange} className={`${inputClass} appearance-none`} required><option value="" disabled>Select a capability</option><option value="fall-website-offer">Website offer — $0 design &amp; build</option><option value="product-design">Product design</option><option value="web">Web application</option><option value="mobile">Mobile app</option><option value="software-engineering">Software engineering</option><option value="ai">Applied AI</option><option value="consulting">Technology consulting</option><option value="other">Something else</option></select></div>
+                <div><label htmlFor="message" className="mb-2 block text-sm font-semibold">{offerSelected ? "What should your new website help customers do?" : "What are you hoping to accomplish?"} <span className="text-black/35">*</span></label><textarea id="message" name="message" value={formData.message} onChange={handleInputChange} className={`${inputClass} min-h-40 resize-y`} placeholder={offerSelected ? "Tell us what you sell, who your customers are, and what is not working about your current website (if you have one)." : "Share the challenge, context, timeline, or anything else that would help us understand the opportunity."} required /></div>
+                <div className="flex flex-col gap-4 border-t border-black/10 pt-6 sm:flex-row sm:items-center sm:justify-between"><p className="max-w-xs text-xs leading-relaxed text-black/40">By submitting this form, you agree that we may contact you about your inquiry.</p><button type="submit" disabled={loading} className="premium-button group bg-black text-white disabled:cursor-not-allowed disabled:opacity-50">{loading ? <><LoaderCircle className="h-4 w-4 animate-spin" />Sending</> : <>{offerSelected ? "Apply for offer" : "Send inquiry"} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></>}</button></div>
               </form>
             </div>
           </div>

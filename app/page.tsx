@@ -3,6 +3,7 @@ import Link from "next/link"
 import { ArrowRight, Bot, Cloud, Code2, Monitor, Smartphone, Sparkles } from "lucide-react"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
+import WebsiteOffer from "@/components/WebsiteOffer"
 import { getRecentBlogPosts } from "@/lib/blog"
 import { plainText } from "@/lib/wordpress"
 
@@ -74,6 +75,17 @@ export default async function Home() {
               </div>
             </div>
           </div>
+        </section>
+
+        <WebsiteOffer />
+
+        <section className="flex min-h-[100svh] items-center overflow-hidden bg-black px-5 py-20 text-white md:px-10">
+          <blockquote
+            className="mx-auto w-full max-w-[1700px] font-bold"
+            style={{ fontSize: "clamp(5.75rem, 15vw, 17rem)", lineHeight: 0.76, letterSpacing: "-0.085em" }}
+          >
+            The AI era<br />doesn&apos;t reward<br /><span style={{ color: "rgba(255,255,255,.42)" }}>followers.</span>
+          </blockquote>
         </section>
 
         <section className="bg-white px-5 py-8 md:px-10">

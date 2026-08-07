@@ -38,7 +38,7 @@ export default function Header() {
     <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${scrolled || !home ? "border-b border-black/[.06] bg-white/80 backdrop-blur-2xl" : "bg-black/10 backdrop-blur-sm"}`}>
       <div className="mx-auto flex h-[4.5rem] max-w-[1520px] items-center justify-between px-5 md:px-10">
         <Link href="/" aria-label="Bytesavy home" className="relative z-50 block h-10 w-36">
-          <Image src="/logo2.png" alt="Bytesavy" fill priority className={`object-contain object-left transition ${light ? "brightness-0 invert" : ""}`} />
+          <Image src="/logo2.png" alt="Bytesavy" fill sizes="144px" priority className={`object-contain object-left transition ${light ? "brightness-0 invert" : ""}`} />
         </Link>
         <nav className="hidden items-center gap-1 lg:flex">
           {links.map(link => <Link key={link.name} href={link.href} className={`rounded-full px-4 py-2 text-sm font-medium transition ${light ? "text-white/70 hover:bg-white/10 hover:text-white" : "text-black/60 hover:bg-black/5 hover:text-black"}`}>{link.name}</Link>)}
