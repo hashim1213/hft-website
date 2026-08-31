@@ -3,7 +3,6 @@ import Link from "next/link"
 import { ArrowRight, Bot, Cloud, Code2, Monitor, Smartphone, Sparkles } from "lucide-react"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
-import WebsiteOffer from "@/components/WebsiteOffer"
 import { getRecentBlogPosts } from "@/lib/blog"
 import { plainText } from "@/lib/wordpress"
 
@@ -76,8 +75,6 @@ export default async function Home() {
             </div>
           </div>
         </section>
-
-        <WebsiteOffer />
 
         <section className="flex min-h-[100svh] items-center overflow-hidden bg-black px-5 py-20 text-white md:px-10">
           <blockquote
