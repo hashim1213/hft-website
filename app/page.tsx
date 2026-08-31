@@ -170,9 +170,18 @@ export default async function Home() {
 
         <section id="insights" className="bg-[#f5f5f7] px-5 py-28 md:px-10 md:py-40">
           <div className="mx-auto max-w-[1400px]">
-            <div className="flex items-end justify-between"><div><p className="premium-kicker">Ideas from Bytesavy</p><h2 className="mt-4 text-5xl font-semibold tracking-[-0.055em] md:text-7xl">Think deeper.</h2></div><Link href="/blog" className="hidden items-center gap-2 font-semibold md:flex">All insights <ArrowRight className="h-4 w-4" /></Link></div>
-            <div className="mt-14 grid gap-5 md:grid-cols-3">{insights.map((post, index) => <Link href={`/blog/${post.slug}`} key={post.slug} className={`insight-card group ${index === 0 ? "md:col-span-2" : ""}`}><p className="text-xs font-semibold uppercase tracking-[0.16em] text-black/35">Insight / {new Date(post.date).getFullYear()}</p><h3 className={`${index === 0 ? "md:text-5xl" : "md:text-3xl"} mt-16 text-3xl font-semibold leading-[1.04] tracking-[-0.045em]`}>{post.title}</h3><p className="mt-5 line-clamp-3 max-w-xl leading-relaxed text-black/45">{post.excerpt}</p><span className="mt-auto flex h-11 w-11 items-center justify-center self-end rounded-full bg-black text-white transition group-hover:scale-110"><ArrowRight className="h-4 w-4" /></span></Link>)}</div>
-            <Link href="/blog" className="mt-8 inline-flex items-center gap-2 font-semibold md:hidden">All insights <ArrowRight className="h-4 w-4" /></Link>
+            <div className="flex items-end justify-between border-b border-black/10 pb-8"><div><p className="premium-kicker">From the blog</p><h2 className="mt-4 text-5xl font-semibold tracking-[-0.055em] md:text-6xl">Latest insights</h2></div><Link href="/blog" className="hidden items-center gap-2 font-semibold md:flex">View all posts <ArrowRight className="h-4 w-4" /></Link></div>
+            <div className="divide-y divide-black/10">{insights.map(post => <article key={post.slug} className="py-8">
+              <Link href={`/blog/${post.slug}`} className="group grid gap-3 md:grid-cols-[180px_1fr] md:gap-10">
+                <time dateTime={post.date} className="text-sm text-black/40">{new Date(post.date).toLocaleDateString("en-CA", { day: "numeric", month: "long", year: "numeric" })}</time>
+                <div>
+                  <h3 className="text-2xl font-semibold leading-snug tracking-[-0.025em] transition group-hover:text-black/60 md:text-3xl">{post.title}</h3>
+                  <p className="mt-3 line-clamp-2 max-w-3xl leading-relaxed text-black/50">{post.excerpt}</p>
+                  <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold">Read more <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span>
+                </div>
+              </Link>
+            </article>)}</div>
+            <Link href="/blog" className="mt-8 inline-flex items-center gap-2 font-semibold md:hidden">View all posts <ArrowRight className="h-4 w-4" /></Link>
           </div>
         </section>
 
