@@ -49,6 +49,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Blog and other pages
     { route: '/blog', priority: 0.8, changeFrequency: 'daily' as const },
     { route: '/canmade', priority: 0.7, changeFrequency: 'monthly' as const },
+    { route: '/photobooths', priority: 0.8, changeFrequency: 'weekly' as const },
     { route: '/privacy', priority: 0.5, changeFrequency: 'yearly' as const },
     { route: '/site-pages', priority: 0.5, changeFrequency: 'yearly' as const },
   ]
