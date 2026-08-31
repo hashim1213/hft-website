@@ -1,11 +1,10 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import Image from "next/image"
-import { ArrowRight } from "lucide-react"
+import { CalendarDays } from "lucide-react"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import { getAllBlogPosts } from "@/lib/blog"
-import { plainText, featuredImage, type WordPressPost } from "@/lib/wordpress"
+import { plainText, type WordPressPost } from "@/lib/wordpress"
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -18,17 +17,19 @@ const fallbackPosts = [
   { id: 3, slug: "modernizing-without-disruption", date: "2026-03-18", title: { rendered: "Modernizing critical systems without disrupting work" }, excerpt: { rendered: "A staged approach to replacing legacy technology while protecting business continuity." }, content: { rendered: "" } },
 ]
 
+const avatarGradients = [
+  "linear-gradient(135deg, #7b5bff, #b944e0)",
+  "linear-gradient(135deg, #3fa2ff, #7b5bff)",
+  "linear-gradient(135deg, #ff5bb0, #7b5bff)",
+  "linear-gradient(135deg, #2fd4c2, #3fa2ff)",
+]
+
 function postAuthor(post: WordPressPost) {
   return post._embedded?.author?.[0]?.name || "Bytesavy Team"
 }
 
-function readingTime(post: WordPressPost) {
-  const words = plainText(post.content.rendered).split(/\s+/).filter(Boolean).length
-  return words ? `${Math.max(1, Math.round(words / 200))} min read` : null
-}
-
-function formatDate(date: string) {
-  return new Date(date).toLocaleDateString("en-CA", { day: "numeric", month: "long", year: "numeric" })
+function isoDate(date: string) {
+  return new Date(date).toISOString().slice(0, 10)
 }
 
 export default async function BlogPage() {
@@ -39,40 +40,36 @@ export default async function BlogPage() {
     <Header />
     <main id="main-content" className="pt-20">
       <section className="border-b border-black/10 bg-[#f6f7f2] px-5 py-14 md:px-10 md:py-16">
-        <div className="mx-auto max-w-4xl">
+        <div className="mx-auto max-w-6xl">
           <h1 className="text-4xl font-semibold tracking-[-.03em] md:text-5xl">Bytesavy Blog</h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-black/55">Practical thinking on product design, engineering, and applied AI for the world&apos;s essential industries.</p>
         </div>
       </section>
 
       <section className="px-5 py-12 md:px-10 md:py-16">
-        <div className="mx-auto max-w-4xl divide-y divide-black/10">
-          {posts.map(post => {
-            const image = featuredImage(post)
-            const minutes = readingTime(post)
-            return <article key={post.slug} className="py-10 first:pt-0 last:pb-0">
-              <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
-                <div className="min-w-0">
-                  <h2 className="text-2xl font-semibold leading-snug tracking-[-.02em] md:text-3xl">
-                    <Link href={`/blog/${post.slug}`} className="transition hover:text-black/60">{plainText(post.title.rendered)}</Link>
-                  </h2>
-                  <p className="mt-3 text-sm text-black/45">
-                    by <span className="font-medium text-black/65">{postAuthor(post)}</span>
-                    <span className="mx-2 text-black/20">|</span>
-                    <time dateTime={post.date}>{formatDate(post.date)}</time>
-                    {minutes && <><span className="mx-2 text-black/20">|</span>{minutes}</>}
-                  </p>
-                  <p className="mt-4 line-clamp-3 leading-relaxed text-black/60">{plainText(post.excerpt.rendered)}</p>
-                  <Link href={`/blog/${post.slug}`} className="group mt-5 inline-flex items-center gap-1.5 text-sm font-semibold">
-                    Read more <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
-                  </Link>
+        <div className="mx-auto max-w-6xl">
+          <p className="font-mono text-sm text-black/55">Displaying 1-{posts.length} ({posts.length})</p>
+          <div className="mt-10 grid gap-x-16 gap-y-14 md:grid-cols-2">
+            {posts.map((post, index) => {
+              const author = postAuthor(post)
+              return <article key={post.slug}>
+                <p className="flex items-center gap-2 font-mono text-sm text-black/70">
+                  <CalendarDays className="h-4 w-4" aria-hidden />
+                  <time dateTime={post.date}>{isoDate(post.date)}</time>
+                </p>
+                <h2 className="mt-4 text-2xl font-semibold leading-snug tracking-[-.015em]">
+                  <Link href={`/blog/${post.slug}`} className="text-[#0972d3] underline decoration-1 underline-offset-4 transition hover:text-[#064a86]">{plainText(post.title.rendered)}</Link>
+                </h2>
+                <p className="mt-4 line-clamp-4 text-[1.05rem] leading-relaxed text-black/70">{plainText(post.excerpt.rendered)}</p>
+                <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
+                  <span className="flex items-center gap-2">
+                    <span className="flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold text-white" style={{ background: avatarGradients[index % avatarGradients.length] }}>{author.charAt(0).toUpperCase()}</span>
+                    <span className="text-sm font-medium text-black/75">{author}</span>
+                  </span>
                 </div>
-                {image && <Link href={`/blog/${post.slug}`} className="relative block h-40 w-full shrink-0 overflow-hidden rounded-xl border border-black/[.06] sm:h-32 sm:w-48">
-                  <Image src={image} alt={plainText(post.title.rendered)} fill unoptimized sizes="(max-width: 640px) 100vw, 192px" className="object-cover" />
-                </Link>}
-              </div>
-            </article>
-          })}
+              </article>
+            })}
+          </div>
         </div>
       </section>
     </main>
