@@ -30,12 +30,21 @@ const LandingPage = () => {
           </div>
           
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-6">
+          <div className="hidden md:flex items-center space-x-6">
             <a href="#features" className="hover:text-red-200">Features</a>
             <a href="#media" className="hover:text-red-200">As Seen On</a>
             <a href="#why" className="hover:text-red-200">Why Choose Us</a>
             <a href="#collaborate" className="hover:text-red-200">Collaborate</a>
             <a href="/canmade/privacy" className="hover:text-red-200">Privacy Policy</a>
+            <a
+              href="https://buymeacoffee.com/canmadeapp"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center bg-white text-red-600 px-4 py-2 rounded-full font-semibold hover:bg-red-100 transition-colors"
+            >
+              <HeartRegular className="mr-2 w-4 h-4" />
+              <span>Donate</span>
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -53,6 +62,16 @@ const LandingPage = () => {
               <a href="#why" className="hover:text-red-200" onClick={toggleMenu}>Why Choose Us</a>
               <a href="#collaborate" className="hover:text-red-200" onClick={toggleMenu}>Collaborate</a>
               <a href="/canmade/privacy" className="hover:text-red-200" onClick={toggleMenu}>Privacy Policy</a>
+              <a
+                href="https://buymeacoffee.com/canmadeapp"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center self-start bg-white text-red-600 px-4 py-2 rounded-full font-semibold hover:bg-red-100 transition-colors"
+                onClick={toggleMenu}
+              >
+                <HeartRegular className="mr-2 w-4 h-4" />
+                <span>Donate</span>
+              </a>
             </div>
           </div>
         )}
