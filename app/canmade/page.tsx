@@ -1,25 +1,19 @@
 'use client'
 
-import React, { useState } from 'react';
-import { ScanDashRegular, ShoppingBagRegular, HeartRegular, BuildingRegular, DatabaseRegular, MailRegular, NavigationRegular, DismissRegular, TrophyRegular, ArrowRightRegular, ClockRegular, GlobeRegular, VideoRegular } from '@fluentui/react-icons';
+import React from 'react';
+import { ScanDashRegular, ShoppingBagRegular, HeartRegular, BuildingRegular, DatabaseRegular, MailRegular, TrophyRegular, ArrowRightRegular, ClockRegular, GlobeRegular, VideoRegular } from '@fluentui/react-icons';
 import { FeatureCard } from '@/components/featurecard';
 import { BenefitCard } from '@/components/benefitcard';
 import Image from 'next/image';
 
 const LandingPage = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
       <nav className="bg-red-600 text-white p-4 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center space-x-2">
-            <Image 
+            <Image
               src="/app-logo.png"
               alt="CanMade Logo"
               width={40}
@@ -28,53 +22,17 @@ const LandingPage = () => {
             />
             <div className="text-2xl font-bold">CanMade</div>
           </div>
-          
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-6">
-            <a href="#features" className="hover:text-red-200">Features</a>
-            <a href="#media" className="hover:text-red-200">As Seen On</a>
-            <a href="#why" className="hover:text-red-200">Why Choose Us</a>
-            <a href="#collaborate" className="hover:text-red-200">Collaborate</a>
-            <a href="/canmade/privacy" className="hover:text-red-200">Privacy Policy</a>
-            <a
-              href="https://buymeacoffee.com/canmadeapp"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center bg-white text-red-600 px-4 py-2 rounded-full font-semibold hover:bg-red-100 transition-colors"
-            >
-              <HeartRegular className="mr-2 w-4 h-4" />
-              <span>Donate</span>
-            </a>
-          </div>
 
-          {/* Mobile Menu Button */}
-          <button onClick={toggleMenu} className="md:hidden">
-            {isMenuOpen ? <DismissRegular className="w-6 h-6" /> : <NavigationRegular className="w-6 h-6" />}
-          </button>
+          <a
+            href="https://buymeacoffee.com/canmadeapp"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center bg-white text-red-600 px-4 py-2 rounded-full font-semibold hover:bg-red-100 transition-colors"
+          >
+            <HeartRegular className="mr-2 w-4 h-4" />
+            <span>Donate</span>
+          </a>
         </div>
-
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-red-600 border-t border-red-500 p-4">
-            <div className="flex flex-col space-y-4">
-              <a href="#features" className="hover:text-red-200" onClick={toggleMenu}>Features</a>
-              <a href="#media" className="hover:text-red-200" onClick={toggleMenu}>As Seen On</a>
-              <a href="#why" className="hover:text-red-200" onClick={toggleMenu}>Why Choose Us</a>
-              <a href="#collaborate" className="hover:text-red-200" onClick={toggleMenu}>Collaborate</a>
-              <a href="/canmade/privacy" className="hover:text-red-200" onClick={toggleMenu}>Privacy Policy</a>
-              <a
-                href="https://buymeacoffee.com/canmadeapp"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center self-start bg-white text-red-600 px-4 py-2 rounded-full font-semibold hover:bg-red-100 transition-colors"
-                onClick={toggleMenu}
-              >
-                <HeartRegular className="mr-2 w-4 h-4" />
-                <span>Donate</span>
-              </a>
-            </div>
-          </div>
-        )}
       </nav>
 
       {/* Hero Section */}
